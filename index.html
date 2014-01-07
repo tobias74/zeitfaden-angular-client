@@ -1,0 +1,81 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <link href="third_party/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+     <link href="third_party/bootstrap-sass/bootstrap-2.3.2.css" rel="stylesheet" type="text/css" />
+
+
+    <link rel="stylesheet" href="app/styles/main.css">
+        
+    <link href="third_party/bootstrap-sass/bootstrap-responsive-2.3.2.css" rel="stylesheet" type="text/css" />
+        
+</head>
+  <body ng-app="ZeitfadenApp">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>  
+          <a class="brand" href="#"> Project Name </a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right"> 
+              <a href="/login" class="navbar-link"> Login </a>                
+            </p>
+            <ul class="nav">
+              <li class="active"><a href="/"> Home </a></li>
+              <li> <a href="/albums"> Albums </a></li>
+              <li> <a href="registration"> Registration </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>          
+    </div>
+  
+    <div class="container-fluid application">
+      <div ng-view class="row-fluid application-view">
+      
+      </div>
+      
+      <footer>
+         yeah I am the footer
+      </footer>
+    </div>
+      
+
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+        <script src="third_party/jquery/jquery.js"></script>
+        <script src="third_party/jquery-ui/ui/jquery-ui.js"></script>
+        <script src="third_party/sass-bootstrap/dist/js/bootstrap.js"></script>
+        <script src="third_party/simplify.js"></script>
+
+
+    <script src="third_party/angular/angular.js"></script>
+
+    <script src="app/scripts/app.js"></script>
+    <script src="app/scripts/controllers/main.js"></script>
+
+
+        <script src="third_party/angular-resource/angular-resource.js"></script>
+        <script src="third_party/angular-cookies/angular-cookies.js"></script>
+        <script src="third_party/angular-sanitize/angular-sanitize.js"></script>
+        <script src="third_party/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+        <script src="app/scripts/directives/zfDatePicker.js"></script>
+        <script src="app/scripts/services/ZeitfadenService.js"></script>
+        <script src="app/scripts/directives/zfSearchMap.js"></script>
+        <script src="app/scripts/directives/zfTraceMap.js"></script>
+        <script src="app/scripts/directives/zfWhenScrolled.js"></script>
+        <script src="app/scripts/controllers/StationArchive.js"></script>
+        <script src="app/scripts/services/StationService.js"></script>
+        <script src="app/scripts/controllers/TraceArchive.js"></script>
+</body>
+</html>

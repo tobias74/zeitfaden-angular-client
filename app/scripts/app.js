@@ -31,6 +31,11 @@ angular.module('ZeitfadenApp', ['ngResource','infinite-scroll'],function($provid
         controller: 'TraceArchiveCtrl', 
         reloadOnSearch:false
       })
+      .when('/my-trace', {
+        templateUrl: 'app/views/my-trace.html', 
+        controller: 'MyTraceCtrl', 
+        reloadOnSearch:false
+      })
       .otherwise({
         redirectTo: '/'
       });

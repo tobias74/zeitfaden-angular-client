@@ -1,105 +1,85 @@
-    <div class="span4">
-      <div class="well sidebar-nav">
-
-
-        <div class="archive-sidebar-container">
-          <div class="btn-toolbar">
-            <button ng-click="clickedLoad()" class="btn">load! </button>
-            <button ng-click="setToCurrentLocation()" class="btn">here! </button>
-          </div>
-
-
-
-          <div ng-switch on="isSearchingLocation">
-            <span ng-switch-when="true">Currently location your position</span>
-            <span ng-switch-when="false">locating off.</span>
-          </div>
-
-          <span ng-switch on="isLoadingStations">
-            <span ng-switch-when="true">Loading stations...</span>
-            <span ng-switch-when="false">Stations loaded.</span>
-          </span>
-        </div>
-
-
-        <h4>Search Map</h4>
-        <div class="archive-sidebar-container">
-          <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" class="search-map" >
-          </div>        
-        </div>
-
-        <h4>Radius</h4> 
-        <div class="archive-sidebar-container text-center">
-          <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
-        </div>
+        <div class="col-xs-6 col-sm-3" role="navigation">
           
 
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
 
-        <h4>Timeframe</h4>
-        <div class="archive-sidebar-container">
-          <div zf-date-picker ng-model="fromDate" class="archive-date-picker"></div>
-          <div zf-date-picker ng-model="untilDate" class="archive-date-picker"></div>
-        </div>
-        
+              <div zf-date-picker ng-model="fromDate" class="archive-date-picker">
+              </div>
+              <div zf-date-picker ng-model="untilDate" class="archive-date-picker">
+              </div>
 
-        <h4>Debug</h4>
-        <div class="archive-sidebar-container">
-          Latitude: {{searchLocation.latitude}} <br>
-          Longitude: {{searchLocation.longitude}}
+            </div><!--/span-->
 
-          {{selectedRange}}
-        </div>
+            <div class="col-12 col-sm-12 col-lg-12">
+              <div class="btn-toolbar">
+                <button ng-click="clickedLoad()" class="btn">load! </button>
+                <button ng-click="setToCurrentLocation()" class="btn">here! </button>
+              </div>
+              
+              <div ng-switch on="isSearchingLocation">
+                <span ng-switch-when="true">Currently location your position</span>
+                <span ng-switch-when="false">locating off.</span>
+              </div>
+    
+              <span ng-switch on="isLoadingStations">
+                <span ng-switch-when="true">Loading stations...</span>
+                <span ng-switch-when="false">Stations loaded.</span>
+              </span>
+
+              <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" class="search-map" style="height:200px;">
+              </div>        
+
+              <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
 
 
+              <div class="archive-sidebar-container">
+                Latitude: {{searchLocation.latitude}} <br>
+                Longitude: {{searchLocation.longitude}}
+      
+                {{selectedRange}}
+              </div>
+
+              
+            </div><!--/span-->
 
 
+          </div><!--/row-->
 
-
-        
-        <ul class="nav nav-list">
-          <li class="nav-header"> Sidebar </li>
-          <li class="active"><a href="#"> Link </a></li>
-          <li><a href="#"> Link2 </a></li>
           
+        </div><!--/span-->
+ 
+ 
+ 
+ 
+
+      <div class="col-xs-12 col-sm-9">
+
+        <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='0'>
           
-            
-          <li class="nav-header"> Sidebar </li>
-          <li><a href="#"> Link2 </a></li>
-          <li><a href="#"> Link2 </a></li>
-          <li><a href="#"> Link2 </a></li>
+          <ul class="thumbnails">
+            <li ng-repeat="station in stations" ng-switch on="station.attachmentType" class="span3" style="{{$index % 4 == 0 && 'margin-left:0;clear:both;' || ''}}">
+              
+              <div ng-switch-when="image" class="thumbnail">
+                <img ng-click="clickedImage(station)" ng-src="{{station.mediumFrontImageUrl}}">
+                <div class="caption">{{station.startDate}}</div>
+              </div>
+              <div ng-switch-when="video" class="thumbnail" >
+                <video style="" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
+                  <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
+                  <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
+                  <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
+                </video>
+             </div>
+  
+            </li>
+          </ul>
+          
+        </div>
+     </div>
 
-          <li class="nav-header"> Sidebar </li>
-          <li><a href="#"> Link2 </a></li>
-          <li><a href="#"> Link2 </a></li>
-          <li><a href="#"> Link2 </a></li>
-          <li><a href="#"> Link2 </a></li>
-          <li><a href="#"> Link2 </a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="span8 station-list-container">
-      <div class="hero-unit archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='0'>
-        
-        <ul class="thumbnails">
-          <li ng-repeat="station in stations" ng-switch on="station.attachmentType" class="span3" style="{{$index % 4 == 0 && 'margin-left:0;clear:both;' || ''}}">
-            
-            <div ng-switch-when="image" class="thumbnail">
-              <img ng-click="clickedImage(station)" ng-src="{{station.mediumFrontImageUrl}}">
-              <div class="caption">{{station.startDate}}</div>
-            </div>
-            <div ng-switch-when="video" class="thumbnail" >
-              <video style="" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
-                <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
-                <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
-                <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
-              </video>
-           </div>
 
-          </li>
-        </ul>
-        
-      </div>
-    </div>
+
 
 
         

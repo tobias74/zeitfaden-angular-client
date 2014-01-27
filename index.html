@@ -6,11 +6,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="third_party/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 
-    <link href="third_party/bootstrap-3.0.3-dist/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="third_party/bootstrap-3.0.3-dist/dist/css/offcanvas.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+    
+    <link href="app/styles/raw.css" rel="stylesheet">
         
         
 </head>
@@ -38,7 +43,7 @@
 
   
     <div class="container">
-      <div ng-view class="row row-offcanvas row-offcanvas-right">      
+      <div ng-view class="row">      
       
       </div>
       
@@ -53,16 +58,20 @@
 
 
         
-        <script src="third_party/jquery/jquery.js"></script>
-        <script src="third_party/jquery-ui/ui/jquery-ui.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-        <script src="third_party/bootstrap-3.0.3-dist/dist/js/bootstrap.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
 
         <script src="third_party/simplify.js"></script>
 
 
-        <script src="third_party/angular/angular.js"></script>
-
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
+        
         <script src="app/scripts/app.js"></script>
         <script src="app/scripts/controllers/main.js"></script>
 

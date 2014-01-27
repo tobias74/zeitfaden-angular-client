@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ZeitfadenApp', ['ngResource','infinite-scroll'],function($provide, $httpProvider){
+angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll'],function($provide, $httpProvider){
   $provide.factory('myHttpInterceptor', function($q) {
     return function(promise) {
 

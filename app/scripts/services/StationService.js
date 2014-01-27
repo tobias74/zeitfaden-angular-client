@@ -2,9 +2,9 @@
 
 angular.module('ZeitfadenApp').factory('StationService', function($resource){
   return {
-//    getByQuery: function(query, callback){
-//      return $resource('/getStationsByQuery/:query', {query:'@id'}).query({query:query},callback);
-//    },
+    getByQuery: function(query, callback){
+      return $resource('/station/getByQUery/query/:query', {query:'@id'}).query({query:query},callback);
+    },
     getStationsByQuery: function(query, callback){
       return $resource('/station/getByQuery/query/:query', {query:'@id'}).query({query:query},callback);
     },

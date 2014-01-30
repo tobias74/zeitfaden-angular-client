@@ -36,6 +36,11 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll'],functi
         controller: 'MyTraceCtrl', 
         reloadOnSearch:false
       })
+      .when('/instant-uploader', {
+        templateUrl: 'app/views/instant-uploader.html', 
+        controller: 'InstantUploaderCtrl', 
+        reloadOnSearch:false
+      })
       .otherwise({
         redirectTo: '/'
       });

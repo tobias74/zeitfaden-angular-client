@@ -38,8 +38,7 @@ angular.module('ZeitfadenApp').controller('TraceArchiveCtrl', function ($scope,S
     $scope.isSearchingLocation = true;
     navigator.geolocation.getCurrentPosition(function(position){
       $scope.$apply(function(){
-        $scope.searchLocation.latitude = position.coords.latitude;
-        $scope.searchLocation.longitude = position.coords.longitude;
+        $scope.position = position;
         $scope.isSearchingLocation = false;
         callback && callback();
       });

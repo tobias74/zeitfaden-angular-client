@@ -57,8 +57,8 @@
 
         <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='0'>
           
-          <ul class="thumbnails">
-            <li ng-repeat="station in stations" ng-switch on="station.attachmentType" class="span3" style="{{$index % 4 == 0 && 'margin-left:0;clear:both;' || ''}}">
+          <div class="row">
+            <div ng-repeat="station in stations" ng-switch on="station.attachmentType" class="col-4 col-sm-4 col-lg-3" >
               
               <div ng-switch-when="image" class="thumbnail">
                 <img ng-click="clickedImage(station)" ng-src="{{station.mediumFrontImageUrl}}">
@@ -73,7 +73,7 @@
              </div>
   
             </li>
-          </ul>
+          </row>
           
         </div>
      </div>

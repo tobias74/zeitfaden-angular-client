@@ -20,6 +20,12 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   ];
                            
          
+         
+  var internalFromDate;
+  var internalUntilDate;
+  var lastStation;
+  var scrollEndReached = false;       
+         
   $scope.stations = [];
   $scope.isLoadingStations = false;
   $scope.isSearchingLocation = true;
@@ -31,8 +37,9 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   };
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   $scope.isSearchingLocation = false;
-  $scope.fromDate = new Date();
-  $scope.untilDate = new Date();
+  $scope.searchDate = new Date();
+  $scope.searchDirection = "intoThePast";
+  
   
   
   
@@ -55,12 +62,17 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   
 
   $scope.clickedLoad = function(){
-    
+    lastStation = undefined;
+    internalFromDate = undefined;
+    internalUntilDate = undefined;
+    scrollEndReached = false;
+        
     var search = $location.search();
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
-    search.fromDate = $scope.fromDate.toUTCString();
-    search.untilDate = $scope.untilDate.toUTCString();
+    search.searchDate = $scope.searchDate.toUTCString();
+    console.debug('this is the searchDirsdtgion ' + $scope.searchDirection);
+    search.searchDirection = $scope.searchDirection;
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
     
@@ -81,33 +93,83 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     console.debug('new load Stations');
     
     $scope.stations = [];
-    $scope.queryOffset = 0;
-    $scope.queryLimit = 20;
+    
     console.debug('load stations with scrollStatus: ' + $scope.scrollingStatusId);
     $scope.loadMore();
   };
   
   $scope.scrolledForMore = function(callback){
-    console.debug('detected the scrolling.');
-    $scope.loadMore(callback);
+    if (scrollEndReached)
+    {
+      return;
+    }
+    if (!$scope.isLoadingStations)
+    {
+      $scope.loadMore(callback);
+    }
   };
   
   $scope.loadMore = function(callback) {
-    
     console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
-
+    if ($scope.isLoadingStations)
+    {
+      return false;
+    }
+    
     $scope.isLoadingStations = true;
+    var manydays=1000;
+
+    console.debug('search Dirdtiton is here ########################: ' + $scope.searchDirection);
+
+    if (lastStation != undefined)
+    {
+      if ($scope.searchDirection == 'intoTheFuture')
+      {
+        internalFromDate = new Date(lastStation.zuluStartDateString);
+        internalUntilDate = new Date(internalFromDate.getTime() + (manydays * 24 * 60 * 60 * 1000));
+      }
+      else //if ($scope.searchDirection == 'intoTheFuture')
+      {
+        internalUntilDate = new Date(lastStation.zuluStartDateString);
+        internalFromDate = new Date(internalUntilDate.getTime() - (manydays * 24 * 60 * 60 * 1000));
+      }
+    }
+    else // its a new search
+    {
+      if ($scope.searchDirection == 'intoTheFuture')
+      {
+        internalFromDate = $scope.searchDate;
+        internalUntilDate = new Date(internalFromDate.getTime() + (manydays * 24 * 60 * 60 * 1000));
+      }
+      else //if ($scope.searchDirection == 'intoTheFuture')
+      {
+        internalUntilDate = $scope.searchDate;
+        internalFromDate = new Date(internalUntilDate.getTime() - (manydays * 24 * 60 * 60 * 1000));
+      }
+      
+    }
+
+
+
+    
+    
     var moreStations = StationService.getByQuery($scope.getQuery(),function(){
       //console.debug(moreStations);
       for (var i = 0; i < moreStations.length; i++) {
         $scope.stations.push(moreStations[i]);
       }
       $scope.isLoadingStations = false;
-      $scope.queryOffset += moreStations.length;
+      if (moreStations.length>0)
+      {
+        lastStation = moreStations[moreStations.length-1];
+      }
+      else
+      {
+        scrollEndReached = true;
+      }
       
       window.tobias[$scope.scrollingStatusId]['filled'] = true;
       window.tobias[$scope.scrollingStatusId]['stations'] = $scope.stations;
-      window.tobias[$scope.scrollingStatusId]['queryOffset'] = $scope.queryOffset;
       window.tobias[$scope.scrollingStatusId]['tobias'] = 'yeshere';
       
       $scope.debug_didLoadStations = true;
@@ -120,17 +182,33 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   $scope.getQuery = function(){
     var fromDateString='2020-01-01';
     var untilDateString='2020-01-01';
+    var lastIdString;
+    var sortString;
+
+    fromDateString = internalFromDate.toUTCString();
+    untilDateString = internalUntilDate.toUTCString();
     
-    if ($scope.fromDate != undefined)
+    if (lastStation != undefined)
     {
-        fromDateString = $scope.fromDate.toUTCString();
+      lastIdString = "and higher than '" + lastStation.id + "'";
     }
-    if ($scope.untilDate != undefined)
+    else
     {
-        untilDateString = $scope.untilDate.toUTCString();
+      lastIdString = "";
     }
+  
+    if ($scope.searchDirection == 'intoTheFuture')
+    {
+      sortString = " chronological ";
+    }
+    else
+    {
+      sortString = " reverse chronological ";
+    }
+  
     
-    return "get " + $scope.queryLimit + "," + $scope.queryOffset + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.selectedRange.range + " miles";
+    return "get 10,0 " + sortString + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.selectedRange.range + " miles " + lastIdString;
+
   };
 
   
@@ -145,19 +223,20 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     
     console.debug('digesting routeparams:');
     console.debug(myParams);
-    
-    if (myParams.fromDate){
-      $scope.fromDate = new Date(myParams.fromDate);
+
+
+    if (myParams.searchDirection){
+      $scope.searchDirection = myParams.searchDirection;
     }
     else {
-      $scope.fromDate = new Date();
+      $scope.searchDirection = "intoThePast";
     }
     
-    if (myParams.untilDate){
-      $scope.untilDate = new Date(myParams.untilDate);
+    if (myParams.searchDate){
+      $scope.searchDate = new Date(myParams.searchDate);
     }
     else {
-      $scope.untilDate = new Date();
+      $scope.searchDate = new Date();
     }
     
     if (myParams.radius){
@@ -211,7 +290,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     window.tobias[scrollingStatusId] = {};
     window.tobias[scrollingStatusId]['filled'] = false;
     window.tobias[scrollingStatusId]['stations'] = [];
-    window.tobias[scrollingStatusId]['queryOffset'] = 0;
     window.tobias[scrollingStatusId]['tobias'] = 'this thing was just initialized.';
     
   };
@@ -229,7 +307,8 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       console.debug(window.tobias[scrollingStatusId]);
       console.debug(window.tobias[scrollingStatusId]['tobias']);
       
-      $scope.queryOffset = window.tobias[scrollingStatusId]['queryOffset'];
+      // hier dann das aktuelle interna Datum setzen
+      //$scope.searchDate = window.tobias[$scope.scrollingStatusId]['searchDate'];
       $scope.stations = window.tobias[$scope.scrollingStatusId]['stations'];
       
       if ($scope.isScrollingStatusEmpty(scrollingStatusId)){

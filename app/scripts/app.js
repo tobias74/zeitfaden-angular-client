@@ -6,7 +6,7 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
 
      return promise.then(
         function(response) {
-            console.debug(eval ('window.some = ' + response.headers().zeitfadenprofiler));
+            //console.debug(eval ('window.some = ' + response.headers().zeitfadenprofiler));
            return response;
         }, function(response) {
            return $q.reject('whaat?');
@@ -18,6 +18,7 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
 }).config(function ($routeProvider) {
     $routeProvider
       .when('/', {
+//        redirectTo: '/archive'
         templateUrl: 'app/views/main.html',
         controller: 'MainCtrl'
       })
@@ -42,6 +43,6 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
         reloadOnSearch:false
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/archive'
       });
   });

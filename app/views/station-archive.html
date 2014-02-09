@@ -1,15 +1,23 @@
-      <div class="col-lg-3 col-sm-4 col-md-3 sidebar">
+      <div class="col-lg-3 col-sm-4 col-md-5 sidebar">
         
 
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
+            <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" class="search-map" style="height:200px;">
+            </div>        
+
+            <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+
+            <div zf-date-time-input ng-model="searchDate" class="archive-date-picker">
+            </div>
+
+
             <div zf-date-picker ng-model="searchDate" class="archive-date-picker">
             </div>
 
-          </div><!--/span-->
 
-          <div class="col-12 col-sm-12 col-lg-12">
+
             <div class="btn-toolbar">
               <button ng-click="clickedLoad()" class="btn">load! </button>
               <button ng-click="setToCurrentLocation()" class="btn">here! </button>
@@ -27,10 +35,6 @@
               <span ng-switch-when="false">Stations loaded.</span>
             </span>
 
-            <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" class="search-map" style="height:200px;">
-            </div>        
-
-            <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
 
 
             <div class="archive-sidebar-container">
@@ -54,7 +58,7 @@
  
  
 
-      <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
+      <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
 
         <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='0'>
           

@@ -39,9 +39,8 @@ body {
  * Sidebar
  */
 
-/* Hide for mobile, show later */
 .sidebar {
-  display: none;
+  display: block;
 }
 @media (min-width: 768px) {
   .sidebar {

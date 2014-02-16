@@ -113,17 +113,19 @@ body {
 }
 
 
-.archive div.station.medium{
-  xxx_height:170px;
-}
-
-.thumbnail > img, .thumbnail a > img {
-  xxx_max-height:80%;
-}
 
 
 /* Extra Small */
 @media(max-width:767px){
+
+  .thumbnail .caption {
+    padding:3px;
+    padding-bottom:0px;
+  }
+  
+  small, .small {
+    font-size: 65%;
+  }
   
 }
 

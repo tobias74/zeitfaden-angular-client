@@ -12,6 +12,17 @@ angular.module('ZeitfadenApp').factory('ResponsiveService', function(){
         return true;
       }
     },
+    
+    getAttachmentFormat: function(){
+      if (window.innerWidth <= 767)
+      {
+        return 'square';
+      }
+      else
+      {
+        return '4by3';
+      }
+    },
     getStationsByQuery: function(query, callback){
       return $resource('/station/getByQuery/query/:query', {query:'@id'}).query({query:query},callback);
     },

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,StationService,$routeParams,$location) {
+angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,StationService,$routeParams,$location,ResponsiveService) {
   
   window.tobias = {};
   
@@ -19,7 +19,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     {"range": 100000000, "description": "100000km"}
   ];
                            
-         
+  $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
          
   var internalFromDate;
   var internalUntilDate;

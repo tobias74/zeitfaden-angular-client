@@ -207,7 +207,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     }
   
     
-    return "get 10,0 " + sortString + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.selectedRange.range + " miles " + lastIdString;
+    return "get 30,0 " + sortString + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.selectedRange.range + " miles " + lastIdString;
 
   };
 

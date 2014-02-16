@@ -8,9 +8,6 @@
   font-size: 0.9vw !important;
 }
 
-.archive div.station.medium{
-  height:170px;
-}
 
 
 
@@ -107,3 +104,51 @@ body {
 .placeholder img {
   border-radius: 50%;
 }
+
+
+
+.archive .col-xs-4 {
+  padding-left:5px;
+  padding-right:5px;
+}
+
+
+.archive div.station.medium{
+  xxx_height:170px;
+}
+
+.thumbnail > img, .thumbnail a > img {
+  xxx_max-height:80%;
+}
+
+
+/* Extra Small */
+@media(max-width:767px){
+  
+}
+
+/* Small */
+@media(min-width:768px) and (max-width:991px){
+  
+}
+
+/* Medium */
+@media(min-width:992px) and (max-width:1199px){
+  
+}
+
+/* Large */
+@media(min-width:1200px){
+  
+}
+
+
+
+
+
+
+
+
+
+
+

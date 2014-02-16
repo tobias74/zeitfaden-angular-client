@@ -1,3 +1,6 @@
+     
+     
+     
       <div class="col-lg-3 col-sm-4 col-md-5 sidebar">
         
 
@@ -63,11 +66,11 @@
         <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='0'>
           
           <div class="row">
-            <div ng-repeat="station in stations" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2">
+            <div ng-repeat="station in stations" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
               
               <div ng-switch-when="image" class="thumbnail station medium">
-                <img ng-click="clickedImage(station)" ng-src="{{station.mediumFrontImageUrl}}">
-                <div class="caption">{{station.startDate}}</div>
+                <img ng-click="clickedImage(station)" ng-src="{{station.mediumFrontImageUrl}}" style="object-fit:contain;">
+                <div class="small caption">{{station.startDate}}</div>
               </div>
               <div ng-switch-when="video" class="thumbnail station medium" >
                 <video style="" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">

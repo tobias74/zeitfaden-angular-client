@@ -4,7 +4,7 @@
 /*global google:false */
 
 
-angular.module('ZeitfadenApp').directive('zfSearchMap',function(){
+angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveService){
   return {
     restrict: 'EA',
     require: '?ngModel',
@@ -28,10 +28,14 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(){
         mapOptions = {
             center: searchLatLng,
             zoom: scope.myModel.zoom,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scaleControl: true,
+            disableDoubleClickZoom: true,
+            draggable: ResponsiveService.shouldMapBeDraggable()
           };
 
         googleMap = new google.maps.Map($(element)[0],mapOptions);
+
 
         searchMarker = new google.maps.Marker({
           position: searchLatLng,
@@ -42,6 +46,15 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(){
         });
         
         google.maps.event.addListener(searchMarker, 'dragend', function(){
+          scope.$apply(function(){
+            scope.myModel.latitude = searchMarker.getPosition().lat();
+            scope.myModel.longitude = searchMarker.getPosition().lng();
+          });
+        }.bind(this));
+
+        google.maps.event.addListener(googleMap, 'dblclick', function(event){
+          console.debug(event)
+          searchMarker.setPosition(event.latLng);
           scope.$apply(function(){
             scope.myModel.latitude = searchMarker.getPosition().lat();
             scope.myModel.longitude = searchMarker.getPosition().lng();

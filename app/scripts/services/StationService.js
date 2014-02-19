@@ -5,6 +5,19 @@ angular.module('ZeitfadenApp').factory('StationService', function($resource){
     getByQuery: function(query, callback){
       return $resource('/station/getByQUery/query/:query', {query:'@id'}).query({query:query},callback);
     },
+    getStationsOrderedByTime: function(params,callback){
+      
+      return $resource('/station/get/mustHaveAttachment/:mustHaveAttachment/latitude/:latitude/longitude/:longitude/distance/:distance/datetime/:datetime/sort/:sort/direction/:direction/lastId/:lastId', {
+        mustHaveAttachment: '@id',
+        latitude: '@id',
+        longitude: '@id',
+        distance: '@id',
+        datetime: '@id',
+        sort: '@id',
+        direction: '@id',
+        lastId: '@id'
+      }).query(params,callback);
+    },
     getStationsByQuery: function(query, callback){
       return $resource('/station/getByQuery/query/:query', {query:'@id'}).query({query:query},callback);
     },

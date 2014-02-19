@@ -118,11 +118,14 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     
     $scope.isLoadingStations = true;
     var manydays=1000;
+    var lastId = 0;
 
     console.debug('search Dirdtiton is here ########################: ' + $scope.searchDirection);
 
     if (lastStation != undefined)
     {
+      lastId = lastStation.id;
+      console.debug('we have a last station');
       if ($scope.searchDirection == 'intoTheFuture')
       {
         internalFromDate = new Date(lastStation.zuluStartDateString);
@@ -136,6 +139,12 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     }
     else // its a new search
     {
+      console.debug('we do not have a last station');
+      console.debug($scope.searchDate);
+
+      internalFromDate = $scope.searchDate;
+      
+/*
       if ($scope.searchDirection == 'intoTheFuture')
       {
         internalFromDate = $scope.searchDate;
@@ -146,14 +155,26 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
         internalUntilDate = $scope.searchDate;
         internalFromDate = new Date(internalUntilDate.getTime() - (manydays * 24 * 60 * 60 * 1000));
       }
+*/
       
     }
 
 
 
+    console.debug('internal from date');
+    console.debug(internalFromDate);
     
-    
-    var moreStations = StationService.getByQuery($scope.getQuery(),function(){
+    var moreStations = StationService.getStationsOrderedByTime({
+      mustHaveAttachment: 1,
+      lastId: lastId,
+      latitude: $scope.searchLocation.latitude,
+      longitude: $scope.searchLocation.longitude,
+      distance: $scope.selectedRange.range,
+      sort: 'byTime',
+      direction: $scope.searchDirection,
+      datetime: internalFromDate.toUTCString()
+      
+    },function(){
       //console.debug(moreStations);
       for (var i = 0; i < moreStations.length; i++) {
         $scope.stations.push(moreStations[i]);
@@ -176,6 +197,12 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       
       callback && callback();
     });
+
+
+
+
+
+
   };
   
   

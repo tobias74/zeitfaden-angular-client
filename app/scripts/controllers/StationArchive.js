@@ -62,6 +62,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   
 
   $scope.clickedLoad = function(){
+    console.debug('clicked load');
     lastStation = undefined;
     internalFromDate = undefined;
     internalUntilDate = undefined;
@@ -71,7 +72,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
     search.searchDate = $scope.searchDate.toUTCString();
-    console.debug('this is the searchDirsdtgion ' + $scope.searchDirection);
     search.searchDirection = $scope.searchDirection;
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();

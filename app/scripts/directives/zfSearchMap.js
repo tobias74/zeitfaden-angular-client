@@ -10,7 +10,8 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
     require: '?ngModel',
     scope:{
       myModel: '=ngModel',
-      myStation: '=zfStation'
+      myStation: '=zfStation',
+      myChangedMarkerCallback: '=zfOnChangeMarker'
     },
     link: function(scope,element,attrs,ngModel){
       var mapOptions;
@@ -50,6 +51,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
             scope.myModel.latitude = searchMarker.getPosition().lat();
             scope.myModel.longitude = searchMarker.getPosition().lng();
           });
+          scope.myChangedMarkerCallback();
         }.bind(this));
 
         google.maps.event.addListener(googleMap, 'dblclick', function(event){
@@ -59,6 +61,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
             scope.myModel.latitude = searchMarker.getPosition().lat();
             scope.myModel.longitude = searchMarker.getPosition().lng();
           });
+          scope.myChangedMarkerCallback();
         }.bind(this));
         
         

@@ -10,7 +10,12 @@
             <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" class="search-map" style="height:400px;">
             </div>        
 
-            <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+            <br>
+            
+            Within Distance: <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+
+            <br>
+            <br>
 
             <div zf-date-time-input ng-model="searchDate" class="archive-date-picker">
             </div>
@@ -63,7 +68,7 @@
 
       <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
 
-        <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='0'>
+        <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='3'>
           
           <div class="row">
             <div ng-repeat="station in stations" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
@@ -73,7 +78,7 @@
                 <div class="small caption">{{station.startDate}}</div>
               </div>
               <div ng-switch-when="video" class="thumbnail station medium" >
-                <video style="" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
+                <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
                   <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
                   <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
                   <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>

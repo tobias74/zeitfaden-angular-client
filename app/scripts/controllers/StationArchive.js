@@ -99,8 +99,10 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   };
   
   $scope.scrolledForMore = function(callback){
+    console.debug('scroll detected');
     if (scrollEndReached)
     {
+      console.debug('scroll end reached');
       return;
     }
     if (!$scope.isLoadingStations)
@@ -126,6 +128,10 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     {
       lastId = lastStation.id;
       console.debug('we have a last station');
+
+      internalFromDate = new Date(lastStation.zuluStartDateString);
+
+/*
       if ($scope.searchDirection == 'intoTheFuture')
       {
         internalFromDate = new Date(lastStation.zuluStartDateString);
@@ -136,6 +142,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
         internalUntilDate = new Date(lastStation.zuluStartDateString);
         internalFromDate = new Date(internalUntilDate.getTime() - (manydays * 24 * 60 * 60 * 1000));
       }
+*/
     }
     else // its a new search
     {

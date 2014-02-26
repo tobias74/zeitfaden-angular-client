@@ -37,6 +37,10 @@
           <a class="navbar-brand" href="#">Project name</a>
         </div>
         <div class="navbar-collapse collapse">
+          
+          <form zf-login-form class="navbar-form navbar-right" role="form">
+          </form>
+          
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
@@ -46,6 +50,8 @@
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
           </form>
+          
+          
         </div>
       </div>
     </div>
@@ -95,6 +101,7 @@
 
         <script src="app/scripts/directives/angular-file-upload.js"></script>
 
+        <script src="app/scripts/directives/zfLoginForm.js"></script>
         <script src="app/scripts/directives/zfDatePicker.js"></script>
         <script src="app/scripts/directives/zfDateTimeInput.js"></script>
         <script src="app/scripts/services/ZeitfadenService.js"></script>
@@ -104,6 +111,8 @@
         <script src="app/scripts/controllers/StationArchive.js"></script>
         <script src="app/scripts/services/StationService.js"></script>
         <script src="app/scripts/services/ResponsiveService.js"></script>
+        <script src="app/scripts/services/LoginService.js"></script>
+
         <script src="app/scripts/controllers/TraceArchive.js"></script>
         <script src="app/scripts/controllers/MyTrace.js"></script>
         <script src="app/scripts/controllers/InstantUploader.js"></script>

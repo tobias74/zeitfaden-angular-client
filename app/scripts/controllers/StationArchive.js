@@ -61,8 +61,27 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   };
   
 
+
+  $scope.changedDistance = function(){
+    console.debug('changed distance');
+    $scope.digestChangedModel();
+  }
+
+  $scope.changedLocation = function(){
+    console.debug('changed location');
+    console.debug($scope.searchLocation);
+    $scope.digestChangedModel();
+  }
+
+
   $scope.clickedLoad = function(){
-    console.debug('clicked load');
+    console.debug('clicked load Button Stachion Archive');
+    $scope.digestChangedModel();    
+  };
+  
+  $scope.digestChangedModel = function(){
+    console.debug('digesting changed model');
+    
     lastStation = undefined;
     internalFromDate = undefined;
     internalUntilDate = undefined;
@@ -76,7 +95,9 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
     
-    $location.search(search);
+    $scope.$apply(function(){
+      $location.search(search);
+    });
     
   };
   
@@ -303,7 +324,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
       console.debug('since there is now scrollingId, we say go: location.replace.');
 
-      $scope.clickedLoad();
+      //$scope.clickedLoad();
       //$scope.scrollingStatusId = 'zf-ls-' + new Date().getTime();      
       //$scope.introduceScrollingStatus($scope.scrollingStatusId);
     }

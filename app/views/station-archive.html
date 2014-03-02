@@ -7,12 +7,12 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
-            <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" zf-on-change-marker="clickedLoad"  class="search-map" style="height:400px;">
+            <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" zf-on-change-marker="changedLocation"  class="search-map" style="height:400px;">
             </div>        
 
             <br>
             
-            Within Distance: <select id="radius_select" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+            Within Distance: <select id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
 
             <br>
             <br>

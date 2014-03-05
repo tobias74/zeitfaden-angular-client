@@ -41,9 +41,121 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   $scope.searchDirection = "intoThePast";
   
   
+  var resetScrollStatus = function(){
+    lastStation = undefined;
+    internalFromDate = undefined;
+    internalUntilDate = undefined;
+    scrollEndReached = false;
+    
+  };
   
   
+  var digestRouteParams = function(myParams){
+    
+    console.debug('digesting routeparams:');
+    console.debug(myParams);
+
+    resetScrollStatus();
+    
+    if (myParams.searchDirection){
+      $scope.searchDirection = myParams.searchDirection;
+    }
+    else {
+      $scope.searchDirection = "intoThePast";
+    }
+    
+    if (myParams.searchDate){
+      $scope.searchDate = new Date(myParams.searchDate);
+    }
+    else {
+      $scope.searchDate = new Date();
+    }
+    
+    if (myParams.radius){
+      $scope.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
+        return (n.range == myParams.radius);
+      })[0];
+    }
+    else {
+      $scope.selectedRange = $scope.dataForRangeSelect[3];
+    }
+
+
+    if (myParams.latitude && myParams.longitude){
+      $scope.searchLocation.latitude = myParams.latitude;
+      $scope.searchLocation.longitude = myParams.longitude;
+      
+    }
+    else {
+      
+    }
+
+    if (myParams.scrollingStatusId){
+
+      console.debug('got the scrolling status');
+      $scope.scrollingStatusId = myParams.scrollingStatusId;
+      digestScrollingStatus($scope.scrollingStatusId);
+    }
+    else {
+      console.debug('this ever reached? ####################################################################');
+      console.debug('no.. no scolling status');
+      console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
+      console.debug('since there is now scrollingId, we say go: location.replace.');
+
+      //$scope.clickedLoad();
+      //$scope.scrollingStatusId = 'zf-ls-' + new Date().getTime();      
+      //$scope.introduceScrollingStatus($scope.scrollingStatusId);
+    }
+    
+    
+  };
   
+
+  var isScrollingStatusEmpty = function(scrollingStatusId){
+    return (window.tobias[scrollingStatusId]['filled'] !== true);
+  };
+
+  
+  var introduceScrollingStatus = function(scrollingStatusId){
+    window.tobias[scrollingStatusId] = {};
+    window.tobias[scrollingStatusId]['filled'] = false;
+    window.tobias[scrollingStatusId]['stations'] = [];
+    window.tobias[scrollingStatusId]['tobias'] = 'this thing was just initialized.';
+    
+  };
+  
+  var digestScrollingStatus = function(scrollingStatusId){
+    $scope.debug_didLoadStations = true;
+
+    if (!window.tobias[scrollingStatusId]){
+      console.debug('uh.. that scrollingStatusId-Id does not exists.');
+      introduceScrollingStatus(scrollingStatusId);
+      loadStations();
+    } 
+    else {
+      console.debug('digesting scrollingStatusId: ' + scrollingStatusId);
+      console.debug(window.tobias[scrollingStatusId]);
+      console.debug(window.tobias[scrollingStatusId]['tobias']);
+      
+      // hier dann das aktuelle interna Datum setzen
+      //$scope.searchDate = window.tobias[$scope.scrollingStatusId]['searchDate'];
+      $scope.stations = window.tobias[$scope.scrollingStatusId]['stations'];
+      lastStation = window.tobias[$scope.scrollingStatusId]['lastStation'];
+      scrollEndReached = window.tobias[$scope.scrollingStatusId]['scrollEndReached'];
+      
+      
+      if (isScrollingStatusEmpty(scrollingStatusId)){
+        console.debug('scrolling status seems to be emtpy, therefore loading now.');
+        loadStations();
+      }
+      else {
+        console.debug('there should be stuff in the filler, not loading');
+      }
+      
+      
+    }
+  };
+
   
   
 
@@ -70,7 +182,9 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   $scope.changedLocation = function(){
     console.debug('changed location');
     console.debug($scope.searchLocation);
-    $scope.digestChangedModel();
+    $scope.$apply(function(){
+      $scope.digestChangedModel();
+    });
   }
 
 
@@ -82,11 +196,10 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   $scope.digestChangedModel = function(){
     console.debug('digesting changed model');
     
-    lastStation = undefined;
-    internalFromDate = undefined;
-    internalUntilDate = undefined;
-    scrollEndReached = false;
-        
+
+    resetScrollStatus();
+    
+            
     var search = $location.search();
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
@@ -95,9 +208,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
     
-    $scope.$apply(function(){
-      $location.search(search);
-    });
+    $location.search(search);
     
   };
   
@@ -110,7 +221,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     console.debug('got the callback! :-)');
   };
   
-  $scope.loadStations = function(){
+  var loadStations = function(){
     console.debug('new load Stations');
     
     $scope.stations = [];
@@ -152,18 +263,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
 
       internalFromDate = new Date(lastStation.zuluStartDateString);
 
-/*
-      if ($scope.searchDirection == 'intoTheFuture')
-      {
-        internalFromDate = new Date(lastStation.zuluStartDateString);
-        internalUntilDate = new Date(internalFromDate.getTime() + (manydays * 24 * 60 * 60 * 1000));
-      }
-      else //if ($scope.searchDirection == 'intoTheFuture')
-      {
-        internalUntilDate = new Date(lastStation.zuluStartDateString);
-        internalFromDate = new Date(internalUntilDate.getTime() - (manydays * 24 * 60 * 60 * 1000));
-      }
-*/
     }
     else // its a new search
     {
@@ -172,18 +271,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
 
       internalFromDate = $scope.searchDate;
       
-/*
-      if ($scope.searchDirection == 'intoTheFuture')
-      {
-        internalFromDate = $scope.searchDate;
-        internalUntilDate = new Date(internalFromDate.getTime() + (manydays * 24 * 60 * 60 * 1000));
-      }
-      else //if ($scope.searchDirection == 'intoTheFuture')
-      {
-        internalUntilDate = $scope.searchDate;
-        internalFromDate = new Date(internalUntilDate.getTime() - (manydays * 24 * 60 * 60 * 1000));
-      }
-*/
       
     }
 
@@ -220,6 +307,8 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       window.tobias[$scope.scrollingStatusId]['filled'] = true;
       window.tobias[$scope.scrollingStatusId]['stations'] = $scope.stations;
       window.tobias[$scope.scrollingStatusId]['tobias'] = 'yeshere';
+      window.tobias[$scope.scrollingStatusId]['lastStation'] = lastStation;
+      window.tobias[$scope.scrollingStatusId]['scrollEndReached'] = scrollEndReached;
       
       $scope.debug_didLoadStations = true;
       
@@ -274,117 +363,15 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   
   
   
-  $scope.digestRouteParams = function(myParams){
-    
-    console.debug('digesting routeparams:');
-    console.debug(myParams);
-
-
-    if (myParams.searchDirection){
-      $scope.searchDirection = myParams.searchDirection;
-    }
-    else {
-      $scope.searchDirection = "intoThePast";
-    }
-    
-    if (myParams.searchDate){
-      $scope.searchDate = new Date(myParams.searchDate);
-    }
-    else {
-      $scope.searchDate = new Date();
-    }
-    
-    if (myParams.radius){
-      $scope.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
-        return (n.range == myParams.radius);
-      })[0];
-    }
-    else {
-      $scope.selectedRange = $scope.dataForRangeSelect[3];
-    }
-
-
-    if (myParams.latitude && myParams.longitude){
-      $scope.searchLocation.latitude = myParams.latitude;
-      $scope.searchLocation.longitude = myParams.longitude;
-      
-    }
-    else {
-      //$scope.setToCurrentLocation($scope.loadStations);
-    }
-
-    if (myParams.scrollingStatusId){
-
-      console.debug('got the scrolling status');
-      $scope.scrollingStatusId = myParams.scrollingStatusId;
-      $scope.digestScrollingStatus($scope.scrollingStatusId);
-    }
-    else {
-      console.debug('no.. no scolling status');
-      console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
-      console.debug('since there is now scrollingId, we say go: location.replace.');
-
-      //$scope.clickedLoad();
-      //$scope.scrollingStatusId = 'zf-ls-' + new Date().getTime();      
-      //$scope.introduceScrollingStatus($scope.scrollingStatusId);
-    }
-    
-    
-  };
   
   
-  $scope.isScrollingStatusEmpty = function(scrollingStatusId){
-    return (window.tobias[scrollingStatusId]['filled'] !== true);
-  };
-
-  $scope.isScrollingStatusFilled = function(scrollingStatusId){
-    return window.tobias[scrollingStatusId]['filled'];
-  };
-  
-  $scope.introduceScrollingStatus = function(scrollingStatusId){
-    window.tobias[scrollingStatusId] = {};
-    window.tobias[scrollingStatusId]['filled'] = false;
-    window.tobias[scrollingStatusId]['stations'] = [];
-    window.tobias[scrollingStatusId]['tobias'] = 'this thing was just initialized.';
-    
-  };
-  
-  $scope.digestScrollingStatus = function(scrollingStatusId){
-    $scope.debug_didLoadStations = true;
-
-    if (!window.tobias[scrollingStatusId]){
-      console.debug('uh.. that scrollingStatusId-Id does not exists.');
-      $scope.introduceScrollingStatus(scrollingStatusId);
-      $scope.loadStations();
-    } 
-    else {
-      console.debug('digesting scrollingStatusId: ' + scrollingStatusId);
-      console.debug(window.tobias[scrollingStatusId]);
-      console.debug(window.tobias[scrollingStatusId]['tobias']);
-      
-      // hier dann das aktuelle interna Datum setzen
-      //$scope.searchDate = window.tobias[$scope.scrollingStatusId]['searchDate'];
-      $scope.stations = window.tobias[$scope.scrollingStatusId]['stations'];
-      
-      if ($scope.isScrollingStatusEmpty(scrollingStatusId)){
-        console.debug('scrolling status seems to be emtpy, therefore loading now.');
-        $scope.loadStations();
-      }
-      else {
-        console.debug('there should be stuff in the filler, not loading');
-      }
-      
-      
-    }
-  };
     
   $scope.$on('$routeUpdate', function(next, current) { 
-    $scope.digestRouteParams($location.search());
-    //$scope.loadStations();
+    digestRouteParams($location.search());
   });  
 
   
-  $scope.digestRouteParams($routeParams);
+  digestRouteParams($routeParams);
   
   $scope.tobiasDebug='no';
 

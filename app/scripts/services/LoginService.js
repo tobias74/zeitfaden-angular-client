@@ -10,13 +10,16 @@ angular.module('ZeitfadenApp').factory('LoginService', function($http){
     performLogin: function(email,password){
       console.debug('inside the servcie with ' + email + password);
       
-      $http({
-        method: 'POST',
-        url: '/user/login/some/param',
-        data: {
+      $http.post('/user/login',{
+          dummy: 'yes',
           email: email,
           password: password
+      }, {
+        headers:{
+          'tobias':'hello',
+          'Content-Type':'application/x-www-form-urlencoded'
         }
+        
       }).success(function(data, status, headers, config){
           isUserLoggedIn = true;
           loggedInUserId = data.loggedInUserId;

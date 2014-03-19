@@ -259,7 +259,8 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     if (lastStation != undefined)
     {
       lastId = lastStation.id;
-      console.debug('we have a last station');
+      console.debug('we have a last station ' + lastStation.zuluStartDateString);
+      console.debug(lastStation);
 
       internalFromDate = new Date(lastStation.zuluStartDateString);
 

@@ -31,6 +31,13 @@
               <button ng-click="setToCurrentLocation()" class="btn">here! </button>
               <input type="radio" ng-model="searchDirection" name="search_direction" value="intoTheFuture">into the future
               <input type="radio" ng-model="searchDirection" name="search_direction" value="intoThePast">into the past
+              
+              <br>
+              
+              <input type="radio" ng-model="searchVisibility" name="visibility" value="public">public
+              <input type="radio" ng-model="searchVisibility" name="visibility" value="my_own">myown
+              <input type="radio" ng-model="searchVisibility" name="visibility" value="pass_protected">passprotected
+
             </div>
             
             <div ng-switch on="isSearchingLocation">

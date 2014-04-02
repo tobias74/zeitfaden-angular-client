@@ -43,7 +43,7 @@
           
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#/archive">Archive</a></li>
-            <li><a href="#/instant-uploader">InstantUpload</a></li>
+            <li><a href="#/instant-uploader">Register</a></li>
             <!--
             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li>
@@ -52,6 +52,9 @@
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
+          </form>
+	      
+	      <form zf-picture-uploader method="post" enctype="multipart/form-data" class="navbar-form navbar-right">
           </form>
           
           
@@ -111,6 +114,7 @@
         <script src="app/scripts/directives/zfSearchMap.js"></script>
         <script src="app/scripts/directives/zfTraceMap.js"></script>
         <script src="app/scripts/directives/zfWhenScrolled.js"></script>
+        <script src="app/scripts/directives/zfPictureUploader.js"></script>
         <script src="app/scripts/controllers/StationArchive.js"></script>
         <script src="app/scripts/services/StationService.js"></script>
         <script src="app/scripts/services/ResponsiveService.js"></script>

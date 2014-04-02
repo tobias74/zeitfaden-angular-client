@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
-            <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" zf-on-change-marker="changedLocation"  class="search-map" style="height:400px;">
+            <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" zf-on-change-marker="changedLocation"  class="search-map" style="height:300px;">
             </div>        
 
             <br>
@@ -29,12 +29,15 @@
             <div class="btn-toolbar">
               <button ng-click="clickedLoad()" class="btn">load! </button>
               <button ng-click="setToCurrentLocation()" class="btn">here! </button>
+              
+              <br>
+              
               <input type="radio" ng-model="searchDirection" name="search_direction" value="intoTheFuture">into the future
               <input type="radio" ng-model="searchDirection" name="search_direction" value="intoThePast">into the past
               
               <br>
               
-              <input type="radio" ng-model="searchVisibility" name="visibility" value="public">public
+              <input type="radio" ng-model="searchVisibility" name="visibility" value="public_only">public
               <input type="radio" ng-model="searchVisibility" name="visibility" value="my_own">myown
               <input type="radio" ng-model="searchVisibility" name="visibility" value="pass_protected">passprotected
 

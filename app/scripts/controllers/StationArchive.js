@@ -39,6 +39,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   $scope.isSearchingLocation = false;
   $scope.searchDate = new Date();
   $scope.searchDirection = "intoThePast";
+  $scope.searchVisibility = "public_only";
   
   
   var resetScrollStatus = function(){
@@ -63,6 +64,16 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     else {
       $scope.searchDirection = "intoThePast";
     }
+
+    if (myParams.searchVisibility){
+      $scope.searchVisibility = myParams.searchVisibility;
+    }
+    else {
+      $scope.searchVisibility = "public_only";
+    }
+
+
+
     
     if (myParams.searchDate){
       $scope.searchDate = new Date(myParams.searchDate);
@@ -204,6 +215,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
     search.searchDate = $scope.searchDate.toUTCString();
+    search.searchVisibility = $scope.searchVisibility;
     search.searchDirection = $scope.searchDirection;
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
@@ -288,6 +300,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       distance: $scope.selectedRange.range,
       sort: 'byTime',
       direction: $scope.searchDirection,
+      visibility: $scope.searchVisibility,
       datetime: internalFromDate.toUTCString()
       
     },function(){
@@ -323,7 +336,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
 
   };
   
-  
+/*  
   $scope.getQuery = function(){
     var fromDateString='2020-01-01';
     var untilDateString='2020-01-01';
@@ -355,7 +368,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     return "get 30,0 " + sortString + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.selectedRange.range + " miles " + lastIdString;
 
   };
-
+*/
   
   $scope.updateMyText = function(date){
     console.debug('I did get this here in updateMyText ' + date);

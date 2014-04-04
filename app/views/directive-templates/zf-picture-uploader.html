@@ -1,6 +1,4 @@
 
-  <form ng-submit="submitForm()" method="post" enctype="multipart/form-data">
-  <span class="btn btn-primary btn-file">
-    Instant Upload<input type="file" name="uploadFile" ng-click="loadCurrentLocation()" ng-file-select="onFileSelect($files)" accept="image/*" capture>
+  <span class="btn btn-primary btn-file" style="width:150px;">
+    {{buttonText}} <input type="file" name="uploadFile" ng-disabled="isUploading" ng-click="loadCurrentLocation()" ng-file-select="onFileSelect($files)" accept="image/*" capture>
   </span>
-  </form>              

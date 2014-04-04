@@ -1,4 +1,5 @@
 
+<!--
 <div ng-switch on="isUserLoggedIn()">
   <div ng-switch-when="false">
     <div class="form-group">
@@ -13,6 +14,33 @@
   <span ng-switch-when="true">is Logged In: {{getLoggedInUserId()}}</span>
 </div>
 
+-->
 
+<form>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Login</h4>
+      </div>
+      <div class="modal-body">
+
+		<div ng-switch on="isUserLoggedIn()">
+		    <div class="form-group">
+		      <input ng-model="email" type="text" placeholder="Email" class="form-control">
+		    </div>
+		    <div class="form-group">
+		      <input ng-model="password" type="password" placeholder="Password" class="form-control">
+		    </div>
+		</div>
+      </div>
+      <div class="modal-footer">
+      	<span>jadda: {{getLoggedInUserId()}}</span>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	    <button ng-click="performLogin(email,password)" class="btn btn-primary">Sign in</button>
+	  </div>
+    </div>
+  </div>
+</form>
 
 

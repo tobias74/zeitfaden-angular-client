@@ -15,7 +15,6 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
   });
   $httpProvider.responseInterceptors.push('myHttpInterceptor');
   
-  
   // Use x-www-form-urlencoded Content-Type
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
   

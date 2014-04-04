@@ -16,6 +16,7 @@ angular.module('ZeitfadenApp').directive('zfLoginForm',function(LoginService){
 
       scope.performLogin = function(email,password){
         console.debug('email und password ' + email + password);
+        console.debug(scope);
         LoginService.performLogin(email,password);
       };
           

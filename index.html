@@ -23,12 +23,40 @@
         
         
 </head>
-  <body ng-app="ZeitfadenApp">
+  <body ng-app="ZeitfadenApp" ng-controller="ZeitfadenApplicationCtrl">
     
 	<!-- Modal -->
 	<div zf-login-form class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	
 	</div>    
+  
+
+  <div class="modal fade" id="myRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myRegistrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myRegistrationModalLabel">Registration</h4>
+        </div>
+        
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
+                <input ng-model="userInput.password_again" type="password" placeholder="Re-Type Password" class="form-control">
+              </div>
+          </form>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)" class="btn btn-primary">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>    
     
     
     
@@ -43,7 +71,7 @@
           </button>
           
           
-          <a class="navbar-brand" href="#">Zeitfaden</a>
+          <a class="navbar-brand" href="#">{{applicationTitle}}</a>
           
          
          
@@ -63,14 +91,25 @@
 	        <li><a href="#/instant-uploader">Register</a></li>
 			
 			<li>
+			  <form class="navbar-form">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#myRegistrationModal">
+            Register
+          </button>
+        </form>       
 			</li>
 	
 			<li>
-				<form class="navbar-form">
+				<form ng-hide="isUserLoggedIn()" class="navbar-form">
 					<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-					  Launch demo modal
+					  Login
 					</button>				
 				</form>
+
+        <form ng-hide="!isUserLoggedIn()" class="navbar-form">
+          <button class="btn btn-secondary" ng-click="performLogout()">
+            Logout
+          </button>       
+       </form>
 			</li>
 	
 	
@@ -180,6 +219,8 @@
         <script src="app/scripts/services/ResponsiveService.js"></script>
         <script src="app/scripts/services/LoginService.js"></script>
 
+
+        <script src="app/scripts/controllers/ZeitfadenApplication.js"></script>
         <script src="app/scripts/controllers/TraceArchive.js"></script>
         <script src="app/scripts/controllers/MyTrace.js"></script>
         <script src="app/scripts/controllers/InstantUploader.js"></script>

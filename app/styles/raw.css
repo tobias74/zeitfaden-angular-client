@@ -9,6 +9,14 @@
     }
 }
 
+.navbar .progress{
+  margin-bottom:0px;
+  height:34px;
+}
+
+.navbar .progress-bar{
+  line-height:34px;
+}
 
 
 .btn-file {

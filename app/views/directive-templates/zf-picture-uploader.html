@@ -1,4 +1,13 @@
 
-  <span class="btn btn-primary btn-file" style="width:150px;">
-    {{buttonText}} <input type="file" name="uploadFile" ng-disabled="isUploading" ng-click="loadCurrentLocation()" ng-file-select="onFileSelect($files)" accept="image/*" capture>
-  </span>
+  <div ng-class="{'progress progress-striped':isUploading,'btn btn-primary btn-file':!isUploading}" style="width:150px;">
+    <span ng-hide="isUploading">
+      {{buttonText}}
+       <input type="file" name="uploadFile" ng-hide="isUploading" ng-disabled="isUploading" ng-click="loadCurrentLocation()" ng-file-select="onFileSelect($files)" accept="image/*" capture>
+    </span>
+
+    <div class="progress-bar" ng-show="isUploading" role="progressbar" aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadProgress}}%;">
+      <span style="min-width:40px;">{{uploadProgress}} %</span>
+    </div>
+
+  </div>
+

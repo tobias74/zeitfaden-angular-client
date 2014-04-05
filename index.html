@@ -12,10 +12,10 @@
 
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     
     <!-- Optional theme -->
-    <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
       
 
     
@@ -26,11 +26,7 @@
   <body ng-app="ZeitfadenApp">
     
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  
-	  <div zf-login-form>
-	
-     </div>
+	<div zf-login-form class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	
 	</div>    
     
@@ -153,9 +149,11 @@
         <script src="third_party/simplify.js"></script>
         <script src="third_party/strftime.js"></script>
 
+        <script src="third_party/angular-file-upload/dist/angular-file-upload-shim.js"></script>
 
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
         
         <script src="app/scripts/app.js"></script>
         <script src="app/scripts/controllers/main.js"></script>
@@ -165,8 +163,9 @@
         <script src="third_party/angular-cookies/angular-cookies.js"></script>
         <script src="third_party/angular-sanitize/angular-sanitize.js"></script>
         <script src="third_party/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+        
+        <script src="third_party/angular-file-upload/dist/angular-file-upload.js"></script>
 
-        <script src="app/scripts/directives/angular-file-upload.js"></script>
 
         <script src="app/scripts/directives/zfLoginForm.js"></script>
         <script src="app/scripts/directives/zfDatePicker.js"></script>
@@ -184,5 +183,8 @@
         <script src="app/scripts/controllers/TraceArchive.js"></script>
         <script src="app/scripts/controllers/MyTrace.js"></script>
         <script src="app/scripts/controllers/InstantUploader.js"></script>
+
+        <script src="third_party/autofill-event.js"></script>
+        
   </body>
 </html>

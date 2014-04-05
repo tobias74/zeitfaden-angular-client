@@ -39,6 +39,11 @@ angular.module('ZeitfadenApp').directive('zfPictureUploader',function($upload){
 	
 	
 	  $scope.onFileSelect = function($files) {
+	  	if ($scope.position === undefined){
+	  		console.debug('no position set.');
+	  		return;
+	  	}
+	  	
 	  	$scope.buttonText = "Please wait...";
 	  	$scope.isUploading = true;
 	    //$files: an array of files selected, each file has name, size, and type.
@@ -65,12 +70,12 @@ angular.module('ZeitfadenApp').directive('zfPictureUploader',function($upload){
 	        /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
 	        //formDataAppender: function(formData, key, val){} 
 	      }).progress(function(evt) {
-	      	$scope.buttonText = 'percent: ' + parseInt(100.0 * evt.loaded / evt.total);
+	      	$scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
 	        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
 	      }).success(function(data, status, headers, config) {
 	        // file is uploaded successfully
 	        $scope.buttonText = 'Instant Upload';
-	  		$scope.isUploading = false;
+	  		  $scope.isUploading = false;
 	        console.log(data);
 	      });
 	      //.error(...)

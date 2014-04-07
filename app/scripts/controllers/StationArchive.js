@@ -318,6 +318,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
         scrollEndReached = true;
       }
       
+      window.tobias[$scope.scrollingStatusId] = {};
       window.tobias[$scope.scrollingStatusId]['filled'] = true;
       window.tobias[$scope.scrollingStatusId]['stations'] = $scope.stations;
       window.tobias[$scope.scrollingStatusId]['tobias'] = 'yeshere';

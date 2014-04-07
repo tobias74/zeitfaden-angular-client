@@ -18,6 +18,10 @@
   line-height:34px;
 }
 
+.form-control.zeitfaden-navbar{
+  width:auto;
+  display:inline-block;
+}
 
 .btn-file {
     position: relative;

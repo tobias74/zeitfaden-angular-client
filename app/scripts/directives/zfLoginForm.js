@@ -19,9 +19,21 @@ angular.module('ZeitfadenApp').directive('zfLoginForm',function(LoginService){
       scope.performLogin = function(email,password){
         console.debug('email und password ' + email + password);
         console.debug(scope);
-        LoginService.performLogin(email,password);
+        var promise = LoginService.performLogin(email,password);
+        
+        promise.then(function(userId){
+          console.debug('inside the prmise success');
+        });    
+
+        promise.catch(function(){
+          console.debug('inside the prmise error');
+        });    
+        
       };
-          
+      
+           
+
+      scope.isPerformingLogin = LoginService.isPerformingLogin;    
            
       scope.isUserLoggedIn = LoginService.isUserLoggedIn;
       scope.getLoggedInUserId = LoginService.getLoggedInUserId;

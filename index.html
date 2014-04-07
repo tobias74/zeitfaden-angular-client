@@ -60,6 +60,17 @@
     
     
     
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -73,99 +84,118 @@
           
           <a class="navbar-brand" href="#">{{applicationTitle}}</a>
           
-         
-         
          <!--
-		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">Toggle search</button>
+	     	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">Toggle search</button>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">Toggle links</button>           
           -->
+
+        <!--
+        <div ng-controller="ModalDemoCtrl">
+            <script type="text/ng-template" id="myModalContent.html">
+                <div class="modal-header">
+                    <h3>I'm a modal!</h3>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li ng-repeat="item in items">
+                            <a ng-click="selected.item = item">{{ item }}</a>
+                        </li>
+                    </ul>
+                    Selected: <b>{{ selected.item }}</b>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+            </script>
+        
+            <button class="btn btn-default" ng-click="open()">Open me!</button>
+            <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+        </div>
+        -->
+        
+
+
           
         </div>
         
-        
-	    <ul class="collapse navbar-collapse nav navbar-nav" id="links">
-	        <!--
-	        <li><a href="#/archive">Archive</a></li>
-          -->
-          <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-  
-              <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#/archive">Archive</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-              </ul>
-          </li>
-    			<li>
-		        <form zf-picture-uploader method="post" enctype="multipart/form-data" class="navbar-form navbar-right">
-	          </form>
-			    </li>
-	    </ul>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
+            <li><form zf-picture-uploader method="post" enctype="multipart/form-data" class="navbar-form navbar-right"></form></li>
+            
+            <li ng-hide="isUserLoggedIn()">
+              <a style="cursor:pointer;" data-toggle="modal" data-target="#myRegistrationModal">Register-Old-Version</a>
+            </li>            
+            
+            
+            
+            
+            
+            <li><a href="#archive">Archive</a> </li>
+                        
 
+            <li ng-hide="isUserLoggedIn()">
+              <a ng-controller="ModalRegistrationCtrl" style="cursor:pointer;" ng-click="open()">Registration
+                  <script type="text/ng-template" id="myModalRegistration.html">
+                      <div class="modal-header">
+                          <h3>Registration</h3>
+                      </div>
+                      <div class="modal-body">
+                      <form>
+                          <div class="form-group">
+                            <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
+                          </div>
+                          <div class="form-group">
+                            <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
+                            <input ng-model="userInput.password_again" type="password" placeholder="Re-Type Password" class="form-control">
+                          </div>
+                      </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button class="btn btn-primary" ng-disabled="isPerformingRegistration" ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)">Register</button>
+                          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                      </div>
+                  </script>
+              </a>
+            </li>
+            
+            
+            <!-- Menu:Login -->
+            <li ng-hide="isUserLoggedIn()">
+              <a ng-controller="ModalLoginCtrl" style="cursor:pointer;" ng-click="open()">Login
+                  <script type="text/ng-template" id="myModalLogin.html">
+                      <div class="modal-header">
+                          <h3>Login</h3>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                              <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                              <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
+                            </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button class="btn btn-primary" ng-disabled="isPerformingLogin()" ng-click="performLogin(userInput.email,userInput.password)">Login</button>
+                          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                      </div>
+                  </script>
+              </a>
+            </li>
+            
+            
+            <li ng-hide="!isUserLoggedIn()">
+                <a href="" ng-click="performLogout()">Logout</a>
+            </li>
+          </ul>
+          <form onsubmit="alert(4);" class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>        
 
-      <ul class="collapse navbar-collapse nav navbar-nav">
-        <div class="collapse navbar-collapse" id="search">
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
-        </div>
-      </ul>     
-
-
-
-        
-      <ul class="collapse navbar-collapse nav navbar-nav navbar-right">
-        <li ng-hide="isUserLoggedIn()">
-          <a style="cursor:pointer;" data-toggle="modal" data-target="#myRegistrationModal">Register</a>
-        </li>
-  
-        <li>
-          <div class="collapse navbar-collapse">
-            <form ng-hide="isUserLoggedIn()" class="navbar-form">
-              <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                Login
-              </button>       
-            </form>
-    
-            <form ng-hide="!isUserLoggedIn()" class="navbar-form">
-              <button class="btn btn-secondary" ng-click="performLogout()">
-                Logout
-              </button>       
-           </form>
-          </div>
-        </li>
-        
-        <li>
-          <div class="btn-group">
-            <button type="button" class="btn btn-danger">Action</button>
-            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-              <span class="caret"></span>
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-            </ul>
-          </div>          
-        </li>
-        
-        
-     </ul>
-        
-        
-        
-        
-        
-        
       </div>
     </div>
 
@@ -215,6 +245,8 @@
         <script src="third_party/ngInfiniteScroll/ng-infinite-scroll.js"></script>
         
         <script src="third_party/angular-file-upload/dist/angular-file-upload.js"></script>
+        <script src="third_party/ui-bootsrap-tpls-0.9.0.js"></script>
+
 
 
         <script src="app/scripts/directives/zfLoginForm.js"></script>
@@ -225,7 +257,12 @@
         <script src="app/scripts/directives/zfTraceMap.js"></script>
         <script src="app/scripts/directives/zfWhenScrolled.js"></script>
         <script src="app/scripts/directives/zfPictureUploader.js"></script>
+        
+        <script src="app/scripts/controllers/ModalDemo.js"></script>
+        <script src="app/scripts/controllers/ModalLogin.js"></script>
+        <script src="app/scripts/controllers/ModalRegistration.js"></script>
         <script src="app/scripts/controllers/StationArchive.js"></script>
+        
         <script src="app/scripts/services/StationService.js"></script>
         <script src="app/scripts/services/ResponsiveService.js"></script>
         <script src="app/scripts/services/LoginService.js"></script>

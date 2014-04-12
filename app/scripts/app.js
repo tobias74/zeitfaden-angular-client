@@ -91,6 +91,11 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
         controller: 'TraceArchiveCtrl', 
         reloadOnSearch:false
       })
+      .when('/settings', {
+        templateUrl: 'app/views/settings.html', 
+        controller: 'SettingsCtrl', 
+        reloadOnSearch:false
+      })
       .when('/my-trace', {
         templateUrl: 'app/views/my-trace.html', 
         controller: 'MyTraceCtrl', 

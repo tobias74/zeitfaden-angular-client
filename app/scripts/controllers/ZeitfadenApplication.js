@@ -16,6 +16,24 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
          
          
   
+  $scope.loadCurrentLocation = function(callback) {
+    $scope.getTime();
+    $scope.isSearchingLocation = true;
+    navigator.geolocation.getCurrentPosition(function(position){
+      $scope.$apply(function(){
+        $scope.position = position;
+        $scope.isSearchingLocation = false;
+        callback && callback();
+      });
+    });  
+  };
+  
+  $scope.getTime = function(){
+    var myDate = new Date();
+    $scope.currentTimeString = myDate.toUTCString();
+  }
+  
+  
   $scope.performRegistration = function(email,password,password_again){
       LoginService.performRegistration(email,password,password_again);
   };       
@@ -33,9 +51,13 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
         var uploader = $scope.uploader = $fileUploader.create({
             scope: $scope,                          // to automatically update the html. Default: $rootScope
             url: '/station/create/',
+            removeAfterUpload: true,
+            autoUpload: true,
             alias: 'uploadFile',
             formData: [
-                { key: 'value' }
+              { 
+                key: 'value',
+              }
             ],
             filters: [
                 function (item) {                    // first user filter
@@ -56,6 +78,14 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
 
         uploader.bind('afteraddingfile', function (event, item) {
             console.info('After adding a file', item);
+            item.formData.push({
+              startLatitude: $scope.position.coords.latitude,
+              endLatitude: $scope.position.coords.latitude,
+              startLongitude: $scope.position.coords.longitude,
+              endLongitude: $scope.position.coords.longitude,
+              startDate: $scope.currentTimeString,
+              endDate: $scope.currentTimeString
+            });
         });
 
         uploader.bind('whenaddingfilefailed', function (event, item) {
@@ -64,7 +94,7 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
 
         uploader.bind('afteraddingall', function (event, items) {
             console.info('After adding all files', items);
-            uploader.uploadAll();
+            //uploader.uploadAll();
             $scope.isUploadingImages = true;
             //$scope.instantUploadButtonText = 'Instant Upload';
       });
@@ -74,7 +104,7 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
         });
 
         uploader.bind('progress', function (event, item, progress) {
-            console.info('Progress: ' + progress, item);
+            //console.info('Progress: ' + progress, item);
         });
 
         uploader.bind('success', function (event, xhr, item, response) {
@@ -94,13 +124,13 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
         });
 
         uploader.bind('progressall', function (event, progress) {
-            console.info('Total progress: ' + progress);
+            //console.info('Total progress: ' + progress);
         });
 
         uploader.bind('completeall', function (event, items) {
             //$scope.instantUploadButtonText = 'Instant Upload';
             console.info('Complete all', items);
-            $scope.isUploadingImages = false;
+            //$scope.isUploadingImages = false;
         });
         
          

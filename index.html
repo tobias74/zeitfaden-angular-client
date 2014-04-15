@@ -130,6 +130,7 @@
               -->
             
             <li><a href="#archive">Archive</a> </li>
+            <li><a href="#trace-archive">Traces</a> </li>
             <li><a href="#settings">Settings</a> </li>
                         
 
@@ -195,11 +196,11 @@
 
           <form class="navbar-form navbar-right">
       
-            <div class="btn btn-file" ng-class="{'btn-success':isUploadingImages,'btn-primary':!isUploadingImages}" style="width:150px;">
+            <div class="btn btn-file" ng-class="{'btn-success':uploader.isUploading,'btn-primary':!uploader.isUploading}" style="width:150px;">
               <span>
                 {{instantUploadButtonText}}
               </span>
-              <span ng-show="isUploadingImages">
+              <span ng-show="uploader.isUploading">
                 {{uploader.progress}} %
               </span>
           

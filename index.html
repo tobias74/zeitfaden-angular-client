@@ -129,7 +129,8 @@
             </li>            
               -->
             
-            <li><a href="#archive">Archive</a> </li>
+            <li><a href="#station-archive">Station-Archive</a> </li>
+            <li><a href="#user-archive">User-Archive</a> </li>
             <li><a href="#trace-archive">Traces</a> </li>
             <li><a href="#settings">Settings</a> </li>
                         
@@ -158,8 +159,8 @@
                   </script>
               </a>
             </li>
-            
-            
+
+
             <!-- Menu:Login -->
             <li ng-hide="isUserLoggedIn()">
               <a ng-controller="ModalLoginCtrl" style="cursor:pointer;" ng-click="open()">Login
@@ -245,12 +246,13 @@
         
         <script src="third_party/simplify.js"></script>
         <script src="third_party/strftime.js"></script>
+        <script src="third_party/underscore/underscore.js"></script>
 
 
 
         
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.js"></script>
 
         
         <script src="app/scripts/app.js"></script>
@@ -276,14 +278,17 @@
         <script src="app/scripts/directives/zfTraceMap.js"></script>
         <script src="app/scripts/directives/zfWhenScrolled.js"></script>
         
+        <script src="app/scripts/controllers/ModalStation.js"></script>
         <script src="app/scripts/controllers/ModalDemo.js"></script>
         <script src="app/scripts/controllers/ModalLogin.js"></script>
         <script src="app/scripts/controllers/ModalRegistration.js"></script>
         <script src="app/scripts/controllers/StationArchive.js"></script>
+        <script src="app/scripts/controllers/UserArchive.js"></script>
         <script src="app/scripts/controllers/Settings.js"></script>
         
         <script src="app/scripts/services/StationService.js"></script>
         <script src="app/scripts/services/ResponsiveService.js"></script>
+        <script src="app/scripts/services/ScrollHistoryService.js"></script>
         <script src="app/scripts/services/LoginService.js"></script>
 
 

@@ -81,9 +81,14 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
         templateUrl: 'app/views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/archive', {
+      .when('/station-archive', {
         templateUrl: 'app/views/station-archive.html', 
         controller: 'StationArchiveCtrl', 
+        reloadOnSearch:false
+      })
+      .when('/user-archive', {
+        templateUrl: 'app/views/user-archive.html', 
+        controller: 'UserArchiveCtrl', 
         reloadOnSearch:false
       })
       .when('/trace-archive', {
@@ -110,3 +115,28 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
         redirectTo: '/archive'
       });
   });
+  
+  
+  
+  
+angular.module('ZeitfadenApp').directive('imageonload', function() {
+    return {
+        restrict: 'A',
+      
+        link: function(scope, element, attributes) {
+          element.on('load', function() {
+            console.debug('image loaded complete.');
+            // Set visibility: true + remove spinner overlay
+              element.removeClass('spinner-hide');
+              element.addClass('spinner-show');
+              //element.parent().find('span').remove();
+          });
+          attributes.$observe('ngSrc', function() {
+            console.debug('src was changed.....');
+            // Set visibility: false + inject temporary spinner overlay
+              element.addClass('spinner-hide');
+              // element.parent().append('<span class="spinner"></span>');
+          });
+        }
+    };
+});

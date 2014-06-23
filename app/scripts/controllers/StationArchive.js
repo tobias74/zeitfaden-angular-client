@@ -1,10 +1,28 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,StationService,$routeParams,$location,ResponsiveService) {
+angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($log,$modal,$scope,StationService,$routeParams,$location,ResponsiveService,ScrollHistoryService) {
   
-  window.tobias = {};
+  console.debug('I got called : ArchiveStationContr5oller.');
+
+  var lastStation;
+  var scrollEndReached = false;       
+
+  var internalFromDate;
+  var internalUntilDate;
+  var lastStation;
+  var scrollEndReached = false;       
   
-  console.debug('I got called : ArchiveStationsContr5oller.');
+  ScrollHistoryService.setController(this);
+  
+  this.setHistoryStations = function(data){
+	  $scope.stations = data['stations'];
+      lastStation = data['lastStation'];
+      scrollEndReached = data['scrollEndReached'];
+  };
+  
+  this.loadEntities = function(){
+  	loadStations();
+  };
   
   $scope.dataForRangeSelect = [
     {"range": 2, "description": "2m"},
@@ -21,10 +39,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
                            
   $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
          
-  var internalFromDate;
-  var internalUntilDate;
-  var lastStation;
-  var scrollEndReached = false;       
          
   $scope.stations = [];
   $scope.isLoadingStations = false;
@@ -35,28 +49,29 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     longitude: 80.2740, 
     zoom: 14
   };
+
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   $scope.isSearchingLocation = false;
   $scope.searchDate = new Date();
   $scope.searchDirection = "intoThePast";
   $scope.searchVisibility = "public_only";
   
-  
+
   var resetScrollStatus = function(){
     lastStation = undefined;
     internalFromDate = undefined;
     internalUntilDate = undefined;
     scrollEndReached = false;
-    
   };
   
   
+  
   var digestRouteParams = function(myParams){
-    
+
+	resetScrollStatus();   
+
     console.debug('digesting routeparams:');
     console.debug(myParams);
-
-    resetScrollStatus();
     
     if (myParams.searchDirection){
       $scope.searchDirection = myParams.searchDirection;
@@ -71,8 +86,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
     else {
       $scope.searchVisibility = "public_only";
     }
-
-
 
     
     if (myParams.searchDate){
@@ -97,17 +110,14 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       $scope.searchLocation.longitude = myParams.longitude;
       
     }
-    else {
-      
-    }
 
-    if (myParams.scrollingStatusId){
-
-      console.debug('got the scrolling status');
+    if (myParams.scrollingStatusId)
+    {
       $scope.scrollingStatusId = myParams.scrollingStatusId;
-      digestScrollingStatus($scope.scrollingStatusId);
+      ScrollHistoryService.digestScrollingStatus(myParams.scrollingStatusId);
     }
-    else {
+    else 
+    {
       console.debug('this ever reached? ####################################################################');
       console.debug('no.. no scolling status');
       console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
@@ -122,50 +132,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   };
   
 
-  var isScrollingStatusEmpty = function(scrollingStatusId){
-    return (window.tobias[scrollingStatusId]['filled'] !== true);
-  };
-
   
-  var introduceScrollingStatus = function(scrollingStatusId){
-    window.tobias[scrollingStatusId] = {};
-    window.tobias[scrollingStatusId]['filled'] = false;
-    window.tobias[scrollingStatusId]['stations'] = [];
-    window.tobias[scrollingStatusId]['tobias'] = 'this thing was just initialized.';
-    
-  };
-  
-  var digestScrollingStatus = function(scrollingStatusId){
-    $scope.debug_didLoadStations = true;
-
-    if (!window.tobias[scrollingStatusId]){
-      console.debug('uh.. that scrollingStatusId-Id does not exists.');
-      introduceScrollingStatus(scrollingStatusId);
-      loadStations();
-    } 
-    else {
-      console.debug('digesting scrollingStatusId: ' + scrollingStatusId);
-      console.debug(window.tobias[scrollingStatusId]);
-      console.debug(window.tobias[scrollingStatusId]['tobias']);
-      
-      // hier dann das aktuelle interna Datum setzen
-      //$scope.searchDate = window.tobias[$scope.scrollingStatusId]['searchDate'];
-      $scope.stations = window.tobias[$scope.scrollingStatusId]['stations'];
-      lastStation = window.tobias[$scope.scrollingStatusId]['lastStation'];
-      scrollEndReached = window.tobias[$scope.scrollingStatusId]['scrollEndReached'];
-      
-      
-      if (isScrollingStatusEmpty(scrollingStatusId)){
-        console.debug('scrolling status seems to be emtpy, therefore loading now.');
-        loadStations();
-      }
-      else {
-        console.debug('there should be stuff in the filler, not loading');
-      }
-      
-      
-    }
-  };
 
   
   
@@ -182,8 +149,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       });
     });  
   };
-  
-
 
   $scope.changedDistance = function(){
     console.debug('changed distance');
@@ -197,7 +162,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
       $scope.digestChangedModel();
     });
   }
-
 
   $scope.clickedLoad = function(){
     console.debug('clicked load Button Stachion Archive');
@@ -226,8 +190,44 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   
   $scope.clickedImage = function(station){
     $scope.selectedStation = station;
+    
+	$scope.items = ['item1', 'item2', 'item3'];
+    
+    var modalInstance = $modal.open({
+      templateUrl: 'app/views/directive-templates/modal-station.html',
+      controller: ModalStationInstanceCtrl,
+      resolve: {
+        items: function () {
+          return $scope.items;
+        },
+        selectedStation: function(){
+        	return $scope.selectedStation;
+        },
+        controllerScope: function(){
+        	return $scope;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+    
+    
   };
-  
+
+
+  $scope.activateNextStation = function(){
+    console.debug('activatingt next station');
+    $scope.selectedStation = _.succeeding($scope.stations, $scope.selectedStation);
+  };
+
+  $scope.activatePreviousStation = function(){
+    console.debug('activatingt previous station');
+    $scope.selectedStation = _.preceding($scope.stations, $scope.selectedStation);
+  };
 
   $scope.myCallback = function(){
     console.debug('got the callback! :-)');
@@ -318,12 +318,13 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
         scrollEndReached = true;
       }
       
-      window.tobias[$scope.scrollingStatusId] = {};
-      window.tobias[$scope.scrollingStatusId]['filled'] = true;
-      window.tobias[$scope.scrollingStatusId]['stations'] = $scope.stations;
-      window.tobias[$scope.scrollingStatusId]['tobias'] = 'yeshere';
-      window.tobias[$scope.scrollingStatusId]['lastStation'] = lastStation;
-      window.tobias[$scope.scrollingStatusId]['scrollEndReached'] = scrollEndReached;
+      ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
+	      filled: true,
+	      stations: $scope.stations,
+	      tobias: 'yeshere',
+	      lastStation: lastStation,
+	      scrollEndReached: scrollEndReached
+      });
       
       $scope.debug_didLoadStations = true;
       
@@ -337,39 +338,6 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
 
   };
   
-/*  
-  $scope.getQuery = function(){
-    var fromDateString='2020-01-01';
-    var untilDateString='2020-01-01';
-    var lastIdString;
-    var sortString;
-
-    fromDateString = internalFromDate.toUTCString();
-    untilDateString = internalUntilDate.toUTCString();
-    
-    if (lastStation != undefined)
-    {
-      lastIdString = "and higher than '" + lastStation.id + "'";
-    }
-    else
-    {
-      lastIdString = "";
-    }
-  
-    if ($scope.searchDirection == 'intoTheFuture')
-    {
-      sortString = " chronological ";
-    }
-    else
-    {
-      sortString = " reverse chronological ";
-    }
-  
-    
-    return "get 30,0 " + sortString + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.selectedRange.range + " miles " + lastIdString;
-
-  };
-*/
   
   $scope.updateMyText = function(date){
     console.debug('I did get this here in updateMyText ' + date);
@@ -394,3 +362,5 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($scope,
   
   
 });
+
+

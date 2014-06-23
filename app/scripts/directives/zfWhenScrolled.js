@@ -5,6 +5,11 @@ angular.module('ZeitfadenApp').directive('zfWhenScrolled', function() {
     var raw = elm[0];
     var blocked = false;
     elm.bind('scroll', function() {
+      
+      scope.$apply(function(){
+        scope.currentScrollHeight = raw.scrollTop;
+      });
+      
       console.debug('this is whenscrolled: ' + attr.whenScrolled);
       if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
         scope.$apply(function(){

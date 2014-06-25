@@ -1,0 +1,36 @@
+
+
+
+
+
+                      <div class="modal-header">
+                          <h3>StationBigHowBig</h3>
+                      </div>
+                      <div class="modal-body">
+                      
+		              <div class="small caption">{{selectedStation.startDate}}</div>
+		                <img 
+		                  tobiasding="worldthing" 
+		                  display-station="controllerScope.selectedStation"
+		                	asdasdasd-loading-src="{{controllerScope.selectedStation.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}" 
+		                	ng-click="clickedImage(station)" 
+		                	asdasdasd-original-src="{{controllerScope.selectedStation.bigFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+                      
+                      <form>
+                          <div class="form-group">
+                            <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
+                          </div>
+                          
+                          
+                          <div class="form-group">
+                            <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
+                            <input ng-model="userInput.password_again" type="password" placeholder="Re-Type Password" class="form-control">
+                          </div>
+                      </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button class="btn btn-warning" ng-click="controllerScope.activateNextStation()">next</button>
+                          <button class="btn btn-warning" ng-click="controllerScope.activatePreviousStation()">previous</button>
+                          <button class="btn btn-primary" ng-disabled="isPerformingRegistration" ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)">Register</button>
+                          <button class="btn btn-warning" ng-click="cancel()">CCCancel</button>
+                      </div>

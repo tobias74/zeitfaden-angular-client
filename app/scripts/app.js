@@ -122,8 +122,19 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
 angular.module('ZeitfadenApp').directive('imageonload', function() {
     return {
         restrict: 'A',
-      
+        
+		//require: '?ngModel',
+
+	    scope:{
+	      previewSrc: '@previewSrc',
+	      tobiasding: '@tobiasding'
+	    },
+		          
         link: function(scope, element, attributes) {
+        	console.debug('this is the previewSrc ' + scope.previewSrc);
+        	console.debug(scope);
+        	console.debug(attributes);
+        	
           element.on('load', function() {
             console.debug('image loaded complete.');
             // Set visibility: true + remove spinner overlay

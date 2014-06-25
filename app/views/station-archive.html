@@ -84,7 +84,7 @@
             <div ng-repeat="station in stations" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
               
               <div ng-switch-when="image" class="thumbnail station medium">
-                <img ng-click="clickedImage(station)" ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+                <img ng-click="clickedImage(station)"    ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
                 <div class="small caption">{{station.startDate}}</div>
               </div>
               <div ng-switch-when="video" class="thumbnail station medium" >

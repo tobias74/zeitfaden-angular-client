@@ -196,6 +196,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($log,$m
     var modalInstance = $modal.open({
       templateUrl: 'app/views/directive-templates/modal-station.html',
       controller: ModalStationInstanceCtrl,
+      windowClass: "modal-station",
       resolve: {
         items: function () {
           return $scope.items;

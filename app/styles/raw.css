@@ -43,8 +43,15 @@
     display: block;
 }
 
+.modal-station .modal-dialog {
+  width:840px;
+  
+}
 
-
+.modal-station .modal-dialog .station-image{
+  width:800px;
+  
+}
 
 .ui-datepicker {
   width:auto; 

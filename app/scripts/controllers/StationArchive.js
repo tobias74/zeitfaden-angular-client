@@ -24,6 +24,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($log,$m
   	loadStations();
   };
   
+  
   $scope.dataForRangeSelect = [
     {"range": 2, "description": "2m"},
     {"range": 10, "description": "10m"},
@@ -188,41 +189,16 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl', function($log,$m
     
   };
   
-  $scope.clickedImage = function(station){
+  
+  $scope.setSelectedStation = function(station){
     $scope.selectedStation = station;
-    
-	$scope.items = ['item1', 'item2', 'item3'];
-    
-    var modalInstance = $modal.open({
-      templateUrl: 'app/views/directive-templates/modal-station.html',
-      controller: ModalStationInstanceCtrl,
-      windowClass: "modal-station",
-      resolve: {
-        items: function () {
-          return $scope.items;
-        },
-        selectedStation: function(){
-        	return $scope.selectedStation;
-        },
-        controllerScope: function(){
-        	return $scope;
-        }
-      }
-    });
-
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-    
-    
   };
 
 
   $scope.activateNextStation = function(){
     console.debug('activatingt next station');
     $scope.selectedStation = _.succeeding($scope.stations, $scope.selectedStation);
+    console.debug($scope.selectedStation);
   };
 
   $scope.activatePreviousStation = function(){

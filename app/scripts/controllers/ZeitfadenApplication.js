@@ -15,7 +15,7 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
   });
          
          
-  
+/*  
   $scope.loadCurrentLocation = function(callback) {
     $scope.getTime();
     $scope.isSearchingLocation = true;
@@ -32,7 +32,8 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
     var myDate = new Date();
     $scope.currentTimeString = myDate.toUTCString();
   }
-  
+  */
+ 
   
   $scope.performRegistration = function(email,password,password_again){
       LoginService.performRegistration(email,password,password_again);
@@ -44,7 +45,7 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
   
   
 
-
+/*
         $scope.instantUploadButtonText = 'Instant Upload';
         $scope.isUploadingImages = false;
 
@@ -134,6 +135,63 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
         });
         
          
+         
+         
+*/         
+         
+// profile pixture upload
+
+
+/*
+        $scope.profileUploadButtonText = 'Upload Profile Image';
+        $scope.isUploadingProfileImage = false;
+
+        var profileUploader = $scope.profileUploader = $fileUploader.create({
+            scope: $scope,                          // to automatically update the html. Default: $rootScope
+            url: '/user/uploadProfileImage/',
+            removeAfterUpload: true,
+            autoUpload: true,
+            alias: 'uploadFile',
+            formData: [
+              { 
+                key: 'value',
+              }
+            ],
+            filters: [
+                function (item) {                    // first user filter
+                    console.info('filter1');
+                    return true;
+                }
+            ]
+        });
+
+        // ADDING FILTERS
+
+        profileUploader.filters.push(function (item) { // second user filter
+            console.info('filter2');
+            return true;
+        });
+
+        // REGISTER HANDLERS
+
+        profileUploader.bind('afteraddingfile', function (event, item) {
+            console.info('After adding a file', item);
+            item.formData.push({
+              'nothing':'here'
+            });
+        });
+
+
+        profileUploader.bind('afteraddingall', function (event, items) {
+            console.info('After adding all files', items);
+            //uploader.uploadAll();
+            $scope.isUploadingProfileImage = true;
+            //$scope.instantUploadButtonText = 'Instant Upload';
+      });
+
+        
+         
+*/         
          
          
          

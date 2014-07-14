@@ -12,13 +12,19 @@
 
                       </div>
                       <div class="modal-body">
-                      
-		              <div class="small caption">{{selectedStation.startDate}}</div>
-		                <img 
-	   	                class="station-image"
-		                  display-station="controllerScope.selectedStation"
-		                	ng-click="clickedImage(station)" 
-		                	/>
+                        <div zf-simple-map zf-station="controllerScope.selectedStation" class="station-image-map">
+                        </div>        
+                        
+                        <div class="station-image-container">
+                          <img 
+                            class="station-image"
+                            display-station="controllerScope.selectedStation"
+                            ng-click="clickedImage(station)" 
+                          />
+                        </div>    
+    
+    
+                        <div class="small caption">{{controllerScope.selectedStation.startDate}}</div>
                       
                       </div>
                       <div style="display:none;" class="modal-footer">

@@ -1,0 +1,13 @@
+
+
+            <div class="btn btn-file" ng-class="{'btn-success':uploader.isUploading,'btn-primary':!uploader.isUploading}" style="width:150px;">
+              <span>
+                {{buttonCaption}}
+              </span>
+              <span ng-show="uploader.isUploading">
+                {{uploader.progress}} %
+              </span>
+          
+              <input ng-file-select type="file" ng-click="loadCurrentLocation()" accept="image/*" capture />
+          
+            </div>    

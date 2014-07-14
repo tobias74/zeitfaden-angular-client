@@ -48,8 +48,30 @@
   
 }
 
+
+
+
+.modal-station .modal-dialog .station-image-map{
+  height:300px;
+  width:250px;
+  display:inline-block;
+  margin:10px;
+  
+}
+
+
 .modal-station .modal-dialog .station-image{
-  width:800px;
+  width:400px;
+  vertical-align:top;
+  
+}
+
+.modal-station .modal-dialog .station-image-container{
+  width:500px;
+  display:inline-block;
+  vertical-align:top;
+  margin:10px;
+  text-align:center;
   
 }
 

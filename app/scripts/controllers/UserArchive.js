@@ -1,47 +1,32 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,StationService,$routeParams,$location,ResponsiveService,ScrollHistoryService) {
+angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,StationService,UserService,$routeParams,$location,ResponsiveService,ScrollHistoryService,$controller) {
+  
+  $controller('AbstractArchiveCtrl', {$scope: $scope});
   
   console.debug('I got called : ArchiveUserContr5oller.');
 
-  var lastStation;
-  var scrollEndReached = false;       
-
-  var internalFromDate;
-  var internalUntilDate;
-  var lastStation;
-  var scrollEndReached = false;       
+  var scrollEndReached = false;
+  var limit = 100;
+  var offset = 0;       
   
   ScrollHistoryService.setController(this);
   
   this.setHistoryStations = function(data){
-	  $scope.stations = data['stations'];
-      lastStation = data['lastStation'];
+	  $scope.entities = data['entities'];
       scrollEndReached = data['scrollEndReached'];
   };
   
   this.loadEntities = function(){
-  	loadStations();
+  	loadUsers();
   };
   
-  $scope.dataForRangeSelect = [
-    {"range": 2, "description": "2m"},
-    {"range": 10, "description": "10m"},
-    {"range": 100, "description": "100m"},
-    {"range": 500, "description": "500m"},
-    {"range": 1000, "description": "1km"},
-    {"range": 10000, "description": "10km"},
-    {"range": 100000, "description": "100km"},
-    {"range": 1000000, "description": "1000km"},
-    {"range": 10000000, "description": "10000km"},
-    {"range": 100000000, "description": "100000km"}
-  ];
                            
   $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
          
          
-  $scope.stations = [];
-  $scope.isLoadingStations = false;
+  $scope.entities = [];
+  $scope.isLoadingEntities = false;
   $scope.isSearchingLocation = true;
 
   $scope.searchLocation = {
@@ -58,9 +43,6 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
   
 
   var resetScrollStatus = function(){
-    lastStation = undefined;
-    internalFromDate = undefined;
-    internalUntilDate = undefined;
     scrollEndReached = false;
   };
   
@@ -123,9 +105,6 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
       console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
       console.debug('since there is now scrollingId, we say go: location.replace.');
 
-      //$scope.clickedLoad();
-      //$scope.scrollingStatusId = 'zf-ls-' + new Date().getTime();      
-      //$scope.introduceScrollingStatus($scope.scrollingStatusId);
     }
     
     
@@ -137,36 +116,6 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
   
   
 
-  $scope.setToCurrentLocation = function(callback) {
-    $scope.isSearchingLocation = true;
-    navigator.geolocation.getCurrentPosition(function(position){
-      $scope.$apply(function(){
-        $scope.searchLocation.latitude = position.coords.latitude;
-        $scope.searchLocation.longitude = position.coords.longitude;
-        $scope.isSearchingLocation = false;
-        $scope.selectedRange = $scope.dataForRangeSelect[1];
-        callback && callback();
-      });
-    });  
-  };
-
-  $scope.changedDistance = function(){
-    console.debug('changed distance');
-    $scope.digestChangedModel();
-  }
-
-  $scope.changedLocation = function(){
-    console.debug('changed location');
-    console.debug($scope.searchLocation);
-    $scope.$apply(function(){
-      $scope.digestChangedModel();
-    });
-  }
-
-  $scope.clickedLoad = function(){
-    console.debug('clicked load Button Stachion Archive');
-    $scope.digestChangedModel();    
-  };
   
   $scope.digestChangedModel = function(){
     console.debug('digesting changed model');
@@ -197,12 +146,13 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
     console.debug('got the callback! :-)');
   };
   
-  var loadStations = function(){
+  var loadUsers = function(){
+    offset = 0;
     console.debug('new load Stations');
     
-    $scope.stations = [];
+    $scope.entities = [];
     
-    console.debug('load stations with scrollStatus: ' + $scope.scrollingStatusId);
+    console.debug('load entities with scrollStatus: ' + $scope.scrollingStatusId);
     $scope.loadMore();
   };
   
@@ -213,7 +163,7 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
       console.debug('scroll end reached');
       return;
     }
-    if (!$scope.isLoadingStations)
+    if (!$scope.isLoadingEntities)
     {
       $scope.loadMore(callback);
     }
@@ -221,72 +171,54 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
   
   $scope.loadMore = function(callback) {
     console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
-    if ($scope.isLoadingStations)
+    if ($scope.isLoadingEntities)
     {
       return false;
     }
     
-    $scope.isLoadingStations = true;
+    $scope.isLoadingEntities = true;
     var manydays=1000;
-    var lastId = 0;
 
     console.debug('search Dirdtiton is here ########################: ' + $scope.searchDirection);
 
-    if (lastStation != undefined)
-    {
-      lastId = lastStation.id;
-      console.debug('we have a last station ' + lastStation.zuluStartDateString);
-      console.debug(lastStation);
+    console.debug('we do not have a last station');
+    console.debug($scope.searchDate);
 
-      internalFromDate = new Date(lastStation.zuluStartDateString);
-
-    }
-    else // its a new search
-    {
-      console.debug('we do not have a last station');
-      console.debug($scope.searchDate);
-
-      internalFromDate = $scope.searchDate;
       
       
-    }
 
 
 
-    console.debug('internal from date');
-    console.debug(internalFromDate);
     
-    var moreStations = StationService.getStationsOrderedByTime({
+    var moreEntities = UserService.getUsersOrderedByTime({
       mustHaveAttachment: 1,
-      lastId: lastId,
+      limit: limit,
+      offset: offset,
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
       sort: 'byTime',
       direction: $scope.searchDirection,
       visibility: $scope.searchVisibility,
-      datetime: internalFromDate.toUTCString()
+      datetime: $scope.searchDate.toUTCString()
       
     },function(){
-      //console.debug(moreStations);
-      for (var i = 0; i < moreStations.length; i++) {
-        $scope.stations.push(moreStations[i]);
+      offset += moreEntities.length;
+      
+      //console.debug(moreEntities);
+      for (var i = 0; i < moreEntities.length; i++) {
+        $scope.entities.push(moreEntities[i]);
       }
-      $scope.isLoadingStations = false;
-      if (moreStations.length>0)
-      {
-        lastStation = moreStations[moreStations.length-1];
-      }
-      else
+      $scope.isLoadingEntities = false;
+      if (moreEntities.length==0)
       {
         scrollEndReached = true;
       }
       
       ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
 	      filled: true,
-	      stations: $scope.stations,
+	      entities: $scope.entities,
 	      tobias: 'yeshere',
-	      lastStation: lastStation,
 	      scrollEndReached: scrollEndReached
       });
       

@@ -44,8 +44,6 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($q){
     this.digestScrollingStatus = function(scrollingStatusId){
       console.debug('got the scrolling status');
     	
-      this.debug_didLoadStations = true;
-
       if (!stateHolder[scrollingStatusId]){
         console.debug('uh.. that scrollingStatusId-Id does not exists.');
         this.introduceScrollingStatus(scrollingStatusId);

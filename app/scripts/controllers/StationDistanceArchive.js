@@ -1,53 +1,43 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('StationArchiveCtrl', 
+angular.module('ZeitfadenApp').controller('StationDistanceArchiveCtrl', 
 ['ProtectedControllerData','$controller','$log','$modal','$scope','StationService','$routeParams','$location','ScrollHistoryService', 
 function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$location,ScrollHistoryService) {
   
   $controller('AbstractStationArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
 
-  var lastStation;
-
-  var internalFromDate;
-  var internalUntilDate;
-  var lastStation;
-  
   ScrollHistoryService.setController(this);
   
   this.setHistoryStations = function(data){
 	  $scope.stations = data['stations'];
-      lastStation = data['lastStation'];
       self.scrollEndReached = data['scrollEndReached'];
   };
   
   this.loadEntities = function(){
     console.debug('new load Stations');
-    
     $scope.stations = [];
-    
     console.debug('load stations with scrollStatus: ' + $scope.scrollingStatusId);
     $scope.loadMore();
   	
   };
   
-  
-         
          
   $scope.stations = [];
   $scope.isLoadingStations = false;
-
-
+  $scope.limit=100;
+  $scope.offset=0;
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
-  $scope.searchDate = new Date();
-  $scope.searchDirection = "intoThePast";
+  $scope.fromhDate = new Date();
+  $scope.untilDate = new Date();
+  $scope.searchDirection = "nearFirst"; //farFirst
   $scope.searchVisibility = "public_only";
   
 
   var resetScrollStatus = function(){
-    lastStation = undefined;
-    internalFromDate = undefined;
-    internalUntilDate = undefined;
     self.scrollEndReached = false;
+    $scope.limit = 100;
+    $scope.offset = 0;
+    
   };
   
   
@@ -74,11 +64,18 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     }
 
     
-    if (myParams.searchDate){
-      $scope.searchDate = new Date(myParams.searchDate);
+    if (myParams.fromDate){
+      $scope.fromDate = new Date(myParams.fromDate);
     }
     else {
-      $scope.searchDate = new Date();
+      $scope.fromDate = new Date();
+    }
+
+    if (myParams.untilDate){
+      $scope.untilDate = new Date(myParams.untilDate);
+    }
+    else {
+      $scope.untilDate = new Date();
     }
     
     if (myParams.radius){
@@ -105,38 +102,23 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     else 
     {
       console.debug('this ever reached? ####################################################################');
-      console.debug('no.. no scolling status');
-      console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
-      console.debug('since there is now scrollingId, we say go: location.replace.');
-
-      //$scope.clickedLoad();
-      //$scope.scrollingStatusId = 'zf-ls-' + new Date().getTime();      
-      //$scope.introduceScrollingStatus($scope.scrollingStatusId);
     }
     
     
   };
-  
-
-  
-
-  
-  
-
 
 
   
   self.digestChangedModel = function(){
     console.debug('digesting changed model');
     
-
     resetScrollStatus();
-    
             
     var search = $location.search();
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
-    search.searchDate = $scope.searchDate.toUTCString();
+    search.fromDate = $scope.fromDate.toUTCString();
+    search.untilDate = $scope.untilDate.toUTCString();
     search.searchVisibility = $scope.searchVisibility;
     search.searchDirection = $scope.searchDirection;
     search.radius = $scope.selectedRange.range;
@@ -147,6 +129,8 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   };
   
   
+
+  
   $scope.loadMore = function(callback) {
     console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
     if ($scope.isLoadingStations)
@@ -155,58 +139,40 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     }
     
     $scope.isLoadingStations = true;
-    var lastId = 0;
-
-    if (lastStation != undefined)
-    {
-      lastId = lastStation.id;
-      internalFromDate = new Date(lastStation.zuluStartDateString);
-    }
-    else // its a new search
-    {
-      internalFromDate = $scope.searchDate;
-    }
 
 
-
-    console.debug('internal from date');
-    console.debug(internalFromDate);
-    
-    var moreStations = StationService.getStationsOrderedByTime({
+    var moreStations = StationService.getStationsOrderedByDistance({
       mustHaveAttachment: 1,
-      lastId: lastId,
+      offset: $scope.offset,
+      limit:$scope.limit,
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
-      distance: $scope.selectedRange.range,
+      maxDistance: $scope.selectedRange.range,
       direction: $scope.searchDirection,
       visibility: $scope.searchVisibility,
-      datetime: internalFromDate.toUTCString()
+      fromDate: $scope.fromDate.toUTCString(),
+      untilDate: $scope.untilDate.toUTCString(),
       
     },function(){
-      //console.debug(moreStations);
-      for (var i = 0; i < moreStations.length; i++) {
-        $scope.stations.push(moreStations[i]);
-      }
-      $scope.isLoadingStations = false;
-      if (moreStations.length>0)
-      {
-        lastStation = moreStations[moreStations.length-1];
-      }
-      else
-      {
-        self.scrollEndReached = true;
-      }
+    	$scope.offset += moreStations.length;
+		for (var i = 0; i < moreStations.length; i++) {
+        	$scope.stations.push(moreStations[i]);
+      	}
+	    $scope.isLoadingStations = false;
+	    if (moreStations.length == 0)
+	    {
+	      self.scrollEndReached = true;
+	    }
       
-      ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
+        ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
 	      filled: true,
 	      stations: $scope.stations,
 	      tobias: 'yeshere',
-	      lastStation: lastStation,
 	      scrollEndReached: self.scrollEndReached
-      });
+        });
       
       
-      callback && callback();
+        callback && callback();
     });
 
 

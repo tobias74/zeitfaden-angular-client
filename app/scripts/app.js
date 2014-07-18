@@ -86,6 +86,11 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
         controller: 'StationArchiveCtrl', 
         reloadOnSearch:false
       })
+      .when('/station-by-distance', {
+        templateUrl: 'app/views/station-distance-archive.html', 
+        controller: 'StationDistanceArchiveCtrl', 
+        reloadOnSearch:false
+      })
       .when('/user-archive', {
         templateUrl: 'app/views/user-archive.html', 
         controller: 'UserArchiveCtrl', 

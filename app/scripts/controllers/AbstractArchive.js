@@ -1,11 +1,8 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', function($scope,StationService,$routeParams,$location,ResponsiveService,ScrollHistoryService) {
-  
-  console.debug('I got called : ArchiveArchiveContr5oller.');
-
-
-  $scope.tobiaswhat="someelse";  
+angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', 
+['$scope','ProtectedControllerData','$location','ResponsiveService',
+function($scope,self,$location,ResponsiveService) {
   
   $scope.dataForRangeSelect = [
     {"range": 2, "description": "2m"},
@@ -19,6 +16,20 @@ angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', function($scope
     {"range": 10000000, "description": "10000km"},
     {"range": 100000000, "description": "100000km"}
   ];
+
+  $scope.searchLocation = {
+    latitude: 13.0810, 
+    longitude: 80.2740, 
+    zoom: 14
+  };
+  
+  self.scrollEndReached = false;       
+
+
+  $scope.isSearchingLocation = false;
+
+  $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
+
 
   
   $scope.setToCurrentLocation = function(callback) {
@@ -36,20 +47,30 @@ angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', function($scope
 
   $scope.changedDistance = function(){
     console.debug('changed distance');
-    $scope.digestChangedModel();
-  }
+    self.digestChangedModel();
+  };
 
   $scope.changedLocation = function(){
     console.debug('changed location');
     console.debug($scope.searchLocation);
     $scope.$apply(function(){
-      $scope.digestChangedModel();
+      self.digestChangedModel();
     });
-  }
+  };
 
   $scope.clickedLoad = function(){
     console.debug('clicked load Button Stachion Archive');
-    $scope.digestChangedModel();    
+    self.digestChangedModel();    
   };
   
-});
+  $scope.$on('$routeUpdate', function(next, current) { 
+    self.digestRouteParams($location.search());
+  });  
+  
+  $scope.clickedLoad = function(){
+    console.debug('clicked load Button Entities Archive');
+    self.digestChangedModel();    
+  };
+  
+  
+}]);

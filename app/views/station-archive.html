@@ -48,7 +48,7 @@
               <span ng-switch-when="false">locating off.</span>
             </div>
   
-            <span ng-switch on="isLoadingStations">
+            <span ng-switch on="isLoadingEntities">
               <span ng-switch-when="true">Loading stations...</span>
               <span ng-switch-when="false">Stations loaded.</span>
             </span>
@@ -81,10 +81,10 @@
         <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='3'>
           
           <div class="row">
-            <div ng-repeat="station in stations" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
+            <div ng-repeat="station in entities" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
               
               <div ng-switch-when="image" class="thumbnail station medium">
-                <img zf-image-modal ng-model="station" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+                <img zf-station-image-modal ng-model="station" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
                 <div class="small caption">{{station.startDate}}</div>
               </div>
               <div ng-switch-when="video" class="thumbnail station medium" >

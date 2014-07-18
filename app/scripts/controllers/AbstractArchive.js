@@ -24,8 +24,8 @@ function($scope,self,$location,ResponsiveService) {
   };
   
   self.scrollEndReached = false;       
-
-
+  $scope.entities = [];
+  $scope.isLoadingEntities = false;
   $scope.isSearchingLocation = false;
 
   $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
@@ -72,5 +72,30 @@ function($scope,self,$location,ResponsiveService) {
     self.digestChangedModel();    
   };
   
+  $scope.scrolledForMore = function(callback){
+    console.debug('scroll detected');
+    if (self.scrollEndReached)
+    {
+      console.debug('scroll end reached');
+      return;
+    }
+    if (!$scope.isLoadingEntities)
+    {
+      $scope.loadMore(callback);
+    }
+  };
+  
+  $scope.setSelectedEntity = function(val){
+    $scope.selectedEntity = val;
+  };
+
+
+  $scope.activateNextEntity = function(){
+    $scope.selectedEntity = _.succeeding($scope.entities, $scope.selectedEntity);
+  };
+
+  $scope.activatePreviousEntity = function(){
+    $scope.selectedEntity = _.preceding($scope.entities, $scope.selectedEntity);
+  };
   
 }]);

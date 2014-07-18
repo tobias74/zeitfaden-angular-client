@@ -96,6 +96,11 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
         controller: 'UserArchiveCtrl', 
         reloadOnSearch:false
       })
+      .when('/user-by-distance', {
+        templateUrl: 'app/views/user-distance-archive.html', 
+        controller: 'UserDistanceArchiveCtrl', 
+        reloadOnSearch:false
+      })
       .when('/trace-archive', {
         templateUrl: 'app/views/traces-archive.html', 
         controller: 'TraceArchiveCtrl', 

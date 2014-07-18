@@ -6,7 +6,7 @@ var ModalStationInstanceCtrl = function (ResponsiveService, $scope, $modalInstan
     $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
 
 	console.debug('thi is the selected station');
-	console.debug(controllerScope.selectedStation);
+	console.debug(controllerScope.selectedEntity);
 	
 	
   $scope.controllerScope = controllerScope;

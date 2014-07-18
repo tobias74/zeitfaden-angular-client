@@ -1,33 +1,33 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,StationService,UserService,$routeParams,$location,ResponsiveService,ScrollHistoryService,$controller) {
+angular.module('ZeitfadenApp').controller('UserArchiveCtrl', 
+['ProtectedControllerData','$controller','$log','$modal','$scope','UserService','$routeParams','$location','ScrollHistoryService', 
+function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,ScrollHistoryService) {
   
-  $controller('AbstractArchiveCtrl', {$scope: $scope});
-  
-  console.debug('I got called : ArchiveUserContr5oller.');
+  $controller('AbstractUserArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
 
-  var scrollEndReached = false;
   var limit = 100;
   var offset = 0;       
   
-  ScrollHistoryService.setController(this);
+  ScrollHistoryService.setController(self);
   
-  this.setHistoryStations = function(data){
+  self.setHistoryEntities = function(data){
 	  $scope.entities = data['entities'];
-      scrollEndReached = data['scrollEndReached'];
+      self.scrollEndReached = data['scrollEndReached'];
   };
   
-  this.loadEntities = function(){
-  	loadUsers();
+  self.loadEntities = function(){
+    offset = 0;
+    
+    $scope.entities = [];
+    
+    console.debug('load entities with scrollStatus: ' + $scope.scrollingStatusId);
+    $scope.loadMore();
   };
   
-                           
-  $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
-         
          
   $scope.entities = [];
   $scope.isLoadingEntities = false;
-  $scope.isSearchingLocation = true;
 
   $scope.searchLocation = {
     latitude: 13.0810, 
@@ -43,12 +43,12 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
   
 
   var resetScrollStatus = function(){
-    scrollEndReached = false;
+    self.scrollEndReached = false;
   };
   
   
   
-  var digestRouteParams = function(myParams){
+  self.digestRouteParams = function(myParams){
 
 	resetScrollStatus();   
 
@@ -98,14 +98,6 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
       $scope.scrollingStatusId = myParams.scrollingStatusId;
       ScrollHistoryService.digestScrollingStatus(myParams.scrollingStatusId);
     }
-    else 
-    {
-      console.debug('this ever reached? ####################################################################');
-      console.debug('no.. no scolling status');
-      console.debug('for the time beeing make in manually? No, this obviously is a new call to this page, therefore we replace.');
-      console.debug('since there is now scrollingId, we say go: location.replace.');
-
-    }
     
     
   };
@@ -117,7 +109,7 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
   
 
   
-  $scope.digestChangedModel = function(){
+  self.digestChangedModel = function(){
     console.debug('digesting changed model');
     
 
@@ -146,28 +138,7 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
     console.debug('got the callback! :-)');
   };
   
-  var loadUsers = function(){
-    offset = 0;
-    console.debug('new load Stations');
-    
-    $scope.entities = [];
-    
-    console.debug('load entities with scrollStatus: ' + $scope.scrollingStatusId);
-    $scope.loadMore();
-  };
   
-  $scope.scrolledForMore = function(callback){
-    console.debug('scroll detected');
-    if (scrollEndReached)
-    {
-      console.debug('scroll end reached');
-      return;
-    }
-    if (!$scope.isLoadingEntities)
-    {
-      $scope.loadMore(callback);
-    }
-  };
   
   $scope.loadMore = function(callback) {
     console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
@@ -205,24 +176,20 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
     },function(){
       offset += moreEntities.length;
       
-      //console.debug(moreEntities);
       for (var i = 0; i < moreEntities.length; i++) {
         $scope.entities.push(moreEntities[i]);
       }
       $scope.isLoadingEntities = false;
       if (moreEntities.length==0)
       {
-        scrollEndReached = true;
+        self.scrollEndReached = true;
       }
       
       ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
 	      filled: true,
 	      entities: $scope.entities,
-	      tobias: 'yeshere',
-	      scrollEndReached: scrollEndReached
+	      scrollEndReached: self.scrollEndReached
       });
-      
-      $scope.debug_didLoadStations = true;
       
       callback && callback();
     });
@@ -235,26 +202,15 @@ angular.module('ZeitfadenApp').controller('UserArchiveCtrl', function($scope,Sta
   };
   
   
-  $scope.updateMyText = function(date){
-    console.debug('I did get this here in updateMyText ' + date);
-    console.debug($scope.fromDate);
-  };
-  
-  
-  
-  
   
     
   $scope.$on('$routeUpdate', function(next, current) { 
-    digestRouteParams($location.search());
+    self.digestRouteParams($location.search());
   });  
 
   
-  digestRouteParams($routeParams);
-  
-  $scope.tobiasDebug='no';
-
+  self.digestRouteParams($routeParams);
   
   
-  
-});
+}]
+);

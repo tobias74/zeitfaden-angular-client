@@ -6,24 +6,24 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   
   $controller('AbstractStationArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
 
-  ScrollHistoryService.setController(this);
-  
-  this.setHistoryStations = function(data){
-	  $scope.stations = data['stations'];
+  ScrollHistoryService.setController(self);
+
+  self.setHistoryEntities = function(data){
+	  $scope.entities = data['stations'];
       self.scrollEndReached = data['scrollEndReached'];
   };
   
-  this.loadEntities = function(){
+  self.loadEntities = function(){
     console.debug('new load Stations');
-    $scope.stations = [];
+    $scope.entities = [];
     console.debug('load stations with scrollStatus: ' + $scope.scrollingStatusId);
     $scope.loadMore();
   	
   };
   
          
-  $scope.stations = [];
-  $scope.isLoadingStations = false;
+  $scope.entities = [];
+  $scope.isLoadingEntities = false;
   $scope.limit=100;
   $scope.offset=0;
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
@@ -99,11 +99,6 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       $scope.scrollingStatusId = myParams.scrollingStatusId;
       ScrollHistoryService.digestScrollingStatus(myParams.scrollingStatusId);
     }
-    else 
-    {
-      console.debug('this ever reached? ####################################################################');
-    }
-    
     
   };
 
@@ -133,12 +128,12 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   
   $scope.loadMore = function(callback) {
     console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
-    if ($scope.isLoadingStations)
+    if ($scope.isLoadingEntities)
     {
       return false;
     }
     
-    $scope.isLoadingStations = true;
+    $scope.isLoadingEntities = true;
 
 
     var moreStations = StationService.getStationsOrderedByDistance({
@@ -156,9 +151,9 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     },function(){
     	$scope.offset += moreStations.length;
 		for (var i = 0; i < moreStations.length; i++) {
-        	$scope.stations.push(moreStations[i]);
+        	$scope.entities.push(moreStations[i]);
       	}
-	    $scope.isLoadingStations = false;
+	    $scope.isLoadingEntities = false;
 	    if (moreStations.length == 0)
 	    {
 	      self.scrollEndReached = true;
@@ -166,7 +161,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       
         ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
 	      filled: true,
-	      stations: $scope.stations,
+	      stations: $scope.entities,
 	      tobias: 'yeshere',
 	      scrollEndReached: self.scrollEndReached
         });

@@ -4,7 +4,7 @@
 /*global google:false */
 
 
-angular.module('ZeitfadenApp').directive('zfImageModal',function(ResponsiveService,$modal,$log){
+angular.module('ZeitfadenApp').directive('zfStationImageModal',function(ResponsiveService,$modal,$log){
   return {
     restrict: 'EA',
     require: '?ngModel',
@@ -14,7 +14,7 @@ angular.module('ZeitfadenApp').directive('zfImageModal',function(ResponsiveServi
       $(element).click(function(){
         
         scope.$apply(function(){
-          scope.setSelectedStation(ngModel.$modelValue);
+          scope.setSelectedEntity(ngModel.$modelValue);
         });
 
         var modalInstance = $modal.open({
@@ -23,7 +23,7 @@ angular.module('ZeitfadenApp').directive('zfImageModal',function(ResponsiveServi
           windowClass: "modal-station",
           resolve: {
             selectedStation: function(){
-              return scope.selectedStation;
+              return scope.selectedEntity;
             },
             controllerScope: function(){
               return scope;
@@ -35,7 +35,7 @@ angular.module('ZeitfadenApp').directive('zfImageModal',function(ResponsiveServi
           console.debug('when is this called ' +selectedItem);
           scope.selected = selectedItem;
         }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
+          //$log.info('Modal dismissed at: ' + new Date());
         });
         
       });

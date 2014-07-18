@@ -57,7 +57,7 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($q){
         console.debug(stateHolder[scrollingStatusId]['tobias']);
       
         // this is a callback
-        this.getController().setHistoryStations(stateHolder[scrollingStatusId]);
+        this.getController().setHistoryEntities(stateHolder[scrollingStatusId]);
       
         if (this.isScrollingStatusEmpty(scrollingStatusId)){
           console.debug('scrolling status seems to be emtpy, therefore loading now.');

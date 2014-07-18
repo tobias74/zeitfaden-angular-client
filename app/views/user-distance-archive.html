@@ -24,6 +24,7 @@
             </div>
 
 
+
             <div class="btn-toolbar">
               <button ng-click="clickedLoad()" class="btn">load! </button>
               <button ng-click="setToCurrentLocation()" class="btn">here! </button>
@@ -46,11 +47,21 @@
               <span ng-switch-when="false">locating off.</span>
             </div>
   
-            <span ng-switch on="isLoadingEntities">
+            <span ng-switch on="isLoadingStations">
               <span ng-switch-when="true">Loading stations...</span>
               <span ng-switch-when="false">Stations loaded.</span>
             </span>
 
+
+            <!--
+            <div class="archive-sidebar-container">
+              Latitude: {{searchLocation.latitude}} <br>
+              Longitude: {{searchLocation.longitude}}
+    
+              {{selectedRange}}
+              {{searchDirection}}
+            </div>
+            -->
             
           </div><!--/span-->
 
@@ -63,23 +74,22 @@
  
  
  
-
       <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
 
         <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='3'>
           
           <div class="row">
-            <div ng-repeat="station in entities" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
+            <div ng-repeat="user in entities" ng-switch on="user.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
               
               <div ng-switch-when="image" class="thumbnail station medium">
-                <img zf-station-image-modal ng-model="station" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
-                <div class="small caption">{{station.startDate}}</div>
+                <img ng-click="clickedImage(user)" ng-src="{{user.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+                <div class="small caption">{{user.startDate}}</div>
               </div>
               <div ng-switch-when="video" class="thumbnail station medium" >
-                <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
-                  <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
-                  <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
-                  <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
+                <video width="400" height="300" ng-poster="{{user.html5Video.jpg}}" preload="none" controls="">
+                  <source ng-src="{{user.html5Video.mp4}}" type="video/mp4"></source>
+                  <source ng-src="{{user.html5Video.ogv}}" type="video/ogg"></source>
+                  <source ng-src="{{user.html5Video.webm}}" type="video/webm"></source>
                 </video>
              </div>
   
@@ -88,10 +98,6 @@
           
         </div>
      </div>
-
-
-
-
 
         
 

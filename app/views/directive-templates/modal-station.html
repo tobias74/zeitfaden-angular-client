@@ -5,26 +5,26 @@
 
                       <div class="modal-header">
                           <h3>StationBigHowBig</h3>
-                          <button class="btn btn-warning" ng-click="controllerScope.activateNextStation()">next</button>
-                          <button class="btn btn-warning" ng-click="controllerScope.activatePreviousStation()">previous</button>
+                          <button class="btn btn-warning" ng-click="controllerScope.activateNextEntity()">next</button>
+                          <button class="btn btn-warning" ng-click="controllerScope.activatePreviousEntity()">previous</button>
                           <button class="btn btn-primary" ng-disabled="isPerformingRegistration" ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)">Register</button>
                           <button class="btn btn-warning" ng-click="cancel()">CCCancel</button>
 
                       </div>
                       <div class="modal-body">
-                        <div zf-simple-map zf-station="controllerScope.selectedStation" class="station-image-map">
+                        <div zf-simple-map zf-station="controllerScope.selectedEntity" class="station-image-map">
                         </div>        
                         
                         <div class="station-image-container">
                           <img 
                             class="station-image"
-                            display-station="controllerScope.selectedStation"
-                            ng-click="clickedImage(station)" 
+                            display-station="controllerScope.selectedEntity"
+                            ng-click="clickedImage(entity)" 
                           />
                         </div>    
     
     
-                        <div class="small caption">{{controllerScope.selectedStation.startDate}}</div>
+                        <div class="small caption">{{controllerScope.selectedEntity.startDate}}</div>
                       
                       </div>
                       <div style="display:none;" class="modal-footer">

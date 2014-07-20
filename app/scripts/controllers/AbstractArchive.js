@@ -50,6 +50,13 @@ function($scope,self,$location,ResponsiveService) {
     self.digestChangedModel();
   };
 
+  $scope.changedDate = function(){
+    console.debug('changed date');
+    $scope.$apply(function(){
+      self.digestChangedModel();
+    });
+  };
+
   $scope.changedLocation = function(){
     console.debug('changed location');
     console.debug($scope.searchLocation);

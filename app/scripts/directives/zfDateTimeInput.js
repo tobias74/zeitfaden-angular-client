@@ -8,7 +8,8 @@ angular.module('ZeitfadenApp').directive('zfDateTimeInput',function(){
     require: '?ngModel',
     templateUrl: 'app/views/directive-templates/zf-date-time-input.html', 
     scope:{
-      myModel: '=ngModel'
+      myModel: '=ngModel',
+      myChangedDateCallback: '=zfOnChangeDate'
     },
     link: function(scope,element,attrs,ngModel){
       var i;
@@ -102,14 +103,17 @@ angular.module('ZeitfadenApp').directive('zfDateTimeInput',function(){
       
       
 
-      $(element).find('.date_selector, .time_selector').change(function(){
+      $(element).find('.date_selector, .time_selector, .datetime_selector').change(function(){
+        console.debug('notified here about new date');
         scope.$apply(function(ev){
-          //console.debug(ev);
-          //console.debug($(element).find('.date_selector').val())
-          //console.debug($(element).find('.time_selector').val())
+          //console.debug($(element).find('.date_selector').val());
+          //console.debug($(element).find('.time_selector').val());
+          console.debug($(element).find('.datetime_selector').val());
           //scope.myModel.setSeconds($(element).find('date_selector').val());
-          scope.myModel = new Date($(element).find('.date_selector').val() + ' ' + $(element).find('.time_selector').val());
+          scope.myModel = new Date($(element).find('.datetime_selector').val());
         });
+        
+        scope.myChangedDateCallback();
       });
       
       
@@ -117,8 +121,9 @@ angular.module('ZeitfadenApp').directive('zfDateTimeInput',function(){
       
       
       scope.$watch('myModel', function(value){
+        console.debug('#################################when is this called? when the values changes in the site?????????????????????????????????????????');
         console.debug('we got notified in about the new date ' + value + ' and the thing is ' + scope.myModel);
-        $(element).find('.day_selector :nth-child(' + value.getDate() + ')').prop('selected', true);
+        $(element).find('.day_selector option').eq(value.getDate()).prop('selected', true);
         $(element).find('.month_selector option').eq(value.getMonth()).prop('selected', true);
         $(element).find('.year_selector option:eq(' + value.getYear() + ')').prop('selected', true);
         $(element).find('.hour_selector option').eq(value.getHours()).prop('selected', true);
@@ -128,6 +133,10 @@ angular.module('ZeitfadenApp').directive('zfDateTimeInput',function(){
         $(element).find('.date_selector').val(value.strftime('%Y-%m-%d'));
         console.debug('setting for timeselector ' + value.strftime('%H:%M:%S'));
         $(element).find('.time_selector').val(value.strftime('%H:%M:%S'));
+        $(element).find('.datetime_selector').val(value.strftime('%Y-%m-%dT%H:%M:%S'));
+        
+        
+        
       });
       
       

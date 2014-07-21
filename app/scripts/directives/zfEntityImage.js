@@ -37,7 +37,7 @@ angular.module('ZeitfadenApp').directive('displayStation', function($document,Re
              
               imageLoader.load(station.smallFrontImageUrl + '/format/' + ResponsiveService.getAttachmentFormat(), function(imageTag){
                   console.debug('on load, now puting the original image');
-                  element[0].src = station.bigFrontImageUrl + '/format/' + ResponsiveService.getAttachmentFormat();
+                  element[0].src = station.bigFrontImageUrl + '/format/original';
               });
 
 

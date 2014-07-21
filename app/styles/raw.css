@@ -43,13 +43,34 @@
     display: block;
 }
 
-.modal-station .modal-dialog {
-  width:90%;
-  
+..modal.modal-station {
+  height:100%;	  
 }
 
 
+.modal-station .modal-dialog {
+  width:90%;
+  height:100%;	  
+}
 
+
+.modal-station .modal-content {
+  height:90%;
+  overflow:hidden;
+}
+
+.modal-station .modal-body {
+}
+
+
+.modal-station .modal-footer {
+	position:absolute;
+	right:30px;
+	bottom:0px;
+	border-top:0px;
+	
+	
+}
 
 .modal-station .modal-dialog .station-image{
   width:100%;
@@ -87,6 +108,7 @@ video {
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 70px;
+  height:100%;
 }
 
 

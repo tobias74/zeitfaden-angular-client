@@ -207,6 +207,15 @@ body {
 
 
 
+.full-settings{
+  border:1px solid red;
+  height: 300px !important;
+}
+
+.small-settings{
+  border:1px solid green;
+}
+
 
 /* Extra Small */
 @media(max-width:767px){
@@ -247,7 +256,7 @@ body {
     z-index:1000;    
   }
 
-  .station-archive-setrtings-wrapper{
+  .station-archive-settings-wrapper{
     margin-top:100px;
   }
 

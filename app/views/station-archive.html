@@ -7,14 +7,20 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
-			        <div class="search-map-wrapper">
+			        <div class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
 	              <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" zf-on-change-marker="changedLocation"  class="search-map" style="height:100%;">
 	              </div>        
+
+                <div style="position:absolute;bottom:10px;right:10px;z-index:2000;" ng-click="showFullSettings = !showFullSettings" >dies ist das click ding.</div>
+
 			        </div>
 
             <br>
             
-            <div class="station-archive-setrtings-wrapper">
+            <div class="station-archive-settings-wrapper">
+              
+              
+              
               Within Distance: <select id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
   
               <br>

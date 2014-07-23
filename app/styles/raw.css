@@ -57,9 +57,12 @@
 .modal-station .modal-content {
   height:90%;
   overflow:hidden;
+  
 }
 
+
 .modal-station .modal-body {
+	height:100%;
 }
 
 
@@ -225,12 +228,39 @@ body {
   .modal-station .modal-dialog .station-image-map{
     height:140px;
   }
+
+  .modal-station .modal-dialog .station-image{
+    height:auto;
+    width:auto;
+    max-height:260px;
+    max-width:100%;
+    padding-top:20px;
+	  
+  }
   
+  .search-map-wrapper{
+    height:130px;
+    width:100%;
+    margin-top:-20px;
+    margin-left:-15px;
+    position:fixed;
+    z-index:1000;    
+  }
+
+  .station-archive-setrtings-wrapper{
+    margin-top:100px;
+  }
+
+
 }
 
 @media(min-width:768px){
   .modal-station .modal-dialog .station-image-map{
     height:500px;
+  }
+  
+  .search-map-wrapper{
+    height:330px;
   }
   
 }

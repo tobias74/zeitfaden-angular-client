@@ -22,6 +22,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
       
       
       ngModel.$render = function(){
+      	
         $(element).addClass('google-maps');
         
         searchLatLng = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
@@ -55,7 +56,6 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
         }.bind(this));
 
         google.maps.event.addListener(googleMap, 'dblclick', function(event){
-          console.debug(event)
           searchMarker.setPosition(event.latLng);
           scope.$apply(function(){
             scope.myModel.latitude = searchMarker.getPosition().lat();

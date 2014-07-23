@@ -11,6 +11,9 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
     scope: false,
     link: function(scope,element,attrs,ngModel){
       
+      
+      
+      /*
       $(element).click(function(){
         
         scope.$apply(function(){
@@ -41,18 +44,9 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
       });
       
 
-      
+ 		*/     
      
      
-      /*      
-      scope.$watch('myModel', function(){
-        
-      }, true);
-      
-      scope.$watch('myStation', function(){
-        
-      }, true);
-      */
     }
   };
 });

@@ -97,7 +97,12 @@
   font-size: 0.9vw !important;
 }
 
-
+.parameter-element{
+	display:block;
+	padding:10px;
+	margin:5px;
+	
+}
 
 video {
   max-width: 100%;
@@ -208,12 +213,11 @@ body {
 
 
 .full-settings{
-  border:1px solid red;
   height: 300px !important;
 }
 
 .small-settings{
-  border:1px solid green;
+	
 }
 
 
@@ -256,8 +260,27 @@ body {
     z-index:1000;    
   }
 
-  .station-archive-settings-wrapper{
-    margin-top:100px;
+  .station-archive-settings-wrapper.show-wrapper{
+    height:180px;
+    width:100%;
+    border-top:1px solid #888;
+    margin-top:280px;
+    margin-left:-15px;
+    position:fixed;
+    z-index:1000;    
+    background-color:#dddddd;
+  }
+
+  .station-archive-settings-wrapper.hide-wrapper{
+  	display:none;
+  }
+  
+  .archive.with-big-top-distance{
+  	margin-top:460px;
+  }
+
+  .archive.with-small-top-distance{
+  	margin-top:110px;
   }
 
 
@@ -271,6 +294,7 @@ body {
   .search-map-wrapper{
     height:330px;
   }
+  
   
 }
 

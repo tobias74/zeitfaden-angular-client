@@ -8,13 +8,21 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
   return {
     restrict: 'EA',
     require: '?ngModel',
+    replace:true,
     scope: false,
+    templateUrl: 'app/views/directive-templates/station-image-modal.html', 
     link: function(scope,element,attrs,ngModel){
       
       
+      //console.debug($$(element).find('.blocker-div'));
+      $(element).find('.blocker-div').tgTouchEvent('longTap',  {}, function(){
+        scope.$apply(function(){
+          scope.setSelectedEntity(ngModel.$modelValue);
+        });
+	  });      
       
-      /*
-      $(element).click(function(){
+      
+      $(element).find('.blocker-div').tgTouchEvent('tap',  {}, function(){
         
         scope.$apply(function(){
           scope.setSelectedEntity(ngModel.$modelValue);
@@ -44,7 +52,6 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
       });
       
 
- 		*/     
      
      
     }

@@ -7,70 +7,73 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
-			        <div class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
-	              <div zf-search-map ng-model="searchLocation" zf-station="selectedStation" zf-on-change-marker="changedLocation"  class="search-map" style="height:100%;">
+	        <div class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
+	              <div zf-search-map ng-model="searchLocation" 
+	                   zf-station="selectedEntity" 
+	                   zf-on-change-marker="changedLocation"
+	                   zf-show-full-settings="showFullSettings"  
+	                   zf-request-location-callback="setToCurrentLocation"
+	                   zf-is-searching-location="isSearchingLocation"  
+	                   zf-on-changed-full-settings="toggleShowFullSettings"
+	                   class="search-map" style="height:100%;">
 	              </div>        
+	        </div>
 
-                <div style="position:absolute;bottom:10px;right:10px;z-index:2000;" ng-click="showFullSettings = !showFullSettings" >dies ist das click ding.</div>
+            
+            <div class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
 
-			        </div>
+              
+                <div class="parameter-element">
+                  <label>
+                	  Within Distance: 
+                  	  <select id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+                  </label>
+   	            </div>
 
-            <br>
-            
-            <div class="station-archive-settings-wrapper">
-              
-              
-              
-              Within Distance: <select id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
-  
-              <br>
-              <br>
-  
-              <div zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" class="archive-date-picker">
+
+				<div class="parameter-element">
+					
+	                <div style="display:inline-block;" zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" >
+	                </div>
+	
+					<div style="display:inline-block;" class="btn-group" >
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    {{searchDirection}} <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+					    <li><a href="" ng-click="searchDirection = 'intoTheFuture'">into the future</a></li>
+					    <li><a href="" ng-click="searchDirection = 'intoThePast'">into the past</a></li>
+					    <li class="divider"></li>
+					    <li><a href="">Separated link</a></li>
+					  </ul>
+					</div>
+	
+				</div>
+
+                <div class="parameter-element">
+
+	                <div style="display:inline-block;font-weight: 700;">
+	                	Visibility:
+	                </div>
+	
+					<div class="btn-group">
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    {{searchVisibility}} <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+					    <li><a href="" ng-click="searchVisibility = 'public_only'">Public Uploads</a></li>
+					    <li><a href="" ng-click="searchVisibility = 'my_own'">My Own</a></li>
+					    <li><a href="" ng-click="searchVisibility = 'pass_protected'">passprotected</a></li>
+					    <li class="divider"></li>
+					    <li><a href="">Separated link</a></li>
+					  </ul>
+					</div>
+				</div>	
+				
+				
               </div>
-  
-              <!--
-              <div zf-date-picker ng-model="searchDate" class="archive-date-picker">
-              </div>
-              -->
-  
-  
-              <div class="btn-toolbar">
-                <button ng-click="clickedLoad()" class="btn">load! </button>
-                <button ng-click="setToCurrentLocation()" class="btn">here! </button>
-                
-                <br>
-                
-                <input type="radio" ng-model="searchDirection" name="search_direction" value="intoTheFuture">into the future
-                <input type="radio" ng-model="searchDirection" name="search_direction" value="intoThePast">into the past
-                
-                <br>
-                
-                <input type="radio" ng-model="searchVisibility" name="visibility" value="public_only">public
-                <input type="radio" ng-model="searchVisibility" name="visibility" value="my_own">myown
-                <input type="radio" ng-model="searchVisibility" name="visibility" value="pass_protected">passprotected
-  
-              </div>
-              
-              <div ng-switch on="isSearchingLocation">
-                <span ng-switch-when="true">Currently location your position</span>
-                <span ng-switch-when="false">locating off.</span>
-              </div>
-    
-              <span ng-switch on="isLoadingEntities">
-                <span ng-switch-when="true">Loading stations...</span>
-                <span ng-switch-when="false">Stations loaded.</span>
-              </span>
-            
-            
-            </div>
-            
           </div><!--/span-->
-
-
         </div><!--/row-->
-
-        
       </div><!--/span-->
  
  
@@ -79,18 +82,19 @@
 
       <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
 
-        <div class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='3'>
+        <div ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='3'>
+          
+			<div ng-show="isLoadingEntities" style="padding-top:100px;text-align:center;margin-left:auto;margin-right:auto;width:100%;">
+	            Loading stations...
+	        </div>
+          
           
           <div class="row">
             <div ng-repeat="station in entities" ng-switch on="station.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
               
               <div ng-switch-when="image" class="thumbnail station medium">
               	
-              	<div style="text-align:center;">
-              		<div style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:20;"></div>	
-    	            <img style="max-width:100%;" zf-station-image-modal ng-model="station" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
-    	            
-              	</div>
+	              <div zf-station-image-modal ng-model="station"></div>	    	            
                 
                 <div class="small caption">{{station.startDate}}</div>
               </div>

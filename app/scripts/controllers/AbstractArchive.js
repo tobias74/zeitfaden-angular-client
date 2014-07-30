@@ -23,6 +23,12 @@ function($scope,self,$location,ResponsiveService) {
     zoom: 14
   };
   
+  $scope.toggleShowFullSettings = function(){
+  	$scope.showFullSettings = !$scope.showFullSettings;
+  };
+  
+  $scope.showFullSettings = false;
+  
   self.scrollEndReached = false;       
   $scope.entities = [];
   $scope.isLoadingEntities = false;
@@ -33,6 +39,7 @@ function($scope,self,$location,ResponsiveService) {
 
   
   $scope.setToCurrentLocation = function(callback) {
+  	console.debug('setting to current location');
     $scope.isSearchingLocation = true;
     navigator.geolocation.getCurrentPosition(function(position){
       $scope.$apply(function(){

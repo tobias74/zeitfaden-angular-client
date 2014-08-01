@@ -13,21 +13,19 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
     templateUrl: 'app/views/directive-templates/station-image-modal.html', 
     link: function(scope,element,attrs,ngModel){
       
-      
-      //console.debug($$(element).find('.blocker-div'));
-      $(element).find('.blocker-div').tgTouchEvent('longTap',  {}, function(){
+	var longTapCallback = function(){
         scope.$apply(function(){
-          scope.setSelectedEntity(ngModel.$modelValue);
+          scope.setSelectedMapEntity(ngModel.$modelValue);
         });
-	  });      
-      
-      
-      $(element).find('.blocker-div').tgTouchEvent('tap',  {}, function(){
+		
+	};      
+
+	var shortTapCallback = function(){
         
         scope.$apply(function(){
           scope.setSelectedEntity(ngModel.$modelValue);
         });
-
+		
         var modalInstance = $modal.open({
           templateUrl: 'app/views/directive-templates/modal-station.html',
           controller: ModalStationInstanceCtrl,
@@ -48,10 +46,15 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
         }, function () {
           //$log.info('Modal dismissed at: ' + new Date());
         });
-        
-      });
+		
+	};
       
 
+
+
+      $(element).find('.blocker-div-for-image').tgTouchEvent('longTap',  {}, longTapCallback);      
+      $(element).find('.blocker-div-for-image').tgTouchEvent('tap',  {}, shortTapCallback);
+      
      
      
     }

@@ -1,8 +1,13 @@
 
 
 <div style="text-align:center;">
-	<div class="blocker-div" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:20;"></div>
-	<img style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+	<div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
+	
+	
+	<img ng-if="showBigImages == true" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
+	<img ng-if="showBigImages == false" style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+		
+
 
 </div>
 

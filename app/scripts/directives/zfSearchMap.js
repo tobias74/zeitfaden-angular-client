@@ -251,6 +251,8 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
           };
 
         googleMap = new google.maps.Map($(element)[0],mapOptions);
+        google.maps.event.trigger(googleMap, 'resize');
+
 		customMapController = addCustomControlls(googleMap,scope);
 		locateController = addLocateControlls(googleMap,scope);
 		freeMapController = addFreeMapControlls(googleMap,scope);
@@ -262,6 +264,8 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
           draggable: true,
           animation:google.maps.Animation.DROP
         });
+        
+        
         
         google.maps.event.addListener(searchMarker, 'dragend', function(){
           scope.$apply(function(){
@@ -282,29 +286,28 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
         
         
       };
-      
+ 
+
       scope.$watch('myModel', function(){
         var myPosition = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
         searchMarker.setPosition(myPosition);
         googleMap.panTo(myPosition);
       }, true);
-      
+ 
       scope.$watch('myStation', function(){
         showStationOnMap(scope.myStation);
       }, true);
+
       
       scope.$watch('myShowFullSettings', function(){
-      	console.debug('noticed change in fullsettings in the map directive ' + scope.myShowFullSettings);
       	customMapController.setShowFullSettings(scope.myShowFullSettings);
       }, true);
       
       scope.$watch('myIsSearchingLocation', function(){
-      	console.debug('noticed change in fullsettings in the map directive ' + scope.myIsSearchingLocation);
       	locateController.setIsLocating(scope.myIsSearchingLocation);
       }, true);
       
       scope.$watch('mapIsFree', function(){
-      	console.debug('noticed change in fullsettings in the map directive ' + scope.mapIsFree);
       	freeMapController.setIsFree(scope.mapIsFree);
       	googleMap.setOptions({'draggable':scope.mapIsFree});
       }, true);
@@ -331,6 +334,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
           });
         }
         
+        google.maps.event.trigger(googleMap, 'resize');
         googleMap.panTo(myPosition);
         
       };

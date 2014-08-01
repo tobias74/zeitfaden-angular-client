@@ -23,6 +23,8 @@ function($scope,self,$location,ResponsiveService) {
     zoom: 14
   };
   
+  $scope.showBigImages = false;
+  
   $scope.toggleShowFullSettings = function(){
   	$scope.showFullSettings = !$scope.showFullSettings;
   };
@@ -101,6 +103,10 @@ function($scope,self,$location,ResponsiveService) {
   
   $scope.setSelectedEntity = function(val){
     $scope.selectedEntity = val;
+  };
+
+  $scope.setSelectedMapEntity = function(val){
+    $scope.selectedMapEntity = val;
   };
 
 

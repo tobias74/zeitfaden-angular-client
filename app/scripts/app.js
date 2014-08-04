@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angularFileUpload','ui.bootstrap'],function($provide, $httpProvider){
+var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angularFileUpload','ui.bootstrap'],function($provide, $httpProvider,$anchorScrollProvider){
+  
+  //$anchorScrollProvider.disableAutoScrolling();
+
   $provide.factory('myHttpInterceptor', function($q) {
     return function(promise) {
 
@@ -127,4 +130,57 @@ angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angula
   });
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+
+app.config(function($provide){
+	$provide.provider('$anchorScroll',function(){
+	
+	  var autoScrollingEnabled = true;
+	
+	  this.disableAutoScrolling = function() {
+	    autoScrollingEnabled = false;
+	  };
+	
+	  this.$get = ['$window', 'ScrollHistoryService', '$rootScope', function($window, ScrollHistoryService, $rootScope) {
+	  
+	    var document = $window.document;
+	
+	    function scroll() {
+	      if (!ScrollHistoryService.hasScrollTop()) 
+	      {
+	        $window.scrollTo(0, 0);
+	      }
+	      else 
+	      {
+	        $window.scrollTo(0, ScrollHistoryService.getScrollTop());
+	      }
+	    }
+	
+	    if (autoScrollingEnabled) {
+
+	      $rootScope.$watch(function autoScrollWatch() {return ScrollHistoryService.getScrollTop();},
+	        function autoScrollWatchAction() {
+	          $rootScope.$evalAsync(scroll);
+	        });
+	    }
+	
+	    return scroll;
+	  }];
+  });
+});
+
+
+
+
+
+
+
+
   

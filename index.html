@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 
-    <link href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     
     <!-- Optional theme -->
-    <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
       
 
     
@@ -24,6 +24,50 @@
         
 </head>
   <body ng-app="ZeitfadenApp" ng-controller="ZeitfadenApplicationCtrl">
+
+
+  <script type="text/ng-template" id="station-image-modal.html">
+    <div style="text-align:center;">
+      <div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
+      <img ng-if="showBigImages == true" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
+      <img ng-if="showBigImages == false" style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="station-image-lonely.html">
+    <div id="{{station.id}}" style="text-align:center;">
+      <div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
+      <img ng-if="showBigImages == true" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
+      <img ng-if="showBigImages == false" style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+    </div>
+  </script>
+
+
+  <script type="text/ng-template" id="station_repeater.html">
+            <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
+            ng-class="{false: 'col-xs-4', true: 'col-xs-12'}[showBigImages]"
+            class="col-3 col-md-3 col-sm-4 col-lg-2">
+              
+              <div ng-switch-when="image" class="thumbnail station medium">
+              	
+	              <div zf-station-image-lonely ng-model="station"></div>	    	            
+                
+              <div class="small caption">{{station.startDate}}</div>
+            </div>
+            <div ng-switch-when="video" class="thumbnail station medium" >
+	           <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
+	             <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
+	             <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
+	             <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
+	           </video>
+	        </div>
+  
+          
+             </div>
+
+  </script>
+
+
     
 	<!-- Modal -->
 	<div zf-login-form class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -214,7 +258,7 @@
     <div class="container-fluid">
 
       
-      <div ng-view class="row">      
+      <div ng-view autoscroll="true" class="row">      
       
       </div>
       
@@ -226,18 +270,18 @@
 
 
         
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="third_party/Touchable-jQuery-Plugin/touchable.js"></script>
 
         <script src="my-frameworks/jquery-long-tap/jquery-long-tap.js"></script>
         <script src="third_party/jquery.longpress.js"></script>
 
 
-        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
 
         <!-- Latest compiled and minified JavaScript -->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 
 
@@ -249,8 +293,8 @@
 
 
         
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-route.js"></script>
 
         
         <script src="app/scripts/app.js"></script>
@@ -260,7 +304,7 @@
         <script src="third_party/angular-resource/angular-resource.js"></script>
         <script src="third_party/angular-cookies/angular-cookies.js"></script>
         <script src="third_party/angular-sanitize/angular-sanitize.js"></script>
-        <script src="third_party/ngInfiniteScroll/ng-infinite-scroll.js"></script>
+        <script src="my-frameworks/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         
         
         <script src="third_party/alternatives/angular-file-upload/angular-file-upload.js"></script>
@@ -272,6 +316,7 @@
         <script src="app/scripts/directives/zfInplaceUploader.js"></script>
         <script src="app/scripts/directives/zfEntityImage.js"></script>
         <script src="app/scripts/directives/zfImageModal.js"></script>
+        <script src="app/scripts/directives/zfImageLonely.js"></script>
         <script src="app/scripts/directives/zfLoginForm.js"></script>
         <script src="app/scripts/directives/zfDatePicker.js"></script>
         <script src="app/scripts/directives/zfDateTimeInput.js"></script>
@@ -308,6 +353,10 @@
         <script src="app/scripts/controllers/MyTrace.js"></script>
 
         <script src="third_party/autofill-event.js"></script>
+        
+        <script>
+          angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 2000);
+        </script>
         
   </body>
 </html>

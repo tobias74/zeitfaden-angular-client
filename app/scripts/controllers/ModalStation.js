@@ -3,10 +3,11 @@
 
 var ModalStationInstanceCtrl = function (ResponsiveService, $scope, $modalInstance, controllerScope) {
 
+
     $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
 
-	console.debug('thi is the selected station');
-	console.debug(controllerScope.selectedEntity);
+//  alert('this is inside the modale station controll ' + controllerScope.selectedEntity);
+//  alert(controllerScope.selectedEntity);
 	
 	
   $scope.controllerScope = controllerScope;

@@ -89,37 +89,31 @@
 
       <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
 
-        <div ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance='3'>
+		<div ng-if="showLonelyEntity == true">
+			hello lonely entity
+		</div>
+
+        <div ng-if="showLonelyEntity == false" ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance="3" infinite-scroll-callback="scrollCallback">
           
 			<div ng-show="isLoadingEntities" style="padding-top:100px;text-align:center;margin-left:auto;margin-right:auto;width:100%;">
 	            Loading stations...
 	        </div>
           
           
-          <div class="row">
-            <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
-            ng-class="{false: 'col-xs-4', true: 'col-xs-12'}[showBigImages]"
-            class="col-3 col-md-3 col-sm-4 col-lg-2">
-              
-              <div ng-switch-when="image" class="thumbnail station medium">
-              	
-	              <div zf-station-image-modal ng-model="station"></div>	    	            
-                
-                <div class="small caption">{{station.startDate}}</div>
-              </div>
-              <div ng-switch-when="video" class="thumbnail station medium" >
-                <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
-                  <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
-                  <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
-                  <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
-                </video>
-             </div>
-  
-            </li>
-          </row>
-          
+          <div class="row" ng-include="'station_repeater.html'" autoscroll>
+          </div>
+           
         </div>
-     </div>
+
+		<!--
+			<div ng-if="showLongSpacer == true" style="height:100000px;" >
+			</div>
+        -->
+        
+      </div>
+      
+
+
 
 
 

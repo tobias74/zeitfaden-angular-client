@@ -10,7 +10,7 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
     require: '?ngModel',
     replace:true,
     scope: false,
-    templateUrl: 'app/views/directive-templates/station-image-modal.html', 
+    templateUrl: 'station-image-modal.html', 
     link: function(scope,element,attrs,ngModel){
       
 	var longTapCallback = function(){
@@ -21,10 +21,10 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
 	};      
 
 	var shortTapCallback = function(){
-        
         scope.$apply(function(){
           scope.setSelectedEntity(ngModel.$modelValue);
         });
+		
 		
         var modalInstance = $modal.open({
           templateUrl: 'app/views/directive-templates/modal-station.html',
@@ -39,7 +39,6 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
             }
           }
         });
-    
         modalInstance.result.then(function (selectedItem) {
           console.debug('when is this called ' +selectedItem);
           scope.selected = selectedItem;
@@ -51,6 +50,7 @@ angular.module('ZeitfadenApp').directive('zfStationImageModal',function(Responsi
       
 
 
+//      $(element).find('.blocker-div-for-image').longpress(longTapCallback,shortTapCallback);      
 
       $(element).find('.blocker-div-for-image').tgTouchEvent('longTap',  {}, longTapCallback);      
       $(element).find('.blocker-div-for-image').tgTouchEvent('tap',  {}, shortTapCallback);

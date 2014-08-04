@@ -44,6 +44,8 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   self.digestRouteParams = function(myParams){
 
 	resetScrollStatus();   
+	
+	self.digestRouteLonelyEntity(myParams);
 
     if (myParams.searchDirection){
       $scope.searchDirection = myParams.searchDirection;

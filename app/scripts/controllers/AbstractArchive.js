@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', 
-['$scope','ProtectedControllerData','$location','ResponsiveService',
-function($scope,self,$location,ResponsiveService) {
+['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService',
+function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   
   $scope.dataForRangeSelect = [
     {"range": 2, "description": "2m"},
@@ -23,7 +23,15 @@ function($scope,self,$location,ResponsiveService) {
     zoom: 14
   };
   
+  
+  $scope.scrollCallback = function(val){
+    ScrollHistoryService.setScrollTop(val);
+  };
+  
+  $scope.showLongSpacer = true;
+  
   $scope.showBigImages = false;
+  $scope.showLonelyEntity = false;
   
   $scope.toggleShowFullSettings = function(){
   	$scope.showFullSettings = !$scope.showFullSettings;
@@ -38,10 +46,19 @@ function($scope,self,$location,ResponsiveService) {
 
   $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
 
+  self.digestRouteLonelyEntity = function(myParams){
+    if (myParams.showLonelyEntity){
+      $scope.lonelyEntity = myParams.lonelyEntity;
+      $scope.lonelyEntityOwner = myParams.lonelyEntityOwner;
+      $scope.showLonelyEntity = true;
+    }
+    else {
+      $scope.showLonelyEntity = false;
+    }
+  };
 
   
   $scope.setToCurrentLocation = function(callback) {
-  	console.debug('setting to current location');
     $scope.isSearchingLocation = true;
     navigator.geolocation.getCurrentPosition(function(position){
       $scope.$apply(function(){

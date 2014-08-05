@@ -23,9 +23,14 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
     zoom: 14
   };
   
+  $scope.entityListLoaded = function(){
+  	if (ScrollHistoryService.hasScrollTop($scope.scrollingStatusId)){
+  		ScrollHistoryService.restoreScrollTop($scope.scrollingStatusId);  
+  	}
+  };
   
   $scope.scrollCallback = function(val){
-    ScrollHistoryService.setScrollTop(val);
+    ScrollHistoryService.setScrollTop($scope.scrollingStatusId, val);
   };
   
   $scope.showLongSpacer = true;

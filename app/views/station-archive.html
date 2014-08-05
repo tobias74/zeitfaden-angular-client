@@ -93,22 +93,27 @@
 			hello lonely entity
 		</div>
 
-        <div ng-if="showLonelyEntity == false" ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" class="archive" infinite-scroll="scrolledForMore()" infinite-scroll-distance="3" infinite-scroll-callback="scrollCallback">
+        <div ng-if="showLonelyEntity == false" 
+             ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" 
+             class="archive" 
+             infinite-scroll="scrolledForMore()" 
+             infinite-scroll-distance="3" 
+             infinite-scroll-callback="scrollCallback">
           
 			<div ng-show="isLoadingEntities" style="padding-top:100px;text-align:center;margin-left:auto;margin-right:auto;width:100%;">
 	            Loading stations...
 	        </div>
           
           
-          <div class="row" ng-include="'station_repeater.html'" autoscroll>
+          <div class="row" ng-include="'station_repeater.html'"  after-rendering="entityListLoaded()">
           </div>
            
         </div>
 
-		<!--
-			<div ng-if="showLongSpacer == true" style="height:100000px;" >
+		
+			<div ng-if="showLongSpacer == true" style="height:{{longSpacerHeighth}}px;" >
 			</div>
-        -->
+        
         
       </div>
       

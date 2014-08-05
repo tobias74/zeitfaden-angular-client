@@ -1,8 +1,94 @@
 'use strict';
 
-var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angularFileUpload','ui.bootstrap'],function($provide, $httpProvider,$anchorScrollProvider){
+var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scroll','angularFileUpload','ui.bootstrap'],function($compileProvider,$provide, $httpProvider,$anchorScrollProvider){
   
   //$anchorScrollProvider.disableAutoScrolling();
+
+	$provide.decorator('ngIncludeDirective', function($delegate, $http,   $templateCache, $anchorScroll, $animate, $sce){
+		
+		$delegate[0].compile = function(element, attr) {
+		      
+		      var afterRendering = attr.afterRendering;
+		  
+		      var srcExp = attr.ngInclude || attr.src,
+		          onloadExp = attr.onload || '',
+		          autoScrollExp = attr.autoscroll;
+		          
+		      return function(scope, $element, $attr, ctrl, $transclude) {
+		        var changeCounter = 0,
+		            currentScope,
+		            previousElement,
+		            currentElement;
+		
+		        var cleanupLastIncludeContent = function() {
+		          if(previousElement) {
+		            previousElement.remove();
+		            previousElement = null;
+		          }
+		          if(currentScope) {
+		            currentScope.$destroy();
+		            currentScope = null;
+		          }
+		          if(currentElement) {
+		            $animate.leave(currentElement, function() {
+		              previousElement = null;
+		            });
+		            previousElement = currentElement;
+		            currentElement = null;
+		          }
+		        };
+		
+		        scope.$watch($sce.parseAsResourceUrl(srcExp), function ngIncludeWatchAction(src) {
+		          var afterAnimation = function() {
+		            if (angular.isDefined(autoScrollExp) && (!autoScrollExp || scope.$eval(autoScrollExp))) {
+		              $anchorScroll();
+		            }		            
+		            if(angular.isDefined(afterRendering)){
+                  scope.$eval(afterRendering);
+		            }
+		          };
+		          var thisChangeId = ++changeCounter;
+		
+		          if (src) {
+		            $http.get(src, {cache: $templateCache}).success(function(response) {
+		              if (thisChangeId !== changeCounter) return;
+		              var newScope = scope.$new();
+		              ctrl.template = response;
+		
+		              // Note: This will also link all children of ng-include that were contained in the original
+		              // html. If that content contains controllers, ... they could pollute/change the scope.
+		              // However, using ng-include on an element with additional content does not make sense...
+		              // Note: We can't remove them in the cloneAttchFn of $transclude as that
+		              // function is called before linking the content, which would apply child
+		              // directives to non existing elements.
+		              var clone = $transclude(newScope, function(clone) {
+		                cleanupLastIncludeContent();
+		                $animate.enter(clone, null, $element, afterAnimation);
+		              });
+		
+		              currentScope = newScope;
+		              currentElement = clone;
+		
+		              currentScope.$emit('$includeContentLoaded');
+		              scope.$eval(onloadExp);
+		            }).error(function() {
+		              if (thisChangeId === changeCounter) cleanupLastIncludeContent();
+		            });
+		            scope.$emit('$includeContentRequested');
+		          } else {
+		            cleanupLastIncludeContent();
+		            ctrl.template = null;
+		          }
+		        });
+		      };
+		    };
+
+		console.debug($delegate);
+
+		return $delegate;
+	});
+
+
 
   $provide.factory('myHttpInterceptor', function($q) {
     return function(promise) {
@@ -129,53 +215,6 @@ var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scrol
       });
   });
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-app.config(function($provide){
-	$provide.provider('$anchorScroll',function(){
-	
-	  var autoScrollingEnabled = true;
-	
-	  this.disableAutoScrolling = function() {
-	    autoScrollingEnabled = false;
-	  };
-	
-	  this.$get = ['$window', 'ScrollHistoryService', '$rootScope', function($window, ScrollHistoryService, $rootScope) {
-	  
-	    var document = $window.document;
-	
-	    function scroll() {
-	      if (!ScrollHistoryService.hasScrollTop()) 
-	      {
-	        $window.scrollTo(0, 0);
-	      }
-	      else 
-	      {
-	        $window.scrollTo(0, ScrollHistoryService.getScrollTop());
-	      }
-	    }
-	
-	    if (autoScrollingEnabled) {
-
-	      $rootScope.$watch(function autoScrollWatch() {return ScrollHistoryService.getScrollTop();},
-	        function autoScrollWatchAction() {
-	          $rootScope.$evalAsync(scroll);
-	        });
-	    }
-	
-	    return scroll;
-	  }];
-  });
-});
-
 
 
 

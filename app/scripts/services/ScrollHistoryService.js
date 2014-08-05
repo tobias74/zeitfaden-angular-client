@@ -1,23 +1,33 @@
 'use strict';
 
-angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootScope,$q,$location){
+angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootScope,$q,$location,$window){
   var ScrollHistoryService = function(){
     var self = this;
     var stateHolder = [];
     
     
-    this.hasScrollTop = function(){
+    this.hasScrollTop = function(scrollingStatusId){
       return true;
     };
     
-    this.getScrollTop = function(){
+    this.getScrollTop = function(scrollingStatusId){
+        return stateHolder[scrollingStatusId]['scrollTop'];
+      
+        /*
         var search = $location.search();
-        console.debug('return the value from scrolltop ' + search.shsScrollTop);
         return search.shsScrollTop;
+        */
     };
     
-    this.setScrollTop = function(val){
-      console.debug('inside the history service ' + val);
+    this.restoreScrollTop = function(scrollingStatusId){
+      $window.scrollTo(0, this.getScrollTop(scrollingStatusId));
+    };
+    
+    this.setScrollTop = function(scrollingStatusId,val){
+      stateHolder[scrollingStatusId]['scrollTop'] = val;
+      
+      /*
+      console.debug('the history service gets set with scroll-top' + val);
 
       $rootScope.$apply(function(){
         var search = $location.search();
@@ -25,12 +35,10 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
         $location.search(search);
         $location.replace();
       });
+      */
+     
     };
     
-    this.sayHello = function(){
-      console.debug('hello....................................');
-      console.debug('this is my scope: ' + $scope.tobiasHello);
-    };
     
     this.setController = function(val){
       this.controller = val;      

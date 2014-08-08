@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootScope,$q,$location,$window){
+angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootScope,$q,$location,$window,ResponsiveService){
   var ScrollHistoryService = function(){
     var self = this;
     var stateHolder = [];
@@ -8,6 +8,14 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
     
     this.hasScrollTop = function(scrollingStatusId){
       return true;
+    };
+    
+    this.lockScrollHistory = function(scrollingStatusId){
+    	stateHolder[scrollingStatusId]['scrollHistoryIsLocked'] = true;
+    };
+
+    this.unlockScrollHistory = function(scrollingStatusId){
+    	stateHolder[scrollingStatusId]['scrollHistoryIsLocked'] = false;
     };
     
     this.getScrollTop = function(scrollingStatusId){
@@ -20,15 +28,19 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
     };
     
     this.restoreScrollTop = function(scrollingStatusId){
+      console.debug('################################## restoring to ' + this.getScrollTop(scrollingStatusId));
       $window.scrollTo(0, this.getScrollTop(scrollingStatusId));
     };
     
     this.setScrollTop = function(scrollingStatusId,val){
+      if (stateHolder[scrollingStatusId]['scrollHistoryIsLocked']){
+    	 console.debug('i guess the browser tried to scroll, preventing histroy overwrite.');
+    	 return;	
+      }
       stateHolder[scrollingStatusId]['scrollTop'] = val;
       
-      /*
-      console.debug('the history service gets set with scroll-top' + val);
-
+      console.debug('the HS GETS scroll-top' + val);
+/*
       $rootScope.$apply(function(){
         var search = $location.search();
         search.shsScrollTop = val;

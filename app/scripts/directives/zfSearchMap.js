@@ -235,27 +235,105 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
       
       scope.mapIsFree = false;
       
+      // copy paste from stackoverflow
+      
+      
+      
+      function LongPress(map, length) {
+        this.length_ = length;
+        var me = this;
+        me.map_ = map;
+        me.timeoutId_ = null;
+        me.didTriggerLongPress = false;
+        google.maps.event.addListener(map, 'mousedown', function(e) {
+          me.didTriggerLongPress = false;
+          me.onMouseDown_(e);
+        });
+        google.maps.event.addListener(map, 'mouseup', function(e) {
+          me.onMouseUp_(e);
+          if (me.didTriggerLongPress){
+            //alert('I would like to stop the propagation now.');
+            e.preventDefault();
+          }
+        });
+        google.maps.event.addListener(map, 'drag', function(e) {
+          me.onMapDrag_(e);
+        });
+      };
+      LongPress.prototype.onMouseUp_ = function(e) {
+        clearTimeout(this.timeoutId_);
+      };
+      LongPress.prototype.onMouseDown_ = function(e) {
+        clearTimeout(this.timeoutId_);
+        var map = this.map_;
+        var event = e;
+        var me = this;
+        this.timeoutId_ = setTimeout(function() {
+          google.maps.event.trigger(map, 'longpress', event);
+          me.didTriggerLongPress = true;
+        }, this.length_);
+      };
+      LongPress.prototype.onMapDrag_ = function(e) {
+        clearTimeout(this.timeoutId_);
+      };
+      
+      
+      // end copy paste from stack overflow
+      
+      
+      
+      
+      
+      
+      
+      
       ngModel.$render = function(){
       	
         $(element).addClass('google-maps');
         
         searchLatLng = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
 
+
+        var mapStyles = [
+          {
+            featureType: "poi",
+            stylers: [
+              { visibility: "off" }
+            ]
+          }
+        ];
+        
+        var styledMap = new google.maps.StyledMapType(mapStyles,
+          {name: "Styled Map"});
+
+
+
         mapOptions = {
             center: searchLatLng,
             zoom: scope.myModel.zoom,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControlOptions: {
+              mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+            },
+            
+            //mapTypeId: google.maps.MapTypeId.ROADMAP,
             scaleControl: true,
             disableDoubleClickZoom: true,
+            streetViewControl: false,
             draggable: ResponsiveService.shouldMapBeDraggable()
           };
 
         googleMap = new google.maps.Map($(element)[0],mapOptions);
+        googleMap.mapTypes.set('map_style', styledMap);
+        googleMap.setMapTypeId('map_style');
+        
+        //new LongPress(googleMap, 500);            
+        
+        
         google.maps.event.trigger(googleMap, 'resize');
 
-		customMapController = addCustomControlls(googleMap,scope);
+		//customMapController = addCustomControlls(googleMap,scope);
 		locateController = addLocateControlls(googleMap,scope);
-		freeMapController = addFreeMapControlls(googleMap,scope);
+		//freeMapController = addFreeMapControlls(googleMap,scope);
 
         searchMarker = new google.maps.Marker({
           position: searchLatLng,
@@ -275,6 +353,24 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
           scope.myChangedMarkerCallback();
         }.bind(this));
 
+
+
+        google.maps.event.addListener(googleMap, 'click', function(event){
+          event.stop();
+          scope.$apply(function(){
+            scope.myFullSettingsCallback();
+          });
+          scope.$apply(function(){
+            scope.mapIsFree = scope.myShowFullSettings;
+          });
+
+
+          google.maps.event.trigger(googleMap, 'resize');
+          var myPosition = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
+          googleMap.panTo(myPosition);
+        }.bind(this));
+
+
         google.maps.event.addListener(googleMap, 'dblclick', function(event){
           searchMarker.setPosition(event.latLng);
           scope.$apply(function(){
@@ -283,6 +379,17 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
           });
           scope.myChangedMarkerCallback();
         }.bind(this));
+
+/*
+        google.maps.event.addListener(googleMap, 'longpress', function(event){
+          searchMarker.setPosition(event.latLng);
+          scope.$apply(function(){
+            scope.myModel.latitude = searchMarker.getPosition().lat();
+            scope.myModel.longitude = searchMarker.getPosition().lng();
+          });
+          scope.myChangedMarkerCallback();
+        }.bind(this));
+*/
         
         
       };
@@ -300,7 +407,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
 
       
       scope.$watch('myShowFullSettings', function(){
-      	customMapController.setShowFullSettings(scope.myShowFullSettings);
+      	//customMapController.setShowFullSettings(scope.myShowFullSettings);
       }, true);
       
       scope.$watch('myIsSearchingLocation', function(){
@@ -308,7 +415,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
       }, true);
       
       scope.$watch('mapIsFree', function(){
-      	freeMapController.setIsFree(scope.mapIsFree);
+      	//freeMapController.setIsFree(scope.mapIsFree);
       	googleMap.setOptions({'draggable':scope.mapIsFree});
       }, true);
       

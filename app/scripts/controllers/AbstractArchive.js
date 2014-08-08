@@ -24,6 +24,10 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   };
   
   $scope.entityListLoaded = function(){
+  	ScrollHistoryService.unlockScrollHistory($scope.scrollingStatusId);
+  	
+  	console.debug('entity list loaded now going to rescroll o');
+  	
   	if (ScrollHistoryService.hasScrollTop($scope.scrollingStatusId)){
   		ScrollHistoryService.restoreScrollTop($scope.scrollingStatusId);  
   	}

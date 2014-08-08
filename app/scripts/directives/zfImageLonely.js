@@ -4,7 +4,7 @@
 /*global google:false */
 
 
-angular.module('ZeitfadenApp').directive('zfStationImageLonely',function(ResponsiveService,$log,$location){
+angular.module('ZeitfadenApp').directive('zfStationImageLonely',function(ScrollHistoryService,$log,$location){
   return {
     restrict: 'EA',
     require: '?ngModel',
@@ -21,6 +21,9 @@ angular.module('ZeitfadenApp').directive('zfStationImageLonely',function(Respons
 	};      
 
 	var shortTapCallback = function(){
+		
+     	ScrollHistoryService.lockScrollHistory(scope.scrollingStatusId);
+		
         scope.$apply(function(){
           scope.setSelectedEntity(ngModel.$modelValue);
         });
@@ -51,9 +54,10 @@ angular.module('ZeitfadenApp').directive('zfStationImageLonely',function(Respons
 
 //      $(element).find('.blocker-div-for-image').longpress(longTapCallback,shortTapCallback);      
 
-      $(element).find('.blocker-div-for-image').tgTouchEvent('longTap',  {}, longTapCallback);      
-      $(element).find('.blocker-div-for-image').tgTouchEvent('tap',  {}, shortTapCallback);
+      $(element).find('.blocker-div-for-image').tgTouchEvent('longTap',  {includeMouse:false}, longTapCallback);      
+      $(element).find('.blocker-div-for-image').tgTouchEvent('tap',  {includeMouse:false}, shortTapCallback);
       
+      $(element).find('.blocker-div-for-image').click(shortTapCallback);
      
      
     }

@@ -13,6 +13,18 @@ angular.module('ZeitfadenApp').factory('ResponsiveService', function(){
       }
     },
     
+    getPlaceholderUrl: function(){
+      if (window.innerWidth <= 767)
+      {
+        return 'http://placehold.it/300x300';
+      }
+      else
+      {
+        return 'http://placehold.it/400x300';
+      }
+    	
+    },
+    
     getAttachmentFormat: function(){
       if (window.innerWidth <= 767)
       {

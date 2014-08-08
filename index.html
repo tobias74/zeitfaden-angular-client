@@ -37,16 +37,18 @@
   <script type="text/ng-template" id="station-image-lonely.html">
     <div id="{{station.id}}" style="text-align:center;">
       <div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
-      <img ng-if="showBigImages == true" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
-      <img ng-if="showBigImages == false" style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+      <img ng-if="showBigImages == true" style="max-width:100%;" 
+      	display-image-with-placeholder="{{station.bigFrontImageUrl}}/format/original">
+      <img ng-if="showBigImages == false" style="max-width:100%;" 
+      	display-image-with-placeholder="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
     </div>
   </script>
 
 
   <script type="text/ng-template" id="station_repeater.html">
             <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
-            ng-class="{false: 'col-xs-4', true: 'col-xs-12'}[showBigImages]"
-            class="col-3 col-md-3 col-sm-4 col-lg-2">
+            ng-class="{false: 'col-xs-4 small-image', true: 'col-xs-12 big-image'}[showBigImages]"
+            class="col-3 col-md-3 col-sm-4 col-lg-3">
               
               <div ng-switch-when="image" class="thumbnail station medium">
               	
@@ -265,7 +267,8 @@
     </div>
       
 
-
+        <script src="http://fb.me/react-0.11.1.js"></script>
+        
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 
@@ -351,6 +354,7 @@
         <script src="app/scripts/controllers/ZeitfadenApplication.js"></script>
         <script src="app/scripts/controllers/TraceArchive.js"></script>
         <script src="app/scripts/controllers/MyTrace.js"></script>
+        <script src="app/scripts/controllers/ReactController.js"></script>
 
         <script src="third_party/autofill-event.js"></script>
         

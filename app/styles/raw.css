@@ -251,6 +251,14 @@ body {
 	  
   }
   
+  .big-image{
+    padding:0px;
+  }
+  
+  .small-image{
+    
+  }
+  
   .search-map-wrapper{
     height:130px;
     width:100%;

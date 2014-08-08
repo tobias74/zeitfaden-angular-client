@@ -200,6 +200,11 @@ var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scrol
         controller: 'SettingsCtrl', 
         reloadOnSearch:false
       })
+      .when('/react', {
+        templateUrl: 'app/views/react.html', 
+        controller: 'ReactCtrl', 
+        reloadOnSearch:false
+      })
       .when('/my-trace', {
         templateUrl: 'app/views/my-trace.html', 
         controller: 'MyTraceCtrl', 

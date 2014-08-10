@@ -30,7 +30,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   $scope.searchDate = new Date();
   $scope.searchDirection = "intoThePast";
-  $scope.searchVisibility = "public_only";
+  $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
   
 
   var resetScrollStatus = function(){
@@ -54,12 +54,22 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       $scope.searchDirection = "intoThePast";
     }
 
+
+
     if (myParams.searchVisibility){
-      $scope.searchVisibility = myParams.searchVisibility;
+      $scope.selectedVisibility = $.grep($scope.dataForVisibilitySelect,function(n,i){
+        return (n.visibility == myParams.searchVisibility);
+      })[0];
     }
     else {
-      $scope.searchVisibility = "public_only";
+      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
     }
+
+    if (!$scope.selectedVisibility){
+      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
+    }
+
+
 
     
     if (myParams.searchDate){
@@ -103,7 +113,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
     search.searchDate = $scope.searchDate.toUTCString();
-    search.searchVisibility = $scope.searchVisibility;
+    search.searchVisibility = $scope.selectedVisibility.visibility;
     search.searchDirection = $scope.searchDirection;
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
@@ -140,7 +150,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
       direction: $scope.searchDirection,
-      visibility: $scope.searchVisibility,
+      visibility: $scope.selectedVisibility.visibility,
       datetime: internalFromDate.toUTCString()
       
     },function(){

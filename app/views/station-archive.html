@@ -7,7 +7,8 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
-	        <div class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
+	        <div style="" 
+	             class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
 	              
 	              
 	              <div zf-search-map ng-model="searchLocation" 
@@ -23,59 +24,71 @@
 	        </div>
 
             
-            <div class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
+            
+            
+            
+            
+            <div style="" 
+                 class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
+
+                <div style="display:inline-block;width:49%;vertical-align:top;">
+                  <div class="parameter-element">
+                    <div style="display:inline-block;" zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" >
+                    </div>
+                  </div>
+            
+            
+            
+            
+                  <div class="parameter-element pull-right">
+            
+                    <div style="display:inline-block;" class="btn-group" >
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        {{searchDirection}} <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="" ng-click="searchDirection = 'intoTheFuture'">into the future</a></li>
+                        <li><a href="" ng-click="searchDirection = 'intoThePast'">into the past</a></li>
+                        <li class="divider"></li>
+                        <li><a href="">Separated link</a></li>
+                      </ul>
+                    </div>
+            
+                  </div>
+                </div>
 
 
-                <div class="parameter-element">
-                	<div ng-click="showBigImages = !showBigImages">click for toggle</div>
-   	            </div>
-              
-                <div class="parameter-element">
-                  <label>
-                	  Within Distance: 
-                  	  <select id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
-                  </label>
-   	            </div>
+                <div style="border-left:1px solid #999999; display:inline-block;width:49%;text-align:right;vertical-align:top;">
+
+                  <div class="parameter-element pull-right">
+                    <div class="btn-group btn-group-lg pull-right" >
+                      <button type="button" class="btn btn-default btn-lg">
+                      	<span class="glyphicon glyphicon-th" ng-click="showBigImages = false"></span>
+                    	</button>
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-th-list" ng-click="showBigImages = true"></span>
+                      </button>
+       	            </div>
+                  </div>
+                
+                  <div class="parameter-element pull-right">
+                    <label>
+                  	  <span style="top:3px;font-size:18px;" class="glyphicon glyphicon-map-marker"></span>
+                   	  <select style="font-size:18px;" id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+                    </label>
+     	            </div>
+
+                  <div class="parameter-element pull-right">
+                    <label>
+                      <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
+                      <select style="font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
+                    </label>
+                  </div>
+
+                </div>
 
 
-				<div class="parameter-element">
-					
-	                <div style="display:inline-block;" zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" >
-	                </div>
-	
-					<div style="display:inline-block;" class="btn-group" >
-					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					    {{searchDirection}} <span class="caret"></span>
-					  </button>
-					  <ul class="dropdown-menu" role="menu">
-					    <li><a href="" ng-click="searchDirection = 'intoTheFuture'">into the future</a></li>
-					    <li><a href="" ng-click="searchDirection = 'intoThePast'">into the past</a></li>
-					    <li class="divider"></li>
-					    <li><a href="">Separated link</a></li>
-					  </ul>
-					</div>
-	
-				</div>
 
-                <div class="parameter-element">
-
-	                <div style="display:inline-block;font-weight: 700;">
-	                	Visibility:
-	                </div>
-	
-					<div class="btn-group">
-					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					    {{searchVisibility}} <span class="caret"></span>
-					  </button>
-					  <ul class="dropdown-menu" role="menu">
-					    <li><a href="" ng-click="searchVisibility = 'public_only'">Public Uploads</a></li>
-					    <li><a href="" ng-click="searchVisibility = 'my_own'">My Own</a></li>
-					    <li><a href="" ng-click="searchVisibility = 'pass_protected'">passprotected</a></li>
-					    <li class="divider"></li>
-					    <li><a href="">Separated link</a></li>
-					  </ul>
-					</div>
-				</div>	
 				
 				
               </div>

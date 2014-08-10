@@ -17,6 +17,13 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
     {"range": 100000000, "description": "100000km"}
   ];
 
+  $scope.dataForVisibilitySelect = [
+    {"visibility": 'public_only', "description": "Public"},
+    {"visibility": 'my_own', "description": "Only mine"},
+    {"visibility": 'pass_protected', "description": "Protected"}
+  ];
+
+
   $scope.searchLocation = {
     latitude: 13.0810, 
     longitude: 80.2740, 
@@ -82,6 +89,11 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
 
   $scope.changedDistance = function(){
     console.debug('changed distance');
+    self.digestChangedModel();
+  };
+
+  $scope.changedVisibility = function(){
+    console.debug('changed visibility');
     self.digestChangedModel();
   };
 

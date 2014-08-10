@@ -38,9 +38,9 @@
     <div id="{{station.id}}" style="text-align:center;">
       <div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
       <img ng-if="showBigImages == true" style="max-width:100%;" 
-      	display-image-with-placeholder="{{station.bigFrontImageUrl}}/format/original">
+      	ng-src="{{station.bigFrontImageUrl}}/format/original">
       <img ng-if="showBigImages == false" style="max-width:100%;" 
-      	display-image-with-placeholder="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+      	ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
     </div>
   </script>
 

@@ -98,9 +98,10 @@
 }
 
 .parameter-element{
+  position:relative;
 	display:block;
 	padding:10px;
-	margin:5px;
+	margin:0px;
 	
 }
 
@@ -213,7 +214,7 @@ body {
 
 
 .full-settings{
-  height: 300px !important;
+  height: 250px !important;
 }
 
 .small-settings{
@@ -272,7 +273,7 @@ body {
     height:180px;
     width:100%;
     border-top:1px solid #888;
-    margin-top:280px;
+    margin-top:230px;
     margin-left:-15px;
     position:fixed;
     z-index:1000;    

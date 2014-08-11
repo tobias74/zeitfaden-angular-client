@@ -24,12 +24,22 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     $scope.loadMore();
   };
   
+
+  $scope.dataForTimeOrderingSelect = [
+    {"order": 'intoThePast', "description": "Into the Past"},
+    {"order": 'intoTheFuture', "description": "Into the Future"}
+  ];
+
+  $scope.changedTimeOrdering = function(){
+    console.debug('changed time ordering');
+    self.digestChangedModel();
+  };
          
   $scope.entities = [];
   $scope.isLoadingEntities = false;
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   $scope.searchDate = new Date();
-  $scope.searchDirection = "intoThePast";
+  $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
   $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
   
 
@@ -47,12 +57,6 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
 	
 	self.digestRouteLonelyEntity(myParams);
 
-    if (myParams.searchDirection){
-      $scope.searchDirection = myParams.searchDirection;
-    }
-    else {
-      $scope.searchDirection = "intoThePast";
-    }
 
 
 
@@ -68,6 +72,22 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     if (!$scope.selectedVisibility){
       $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
     }
+
+
+    if (myParams.searchDirection){
+      $scope.selectedTimeOrdering = $.grep($scope.dataForTimeOrderingSelect,function(n,i){
+        return (n.order == myParams.searchDirection);
+      })[0];
+    }
+    else {
+      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+    }
+
+    if (!$scope.selectedTimeOrdering){
+      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+    }
+
+
 
 
 
@@ -114,7 +134,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     search.longitude = $scope.searchLocation.longitude;
     search.searchDate = $scope.searchDate.toUTCString();
     search.searchVisibility = $scope.selectedVisibility.visibility;
-    search.searchDirection = $scope.searchDirection;
+    search.searchDirection = $scope.selectedTimeOrdering.order;
     search.radius = $scope.selectedRange.range;
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
     
@@ -149,7 +169,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
-      direction: $scope.searchDirection,
+      direction: $scope.selectedTimeOrdering.order,
       visibility: $scope.selectedVisibility.visibility,
       datetime: internalFromDate.toUTCString()
       

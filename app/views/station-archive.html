@@ -32,29 +32,21 @@
                  class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
 
                 <div style="display:inline-block;width:49%;vertical-align:top;">
+                  
                   <div class="parameter-element">
                     <div style="display:inline-block;" zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" >
                     </div>
                   </div>
             
-            
-            
-            
-                  <div class="parameter-element pull-right">
-            
-                    <div style="display:inline-block;" class="btn-group" >
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        {{searchDirection}} <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="" ng-click="searchDirection = 'intoTheFuture'">into the future</a></li>
-                        <li><a href="" ng-click="searchDirection = 'intoThePast'">into the past</a></li>
-                        <li class="divider"></li>
-                        <li><a href="">Separated link</a></li>
-                      </ul>
-                    </div>
-            
+
+                  <div class="parameter-element">
+                    <label>
+                      <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-forward"></span>
+                      <select style="font-size:18px;width:130px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
+                    </label>
                   </div>
+
+            
                 </div>
 
 

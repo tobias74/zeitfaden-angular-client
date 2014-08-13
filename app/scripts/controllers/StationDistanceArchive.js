@@ -42,27 +42,14 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   
   
   
+  var parentDigestRouteParams = self.digestRouteParams;
   self.digestRouteParams = function(myParams){
+    parentDigestRouteParams(myParams);
 
-	resetScrollStatus();   
+  	resetScrollStatus();   
 
     console.debug('digesting routeparams:');
     console.debug(myParams);
-    
-    if (myParams.searchDirection){
-      $scope.searchDirection = myParams.searchDirection;
-    }
-    else {
-      $scope.searchDirection = "intoThePast";
-    }
-
-    if (myParams.searchVisibility){
-      $scope.searchVisibility = myParams.searchVisibility;
-    }
-    else {
-      $scope.searchVisibility = "public_only";
-    }
-
     
     if (myParams.fromDate){
       $scope.fromDate = new Date(myParams.fromDate);

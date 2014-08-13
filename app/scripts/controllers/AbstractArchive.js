@@ -62,6 +62,25 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
 
   $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
 
+
+  self.digestRouteParams = function(myParams){
+
+    if (myParams.searchVisibility){
+      $scope.selectedVisibility = $.grep($scope.dataForVisibilitySelect,function(n,i){
+        return (n.visibility == myParams.searchVisibility);
+      })[0];
+    }
+    else {
+      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
+    }
+
+    if (!$scope.selectedVisibility){
+      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
+    }
+
+
+  };
+
   self.digestRouteLonelyEntity = function(myParams){
     if (myParams.showLonelyEntity){
       $scope.lonelyEntity = myParams.lonelyEntity;

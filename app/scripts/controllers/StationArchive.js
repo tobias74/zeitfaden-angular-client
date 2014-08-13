@@ -4,7 +4,7 @@ angular.module('ZeitfadenApp').controller('StationArchiveCtrl',
 ['ProtectedControllerData','$controller','$log','$modal','$scope','StationService','$routeParams','$location','ScrollHistoryService', 
 function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$location,ScrollHistoryService) {
   
-  $controller('AbstractStationArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
+  var myParentController = $controller('AbstractStationArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
 
   var internalFromDate;
   var internalUntilDate;
@@ -51,27 +51,13 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   };
   
   
+  var parentDigestRouteParams = self.digestRouteParams;
   self.digestRouteParams = function(myParams){
-
-	resetScrollStatus();   
+    parentDigestRouteParams(myParams);
+    
+  	resetScrollStatus();   
 	
-	self.digestRouteLonelyEntity(myParams);
-
-
-
-
-    if (myParams.searchVisibility){
-      $scope.selectedVisibility = $.grep($scope.dataForVisibilitySelect,function(n,i){
-        return (n.visibility == myParams.searchVisibility);
-      })[0];
-    }
-    else {
-      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
-    }
-
-    if (!$scope.selectedVisibility){
-      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
-    }
+	  self.digestRouteLonelyEntity(myParams);
 
 
     if (myParams.searchDirection){
@@ -89,9 +75,6 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
 
 
 
-
-
-    
     if (myParams.searchDate){
       $scope.searchDate = new Date(myParams.searchDate);
     }

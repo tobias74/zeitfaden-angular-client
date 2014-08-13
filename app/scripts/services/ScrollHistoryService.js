@@ -11,10 +11,12 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
     };
     
     this.lockScrollHistory = function(scrollingStatusId){
+      if (!stateHolder[scrollingStatusId]) stateHolder[scrollingStatusId] = {};
     	stateHolder[scrollingStatusId]['scrollHistoryIsLocked'] = true;
     };
 
     this.unlockScrollHistory = function(scrollingStatusId){
+      if (!stateHolder[scrollingStatusId]) stateHolder[scrollingStatusId] = {};
     	stateHolder[scrollingStatusId]['scrollHistoryIsLocked'] = false;
     };
     
@@ -33,10 +35,13 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
     };
     
     this.setScrollTop = function(scrollingStatusId,val){
-      if (stateHolder[scrollingStatusId]['scrollHistoryIsLocked']){
+      if (stateHolder[scrollingStatusId] && stateHolder[scrollingStatusId]['scrollHistoryIsLocked']){
     	 console.debug('i guess the browser tried to scroll, preventing histroy overwrite.');
     	 return;	
       }
+      
+      if (!stateHolder[scrollingStatusId]) stateHolder[scrollingStatusId] = {};
+      
       stateHolder[scrollingStatusId]['scrollTop'] = val;
       
       console.debug('the HS GETS scroll-top' + val);

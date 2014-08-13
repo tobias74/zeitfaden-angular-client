@@ -43,6 +43,25 @@
       	ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
     </div>
   </script>
+  
+  <script type="text/ng-template" id="station-search-map.html">
+    <div style="" 
+         class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
+          
+          
+          <div zf-search-map ng-model="searchLocation" 
+               zf-station="selectedMapEntity" 
+               zf-on-change-marker="changedLocation"
+               zf-show-full-settings="showFullSettings"  
+               zf-request-location-callback="setToCurrentLocation"
+               zf-is-searching-location="isSearchingLocation"  
+               zf-on-changed-full-settings="toggleShowFullSettings"
+               class="search-map" style="height:100%;">
+          </div>        
+          
+    </div>
+  </script>
+  
 
 
   <script type="text/ng-template" id="station_repeater.html">

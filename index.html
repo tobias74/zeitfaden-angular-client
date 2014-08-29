@@ -63,6 +63,50 @@
   </script>
   
 
+  <script type="text/ng-template" id="parameter_header.html">
+
+                <div style="border-left:1px solid #999999; display:block;text-align:right;vertical-align:top;">
+
+                  <div class="parameter-element pull-right">
+                    <div class="btn-group btn-group-lg pull-right" >
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-th" ng-click="showBigImages = false"></span>
+                      </button>
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-th-list" ng-click="showBigImages = true"></span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="parameter-element ">
+                    <div class="btn-group btn-group-lg " >
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-user" ng-click="clickUserIcon()"></span>
+                      </button>
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-picture" ng-click="clickStationIcon()"></span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="parameter-element ">
+                    <div class="btn-group btn-group-lg " >
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-sort-by-attributes" ng-click="clickDistanceSort()"></span>
+                      </button>
+                      <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="clickTimeSort()"></span>
+                      </button>
+                    </div>
+                  </div>
+
+
+
+                </div>
+
+  </script>
+
+
 
   <script type="text/ng-template" id="station_repeater.html">
             <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
@@ -315,8 +359,8 @@
 
 
         
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-route.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-route.js"></script>
 
         
         <script src="app/scripts/app.js"></script>

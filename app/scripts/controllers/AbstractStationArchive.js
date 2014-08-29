@@ -6,6 +6,8 @@ function($scope,self,$location,ResponsiveService,$controller) {
   
   var myParentController = $controller('AbstractArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
   
+  self.entityName = 'station';
+  
 
   
 }]);

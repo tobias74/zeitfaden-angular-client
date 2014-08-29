@@ -10,40 +10,35 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   var internalUntilDate;
   var lastStation;
   
-  ScrollHistoryService.setController(self);
-  
+  var parentSetHistoryEntities = self.setHistoryEntities;  
   self.setHistoryEntities = function(data){
-	  $scope.entities = data['stations'];
       lastStation = data['lastStation'];
-      self.scrollEndReached = data['scrollEndReached'];
+      parentSetHistoryEntities(data);
   };
   
-  self.loadEntities = function(){
-    $scope.entities = [];
-    console.debug('load stations with scrollStatus: ' + $scope.scrollingStatusId);
-    $scope.loadMore();
+  
+  $scope.clickUserIcon = function(){
+	  $location.path('/user-archive');
+	  self.introduceNewScrollingId();
   };
   
-
-  $scope.dataForTimeOrderingSelect = [
-    {"order": 'intoThePast', "description": "Into the Past"},
-    {"order": 'intoTheFuture', "description": "Into the Future"}
-  ];
-
-  $scope.changedTimeOrdering = function(){
-    console.debug('changed time ordering');
-    self.digestChangedModel();
+  $scope.clickStationIcon = function(){
+  	// nothing
   };
+  
+  $scope.clickTimeSort = function(){
+  	// nothing
+  };
+
+  $scope.clickDistanceSort = function(){
+	  $location.path('/station-by-distance');
+	  self.introduceNewScrollingId();
+  };
+
          
-  $scope.entities = [];
-  $scope.isLoadingEntities = false;
-  $scope.selectedRange = $scope.dataForRangeSelect[3];  
-  $scope.searchDate = new Date();
-  $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
-  $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
   
 
-  var resetScrollStatus = function(){
+  self.resetScrollStatus = function(){
     lastStation = undefined;
     internalFromDate = undefined;
     internalUntilDate = undefined;
@@ -54,75 +49,26 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   var parentDigestRouteParams = self.digestRouteParams;
   self.digestRouteParams = function(myParams){
     parentDigestRouteParams(myParams);
+
+    self.digestSingleTime(myParams);
+		
+	self.digestRadius(myParams);
     
-  	resetScrollStatus();   
-	
-	  self.digestRouteLonelyEntity(myParams);
-
-
-    if (myParams.searchDirection){
-      $scope.selectedTimeOrdering = $.grep($scope.dataForTimeOrderingSelect,function(n,i){
-        return (n.order == myParams.searchDirection);
-      })[0];
-    }
-    else {
-      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
-    }
-
-    if (!$scope.selectedTimeOrdering){
-      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
-    }
-
-
-
-    if (myParams.searchDate){
-      $scope.searchDate = new Date(myParams.searchDate);
-    }
-    else {
-      $scope.searchDate = new Date();
-    }
     
-    if (myParams.radius){
-      $scope.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
-        return (n.range == myParams.radius);
-      })[0];
-    }
-    else {
-      $scope.selectedRange = $scope.dataForRangeSelect[3];
-    }
 
 
-    if (myParams.latitude && myParams.longitude){
-      $scope.searchLocation.latitude = myParams.latitude;
-      $scope.searchLocation.longitude = myParams.longitude;
-      
-    }
 
-    if (myParams.scrollingStatusId)
-    {
-      $scope.scrollingStatusId = myParams.scrollingStatusId;
-      ScrollHistoryService.digestScrollingStatus(myParams.scrollingStatusId);
-    }
-    
   };
   
 
 
-  
-  self.digestChangedModel = function(){
-    resetScrollStatus();
-            
-    var search = $location.search();
-    search.latitude = $scope.searchLocation.latitude;
-    search.longitude = $scope.searchLocation.longitude;
+  self.updateLocationSearch = function(search){
     search.searchDate = $scope.searchDate.toUTCString();
-    search.searchVisibility = $scope.selectedVisibility.visibility;
     search.searchDirection = $scope.selectedTimeOrdering.order;
     search.radius = $scope.selectedRange.range;
-    search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
-    
-    $location.search(search);
   };
+
+
   
   
   $scope.loadMore = function(callback) {
@@ -183,7 +129,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   };
 
   
-  self.digestRouteParams($routeParams);
+  self.onRouteUpdateTemplateMethod($routeParams);
   
 }]
 );

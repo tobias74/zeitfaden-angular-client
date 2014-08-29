@@ -30,29 +30,18 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
     };
     
     this.restoreScrollTop = function(scrollingStatusId){
-      console.debug('################################## restoring to ' + this.getScrollTop(scrollingStatusId));
       $window.scrollTo(0, this.getScrollTop(scrollingStatusId));
     };
     
     this.setScrollTop = function(scrollingStatusId,val){
       if (stateHolder[scrollingStatusId] && stateHolder[scrollingStatusId]['scrollHistoryIsLocked']){
-    	 console.debug('i guess the browser tried to scroll, preventing histroy overwrite.');
+    	 //console.debug('i guess the browser tried to scroll, preventing histroy overwrite.');
     	 return;	
       }
       
       if (!stateHolder[scrollingStatusId]) stateHolder[scrollingStatusId] = {};
       
       stateHolder[scrollingStatusId]['scrollTop'] = val;
-      
-      console.debug('the HS GETS scroll-top' + val);
-/*
-      $rootScope.$apply(function(){
-        var search = $location.search();
-        search.shsScrollTop = val;
-        $location.search(search);
-        $location.replace();
-      });
-      */
      
     };
     
@@ -88,31 +77,24 @@ angular.module('ZeitfadenApp').factory('ScrollHistoryService', function($rootSco
       };
 
     this.digestScrollingStatus = function(scrollingStatusId){
-      console.debug('got the scrolling status');
       
       if (!stateHolder[scrollingStatusId]){
-        console.debug('uh.. that scrollingStatusId-Id does not exists.');
         this.introduceScrollingStatus(scrollingStatusId);
         
         // this is a callback
         this.getController().loadEntities();
       } 
       else {
-        console.debug('digesting scrollingStatusId: ' + scrollingStatusId);
-        console.debug(stateHolder[scrollingStatusId]);
-        console.debug(stateHolder[scrollingStatusId]['tobias']);
       
         // this is a callback
         this.getController().setHistoryEntities(stateHolder[scrollingStatusId]);
       
         if (this.isScrollingStatusEmpty(scrollingStatusId)){
-          console.debug('scrolling status seems to be emtpy, therefore loading now.');
-          
-          // this is a callback
-        this.getController().loadEntities();
+     	     // this is a callback
+	        this.getController().loadEntities();
         }
         else {
-          console.debug('there should be stuff in the filler, not loading');
+	        console.debug('there should be stuff in the filler, not loading');
         }
     }
   };

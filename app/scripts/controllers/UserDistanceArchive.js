@@ -5,14 +5,7 @@ angular.module('ZeitfadenApp').controller('UserDistanceArchiveCtrl',
 function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,ScrollHistoryService) {
   
   $controller('AbstractUserArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
-
   
-  ScrollHistoryService.setController(self);
-  
-  self.setHistoryEntities = function(data){
-	  $scope.entities = data['entities'];
-      self.scrollEndReached = data['scrollEndReached'];
-  };
   
   self.loadEntities = function(){
     $scope.offset = 0;
@@ -20,106 +13,52 @@ function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,
     $scope.loadMore();
   };
 
-
-  $scope.selectedRange = $scope.dataForRangeSelect[3];  
-  $scope.searchDate = new Date();
-  $scope.searchDirection = "intoThePast";
-  $scope.searchVisibility = "public_only";
-  $scope.fromDate = new Date();
-  $scope.untilDate = new Date();
-  $scope.limit=100;
-  $scope.offset=0;
+  $scope.clickUserIcon = function(){
+  	//nothing
+  };
   
+  $scope.clickStationIcon = function(){
+	  $location.path('/station-by-distance');
+	  self.introduceNewScrollingId();
+  };
 
-  var resetScrollStatus = function(){
+  $scope.clickTimeSort = function(){
+	  $location.path('/user-archive');
+	  self.introduceNewScrollingId();
+  };
+
+  $scope.clickDistanceSort = function(){
+  	// nothing
+  };
+
+
+  self.resetScrollStatus = function(){
     self.scrollEndReached = false;
+    $scope.limit = 100;
+    $scope.offset = 0;
   };
   
   
   
+  var parentDigestRouteParams = self.digestRouteParams;
   self.digestRouteParams = function(myParams){
+    parentDigestRouteParams(myParams);
 
-	  resetScrollStatus();   
-    
-    if (myParams.searchDirection){
-      $scope.searchDirection = myParams.searchDirection;
-    }
-    else {
-      $scope.searchDirection = "intoThePast";
-    }
-
-    if (myParams.searchVisibility){
-      $scope.searchVisibility = myParams.searchVisibility;
-    }
-    else {
-      $scope.searchVisibility = "public_only";
-    }
-
-    
-    if (myParams.fromDate){
-      $scope.fromDate = new Date(myParams.fromDate);
-    }
-    else {
-      $scope.fromDate = new Date();
-    }
-
-    if (myParams.untilDate){
-      $scope.untilDate = new Date(myParams.untilDate);
-    }
-    else {
-      $scope.untilDate = new Date();
-    }
-    
-    if (myParams.radius){
-      $scope.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
-        return (n.range == myParams.radius);
-      })[0];
-    }
-    else {
-      $scope.selectedRange = $scope.dataForRangeSelect[3];
-    }
-
-
-    if (myParams.latitude && myParams.longitude){
-      $scope.searchLocation.latitude = myParams.latitude;
-      $scope.searchLocation.longitude = myParams.longitude;
-      
-    }
-
-    if (myParams.scrollingStatusId)
-    {
-      $scope.scrollingStatusId = myParams.scrollingStatusId;
-      ScrollHistoryService.digestScrollingStatus(myParams.scrollingStatusId);
-    }
-    
+    self.digestTwoTimes(myParams);
     
   };
   
 
   
 
-  
-  
-
-  
-  self.digestChangedModel = function(){
-
-    resetScrollStatus();
-            
-    var search = $location.search();
-    search.latitude = $scope.searchLocation.latitude;
-    search.longitude = $scope.searchLocation.longitude;
+  self.updateLocationSearch = function(search){
     search.fromDate = $scope.fromDate.toUTCString();
     search.untilDate = $scope.untilDate.toUTCString();
-    search.searchVisibility = $scope.searchVisibility;
     search.searchDirection = $scope.searchDirection;
-    search.radius = $scope.selectedRange.range;
-    search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
-    
-    $location.search(search);
-    
   };
   
+  
+
   
   
   $scope.loadMore = function(callback) {
@@ -137,9 +76,9 @@ function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,
       offset: $scope.offset,
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
-      maxDistance: $scope.selectedRange.range,
+      maxDistance: 99999999999,
       direction: $scope.searchDirection,
-      visibility: $scope.searchVisibility,
+      visibility: $scope.selectedVisibility.visibility,
       fromDate: $scope.fromDate.toUTCString(),
       untilDate: $scope.untilDate.toUTCString()
       
@@ -174,12 +113,7 @@ function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,
   
   
     
-  $scope.$on('$routeUpdate', function(next, current) { 
-    self.digestRouteParams($location.search());
-  });  
-
-  
-  self.digestRouteParams($routeParams);
+  self.onRouteUpdateTemplateMethod($routeParams);
   
   
 }]

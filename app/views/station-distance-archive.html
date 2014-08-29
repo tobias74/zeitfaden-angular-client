@@ -13,7 +13,19 @@
             <div style="" 
                  class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
 
-                <div style="display:inline-block;width:49%;vertical-align:top;">
+
+
+  	            <div class="row" ng-include="'parameter_header.html'">
+	            </div>
+
+                  <div class="parameter-element pull-right">
+                    <label>
+                      <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
+                      <select style="font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
+                    </label>
+                  </div>
+
+                <div style="display:block;vertical-align:top;">
                   
                   <div class="parameter-element">
                     <div zf-date-time-input ng-model="fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
@@ -24,33 +36,6 @@
                 </div>
 
 
-                <div style="border-left:1px solid #999999; display:inline-block;width:49%;text-align:right;vertical-align:top;">
-
-                  <div class="parameter-element pull-right">
-                    <div class="btn-group btn-group-lg pull-right" >
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-th" ng-click="showBigImages = false"></span>
-                      </button>
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-th-list" ng-click="showBigImages = true"></span>
-                      </button>
-                    </div>
-                  </div>
-                
-                  <div class="parameter-element pull-right">
-                    <label>
-                      <span style="top:3px;font-size:18px;" class="glyphicon glyphicon-map-marker"></span>
-                      <select style="font-size:18px;" id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
-                    </label>
-                  </div>
-
-                  <div class="parameter-element pull-right">
-                    <label>
-                      <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
-                      <select style="font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
-                    </label>
-                  </div>
-                </div>
               </div>
             
           </div><!--/span-->

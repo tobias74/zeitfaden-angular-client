@@ -4,18 +4,6 @@ angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl',
 ['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService',
 function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   
-  $scope.dataForRangeSelect = [
-    {"range": 2, "description": "2m"},
-    {"range": 10, "description": "10m"},
-    {"range": 100, "description": "100m"},
-    {"range": 500, "description": "500m"},
-    {"range": 1000, "description": "1km"},
-    {"range": 10000, "description": "10km"},
-    {"range": 100000, "description": "100km"},
-    {"range": 1000000, "description": "1000km"},
-    {"range": 10000000, "description": "10000km"},
-    {"range": 100000000, "description": "100000km"}
-  ];
 
   $scope.dataForVisibilitySelect = [
     {"visibility": 'public_only', "description": "Public"},
@@ -29,11 +17,22 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
     longitude: 80.2740, 
     zoom: 14
   };
+
+  ScrollHistoryService.setController(self);
+  
+  self.setHistoryEntities = function(data){
+	  $scope.entities = data[self.entityName + 's'];
+      self.scrollEndReached = data['scrollEndReached'];
+  };
+  
+  self.loadEntities = function(){
+    $scope.entities = [];
+    $scope.loadMore();
+  };
+
   
   $scope.entityListLoaded = function(){
   	ScrollHistoryService.unlockScrollHistory($scope.scrollingStatusId);
-  	
-  	console.debug('entity list loaded now going to rescroll o');
   	
   	if (ScrollHistoryService.hasScrollTop($scope.scrollingStatusId)){
   		ScrollHistoryService.restoreScrollTop($scope.scrollingStatusId);  
@@ -43,6 +42,32 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   $scope.scrollCallback = function(val){
     ScrollHistoryService.setScrollTop($scope.scrollingStatusId, val);
   };
+  
+  
+  self.onRouteUpdateTemplateMethod = function(myParams){
+  	
+  	self.resetScrollStatus();   
+  	
+  	self.digestRouteParams(myParams);
+
+    if (myParams.latitude && myParams.longitude){
+      $scope.searchLocation.latitude = myParams.latitude;
+      $scope.searchLocation.longitude = myParams.longitude;
+      
+    }
+  	
+  	
+    self.digestRouteLonelyEntity(myParams);
+  	
+  	
+    if (myParams.scrollingStatusId)
+    {
+      $scope.scrollingStatusId = myParams.scrollingStatusId;
+      ScrollHistoryService.digestScrollingStatus(myParams.scrollingStatusId);
+    }
+  	
+  };
+  
   
   $scope.showLongSpacer = true;
   
@@ -59,9 +84,34 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   $scope.entities = [];
   $scope.isLoadingEntities = false;
   $scope.isSearchingLocation = false;
+  $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
 
   $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
 
+  self.updateLocationSearch = function(search){
+  	
+  };
+	
+  self.digestChangedModelTemplateMethod = function(){
+    self.resetScrollStatus();
+    
+    var search = $location.search();
+
+    search.latitude = $scope.searchLocation.latitude;
+    search.longitude = $scope.searchLocation.longitude;
+    search.searchVisibility = $scope.selectedVisibility.visibility;
+	
+	self.updateLocationSearch(search);
+    
+    search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
+    $location.search(search);
+  };
+
+  self.introduceNewScrollingId = function(){
+    var search = $location.search();
+    search.scrollingStatusId = 'zf-newls-' + new Date().getTime();
+    $location.search(search);
+  };
 
   self.digestRouteParams = function(myParams){
 
@@ -107,46 +157,38 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   };
 
   $scope.changedDistance = function(){
-    console.debug('changed distance');
-    self.digestChangedModel();
+    self.digestChangedModelTemplateMethod();
   };
 
   $scope.changedVisibility = function(){
-    console.debug('changed visibility');
-    self.digestChangedModel();
+    self.digestChangedModelTemplateMethod();
   };
 
   $scope.changedDate = function(){
-    console.debug('changed date');
     $scope.$apply(function(){
-      self.digestChangedModel();
+      self.digestChangedModelTemplateMethod();
     });
   };
 
   $scope.changedLocation = function(){
-    console.debug('changed location');
-    console.debug($scope.searchLocation);
     $scope.$apply(function(){
-      self.digestChangedModel();
+      self.digestChangedModelTemplateMethod();
     });
   };
 
   $scope.clickedLoad = function(){
-    console.debug('clicked load Button Stachion Archive');
-    self.digestChangedModel();    
+    self.digestChangedModelTemplateMethod();    
   };
   
   $scope.$on('$routeUpdate', function(next, current) { 
-    self.digestRouteParams($location.search());
+    self.onRouteUpdateTemplateMethod($location.search());
   });  
   
   $scope.clickedLoad = function(){
-    console.debug('clicked load Button Entities Archive');
-    self.digestChangedModel();    
+    self.digestChangedModelTemplateMethod();    
   };
   
   $scope.scrolledForMore = function(callback){
-    console.debug('scroll detected');
     if (self.scrollEndReached)
     {
       console.debug('scroll end reached');
@@ -174,5 +216,101 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   $scope.activatePreviousEntity = function(){
     $scope.selectedEntity = _.preceding($scope.entities, $scope.selectedEntity);
   };
+  
+  
+  
+  
+  // only for the Archives
+  
+  $scope.dataForRangeSelect = [
+    {"range": 2, "description": "2m"},
+    {"range": 10, "description": "10m"},
+    {"range": 100, "description": "100m"},
+    {"range": 500, "description": "500m"},
+    {"range": 1000, "description": "1km"},
+    {"range": 10000, "description": "10km"},
+    {"range": 100000, "description": "100km"},
+    {"range": 1000000, "description": "1000km"},
+    {"range": 10000000, "description": "10000km"},
+    {"range": 100000000, "description": "100000km"}
+  ];
+
+  $scope.selectedRange = $scope.dataForRangeSelect[3];  
+  
+  
+  $scope.searchDate = new Date();
+
+  $scope.dataForTimeOrderingSelect = [
+    {"order": 'intoThePast', "description": "Into the Past"},
+    {"order": 'intoTheFuture', "description": "Into the Future"}
+  ];
+
+  $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+  
+  self.digestSingleTime = function(myParams){
+    if (myParams.searchDirection){
+      $scope.selectedTimeOrdering = $.grep($scope.dataForTimeOrderingSelect,function(n,i){
+        return (n.order == myParams.searchDirection);
+      })[0];
+    }
+    else {
+      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+    }
+    if (!$scope.selectedTimeOrdering){
+      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+    }
+    
+    if (myParams.searchDate){
+      $scope.searchDate = new Date(myParams.searchDate);
+    }
+    else {
+      $scope.searchDate = new Date();
+    }    
+  };
+
+  $scope.changedTimeOrdering = function(){
+    console.debug('changed time ordering');
+    self.digestChangedModelTemplateMethod();
+  };
+
+  self.digestRadius = function(myParams){
+    if (myParams.radius){
+      $scope.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
+        return (n.range == myParams.radius);
+      })[0];
+    }
+    else {
+      $scope.selectedRange = $scope.dataForRangeSelect[3];
+    }
+  	
+  };
+  
+  
+  
+  
+// only for the distance search, both stations und users
+  $scope.limit=100;
+  $scope.offset=0;
+  $scope.fromDate = new Date();
+  $scope.untilDate = new Date();
+  $scope.searchDirection = "nearFirst"; //farFirst
+
+  self.digestTwoTimes = function(myParams){
+    if (myParams.fromDate){
+      $scope.fromDate = new Date(myParams.fromDate);
+    }
+    else {
+      $scope.fromDate = new Date();
+    }
+
+    if (myParams.untilDate){
+      $scope.untilDate = new Date(myParams.untilDate);
+    }
+    else {
+      $scope.untilDate = new Date();
+    }
+  };  
+  
+  
   
 }]);

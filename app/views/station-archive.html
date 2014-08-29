@@ -16,6 +16,10 @@
             <div style="" 
                  class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
 
+  	            <div class="row" ng-include="'parameter_header.html'">
+	            </div>
+
+
                 <div style="display:inline-block;width:49%;vertical-align:top;">
                   
                   <div class="parameter-element">
@@ -53,7 +57,7 @@
                   	  <span style="top:3px;font-size:18px;" class="glyphicon glyphicon-map-marker"></span>
                    	  <select style="font-size:18px;" id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
                     </label>
-     	            </div>
+   	              </div>
 
                   <div class="parameter-element pull-right">
                     <label>

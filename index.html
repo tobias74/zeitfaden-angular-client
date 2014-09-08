@@ -7,17 +7,13 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-
     <link href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
-
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     
     <!-- Optional theme -->
     <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-      
-
     
     <link href="app/styles/raw.css" rel="stylesheet">
         
@@ -32,8 +28,6 @@
 	      </div>
 	  </label>
   </script>
-
-
 
   <script type="text/ng-template" id="station-image-modal.html">
     <div style="text-align:center;">
@@ -56,8 +50,7 @@
   <script type="text/ng-template" id="station-search-map.html">
     <div style="" 
          class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
-          
-          
+
           <div zf-search-map ng-model="searchLocation" 
                zf-station="selectedMapEntity" 
                zf-on-change-marker="changedLocation"
@@ -67,102 +60,81 @@
                zf-on-changed-full-settings="toggleShowFullSettings"
                class="search-map" style="height:100%;">
           </div>        
-          
     </div>
   </script>
  
- 
-
   <script type="text/ng-template" id="parameter_header.html">
-
-                <div style="display:block;vertical-align:top;border-bottom:1px solid #aaaaaa;margin-bottom:5px;">
-	                <div class="btn-group btn-group-lg parameter-element" >
-	                  <button type="button" class="btn btn-default btn-lg">
-	                    <span class="glyphicon glyphicon-user" ng-click="clickUserIcon()"></span>
-	                  </button>
-	                  <button type="button" class="btn btn-default btn-lg">
-	                    <span class="glyphicon glyphicon-picture" ng-click="clickStationIcon()"></span>
-	                  </button>
-	                </div>
-	
-	                <div class="btn-group btn-group-lg parameter-element" >
-	                  <button type="button" class="btn btn-default btn-lg">
-	                    <span class="glyphicon glyphicon-sort-by-attributes" ng-click="clickDistanceSort()"></span>
-	                  </button>
-	                  <button type="button" class="btn btn-default btn-lg">
-	                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="clickTimeSort()"></span>
-	                  </button>
-	                </div>
-	
-	                <div class="btn-group btn-group-lg parameter-element pull-right" >
-	                  <button type="button" class="btn btn-default btn-lg">
-	                    <span class="glyphicon glyphicon-th" ng-click="showBigImages = false"></span>
-	                  </button>
-	                  <button type="button" class="btn btn-default btn-lg">
-	                    <span class="glyphicon glyphicon-th-list" ng-click="showBigImages = true"></span>
-	                  </button>
-	                </div>
-
-                </div>
-
-  </script>
-
-
-  <script type="text/ng-template" id="distance-time-parameters.html">
-      <div class="parameter-element">
-        <div zf-date-time-input ng-model="fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
+      <div style="display:block;vertical-align:top;border-bottom:1px solid #aaaaaa;margin-bottom:5px;">
+        <div class="btn-group btn-group-lg parameter-element" >
+          <button type="button" class="btn btn-default btn-lg" ng-click="clickUserIcon()">
+            <span class="glyphicon glyphicon-user" ></span>
+          </button>
+          <button type="button" class="btn btn-default btn-lg" ng-click="clickStationIcon()">
+            <span class="glyphicon glyphicon-picture" ></span>
+          </button>
         </div>
-        <div zf-date-time-input ng-model="untilDate" class="archive-date-picker" zf-on-change-date="changedDate">
+
+        <div class="btn-group btn-group-lg parameter-element" >
+          <button type="button" class="btn btn-default btn-lg" ng-click="clickDistanceSort()">
+            <span class="glyphicon glyphicon-sort-by-attributes"></span>
+          </button>
+          <button type="button" class="btn btn-default btn-lg" ng-click="clickTimeSort()">
+            <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+          </button>
+        </div>
+
+        <div class="btn-group btn-group-lg parameter-element pull-right" >
+          <button type="button" class="btn btn-default btn-lg" ng-click="showBigImages = false">
+            <span class="glyphicon glyphicon-th"></span>
+          </button>
+          <button type="button" class="btn btn-default btn-lg" ng-click="showBigImages = true">
+            <span class="glyphicon glyphicon-th-list"></span>
+          </button>
         </div>
       </div>
   </script>
 
+  <script type="text/ng-template" id="distance-time-parameters.html">
+      <div class="parameter-element">
+        <div zf-date-time-input ng-model="searchSpec.fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
+        </div>
+        <div zf-date-time-input ng-model="searchSpec.untilDate" class="archive-date-picker" zf-on-change-date="changedDate">
+        </div>
+      </div>
+  </script>
 
   <script type="text/ng-template" id="archive-time-parameters.html">
-          
-          <div class="parameter-element">
-	            <div zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" >
-	            </div>
-	            <label>
-	              <div style="display:inline-block;top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-forward"></div>
-	              <select style="font-size:18px;width:130px;margin-left:4px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
-	            </label>
-          </div> 
-    
+    <div class="parameter-element">
+        <div zf-date-time-input ng-model="searchSpec.searchDate" zf-on-change-date="changedDate" >
+        </div>
+        <label>
+          <div style="display:inline-block;top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-forward"></div>
+          <select style="font-size:18px;width:130px;margin-left:4px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="searchSpec.selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
+        </label>
+    </div> 
   </script>
-
 
   <script type="text/ng-template" id="station_repeater.html">
-            <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
-            ng-class="{false: 'col-xs-4 small-image', true: 'col-xs-12 big-image'}[showBigImages]"
-            class="col-3 col-md-3 col-sm-4 col-lg-3">
-              
-              <div ng-switch-when="image" class="thumbnail station medium">
-              	
-	              <div zf-station-image-lonely ng-model="station"></div>	    	            
-                
-              <div class="small caption">{{station.startDate}}</div>
-            </div>
-            <div ng-switch-when="video" class="thumbnail station medium" >
-	           <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
-	             <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
-	             <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
-	             <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
-	           </video>
-	        </div>
-  
-          
-             </div>
-
+      <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
+      ng-class="{false: 'col-xs-4 small-image', true: 'col-xs-12 big-image'}[showBigImages]"
+      class="col-3 col-md-3 col-sm-4 col-lg-3">
+        <div ng-switch-when="image" class="thumbnail station medium">
+          <div zf-station-image-lonely ng-model="station"></div>	    	            
+        <div class="small caption">{{station.startDate}}</div>
+      </div>
+      <div ng-switch-when="video" class="thumbnail station medium" >
+       <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
+         <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
+         <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
+         <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
+       </video>
+    </div>
+   </div>
   </script>
-
-
     
 	<!-- Modal -->
 	<div zf-login-form class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	
 	</div>    
-  
 
   <div class="modal fade" id="myRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myRegistrationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -191,19 +163,6 @@
     </div>
   </div>    
     
-    
-    
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -214,62 +173,18 @@
             <span class="icon-bar"></span>
           </button>
           
-          
           <a class="navbar-brand" href="#">{{applicationTitle}}</a>
-          
-         <!--
-	     	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">Toggle search</button>
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">Toggle links</button>           
-          -->
-
-        <!--
-        <div ng-controller="ModalDemoCtrl">
-            <script type="text/ng-template" id="myModalContent.html">
-                <div class="modal-header">
-                    <h3>I'm a modal!</h3>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li ng-repeat="item in items">
-                            <a ng-click="selected.item = item">{{ item }}</a>
-                        </li>
-                    </ul>
-                    Selected: <b>{{ selected.item }}</b>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" ng-click="ok()">OK</button>
-                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-                </div>
-            </script>
-        
-            <button class="btn btn-default" ng-click="open()">Open me!</button>
-            <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-        </div>
-        -->
           
         </div>
         
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-
-            <!--
-            <li><form zf-picture-uploader method="post" enctype="multipart/form-data" class="navbar-form navbar-right"></form></li>
-            -->
-            
-            <!--
-            <li ng-hide="isUserLoggedIn()">
-              <a style="cursor:pointer;" data-toggle="modal" data-target="#myRegistrationModal">Register-Old-Version</a>
-            </li>            
-              -->
-            
             <li><a href="#station-archive">Station-Archive</a> </li>
             <li><a href="#station-by-distance">Station-Distance-Archive</a> </li>
             <li><a href="#user-archive">User-Archive</a> </li>
             <li><a href="#user-by-distance">User-Distance-Archive</a> </li>
             <li><a href="#trace-archive">Traces</a> </li>
             <li><a href="#settings">Settings</a> </li>
-                        
-
             <li ng-hide="isUserLoggedIn()">
               <a ng-controller="ModalRegistrationCtrl" style="cursor:pointer;" ng-click="open()">Registration
                   <script type="text/ng-template" id="myModalRegistration.html">
@@ -294,7 +209,6 @@
                   </script>
               </a>
             </li>
-
 
             <!-- Menu:Login -->
             <li ng-hide="isUserLoggedIn()">
@@ -342,67 +256,38 @@
     </div>
 
   
-  
-  
     <div class="container-fluid">
-
-      
       <div ng-view autoscroll="true" class="row">      
-      
       </div>
-      
     </div>
       
-
         <script src="http://fb.me/react-0.11.1.js"></script>
-        
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-
-        
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="third_party/Touchable-jQuery-Plugin/touchable.js"></script>
 
         <script src="my-frameworks/jquery-long-tap/jquery-long-tap.js"></script>
         <script src="third_party/jquery.longpress.js"></script>
-
-
         <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-
 
         
         <script src="third_party/simplify.js"></script>
         <script src="third_party/strftime.js"></script>
         <script src="third_party/underscore/underscore.js"></script>
-
-
-
-        
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-route.js"></script>
-
-        
         <script src="app/scripts/app.js"></script>
         <script src="app/scripts/controllers/main.js"></script>
-
-
         <script src="third_party/angular-resource/angular-resource.js"></script>
         <script src="third_party/angular-cookies/angular-cookies.js"></script>
         <script src="third_party/angular-sanitize/angular-sanitize.js"></script>
         <script src="my-frameworks/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
-        
-        
         <script src="third_party/alternatives/angular-file-upload/angular-file-upload.js"></script>
         <script src="third_party/ui-bootsrap-tpls-0.9.0.js"></script>
         <script src="third_party/Javascript-and-Coffeescript-Utils/imgloader.js"></script>
-
-
-
         <script src="app/scripts/directives/zfInplaceUploader.js"></script>
         <script src="app/scripts/directives/zfEntityImage.js"></script>
         <script src="app/scripts/directives/zfImageModal.js"></script>
@@ -444,8 +329,14 @@
         <script src="app/scripts/controllers/ReactController.js"></script>
 
         <script src="third_party/autofill-event.js"></script>
-        
-        
   </body>
 </html>
+
+
+
+
+
+
+
+
 

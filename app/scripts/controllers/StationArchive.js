@@ -60,11 +60,11 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
 
   };
   
-
-
   self.updateLocationSearch = function(search){
-    search.searchDate = $scope.searchDate.toUTCString();
-    search.searchDirection = $scope.selectedTimeOrdering.order;
+    console.debug('now doing the searchDate ###############################################################');
+    console.debug($scope.searchSpec.searchDate.toUTCString());
+    search.searchDate = $scope.searchSpec.searchDate.toUTCString();
+    search.searchDirection = $scope.searchSpec.selectedTimeOrdering.order;
     search.radius = $scope.selectedRange.range;
   };
 
@@ -88,7 +88,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     }
     else // its a new search
     {
-      internalFromDate = $scope.searchDate;
+      internalFromDate = $scope.searchSpec.searchDate;
     }
 
     
@@ -98,7 +98,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
-      direction: $scope.selectedTimeOrdering.order,
+      direction: $scope.searchSpec.selectedTimeOrdering.order,
       visibility: $scope.selectedVisibility.visibility,
       datetime: internalFromDate.toUTCString()
       

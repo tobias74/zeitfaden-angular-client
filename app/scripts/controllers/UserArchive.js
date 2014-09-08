@@ -50,8 +50,8 @@ function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,
   
 
   self.updateLocationSearch = function(search){
-    search.searchDate = $scope.searchDate.toUTCString();
-    search.searchDirection = $scope.selectedTimeOrdering.order;
+    search.searchDate = $scope.searchSpec.searchDate.toUTCString();
+    search.searchDirection = $scope.searchSpec.selectedTimeOrdering.order;
     search.radius = $scope.selectedRange.range;
   };
   
@@ -89,9 +89,9 @@ function(self,$controller,$log,$modal,$scope,UserService,$routeParams,$location,
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
       sort: 'byTime',
-      direction: $scope.selectedTimeOrdering.order,
+      direction: $scope.searchSpec.selectedTimeOrdering.order,
       visibility: $scope.selectedVisibility.visibility,
-      datetime: $scope.searchDate.toUTCString()
+      datetime: $scope.searchSpec.searchDate.toUTCString()
       
     },function(){
       offset += moreEntities.length;

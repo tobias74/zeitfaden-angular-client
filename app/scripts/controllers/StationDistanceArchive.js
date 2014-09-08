@@ -44,8 +44,8 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   };
 
   self.updateLocationSearch = function(search){
-    search.fromDate = $scope.fromDate.toUTCString();
-    search.untilDate = $scope.untilDate.toUTCString();
+    search.fromDate = $scope.searchSpec.fromDate.toUTCString();
+    search.untilDate = $scope.searchSpec.untilDate.toUTCString();
     search.searchDirection = $scope.searchDirection;
   };
 
@@ -73,13 +73,12 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       maxDistance: 999999999999,
       direction: $scope.searchDirection,
       visibility: $scope.selectedVisibility.visibility,
-      fromDate: $scope.fromDate.toUTCString(),
-      untilDate: $scope.untilDate.toUTCString(),
+      fromDate: $scope.searchSpec.fromDate.toUTCString(),
+      untilDate: $scope.searchSpec.untilDate.toUTCString(),
       
     },function(){
     	$scope.offset += moreStations.length;
 		for (var i = 0; i < moreStations.length; i++) {
-			console.debug($scope);
         	$scope.entities.push(moreStations[i]);
       	}
 	    $scope.isLoadingEntities = false;

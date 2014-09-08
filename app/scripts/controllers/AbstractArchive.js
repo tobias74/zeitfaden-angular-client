@@ -101,7 +101,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
     search.longitude = $scope.searchLocation.longitude;
     search.searchVisibility = $scope.selectedVisibility.visibility;
 	
-	self.updateLocationSearch(search);
+	  self.updateLocationSearch(search);
     
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
     $location.search(search);
@@ -237,34 +237,35 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
 
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   
+  $scope.searchSpec = {};
   
-  $scope.searchDate = new Date();
+  $scope.searchSpec.searchDate = new Date();
 
   $scope.dataForTimeOrderingSelect = [
     {"order": 'intoThePast', "description": "Into the Past"},
     {"order": 'intoTheFuture', "description": "Into the Future"}
   ];
 
-  $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+  $scope.searchSpec.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
   
   self.digestSingleTime = function(myParams){
     if (myParams.searchDirection){
-      $scope.selectedTimeOrdering = $.grep($scope.dataForTimeOrderingSelect,function(n,i){
+      $scope.searchSpec.selectedTimeOrdering = $.grep($scope.dataForTimeOrderingSelect,function(n,i){
         return (n.order == myParams.searchDirection);
       })[0];
     }
     else {
-      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+      $scope.searchSpec.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
     }
-    if (!$scope.selectedTimeOrdering){
-      $scope.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
+    if (!$scope.searchSpec.selectedTimeOrdering){
+      $scope.searchSpec.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
     }
     
     if (myParams.searchDate){
-      $scope.searchDate = new Date(myParams.searchDate);
+      $scope.searchSpec.searchDate = new Date(myParams.searchDate);
     }
     else {
-      $scope.searchDate = new Date();
+      $scope.searchSpec.searchDate = new Date();
     }    
   };
 
@@ -291,23 +292,23 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
 // only for the distance search, both stations und users
   $scope.limit=100;
   $scope.offset=0;
-  $scope.fromDate = new Date();
-  $scope.untilDate = new Date();
+  $scope.searchSpec.fromDate = new Date();
+  $scope.searchSpec.untilDate = new Date();
   $scope.searchDirection = "nearFirst"; //farFirst
 
   self.digestTwoTimes = function(myParams){
     if (myParams.fromDate){
-      $scope.fromDate = new Date(myParams.fromDate);
+      $scope.searchSpec.fromDate = new Date(myParams.fromDate);
     }
     else {
-      $scope.fromDate = new Date();
+      $scope.searchSpec.fromDate = new Date();
     }
 
     if (myParams.untilDate){
-      $scope.untilDate = new Date(myParams.untilDate);
+      $scope.searchSpec.untilDate = new Date(myParams.untilDate);
     }
     else {
-      $scope.untilDate = new Date();
+      $scope.searchSpec.untilDate = new Date();
     }
   };  
   

@@ -13,19 +13,11 @@
 
 
 
-  	            <div class="row" ng-include="'parameter_header.html'">
+  	            <div ng-include="'parameter_header.html'">
 	            </div>
 
-
-                <div style="display:block;vertical-align:top;">
-                  
-                  <div class="parameter-element">
-                    <div zf-date-time-input ng-model="fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
-                    </div>
-                    <div zf-date-time-input ng-model="untilDate" class="archive-date-picker" zf-on-change-date="changedDate">
-                    </div>
-                  </div>
-                </div>
+  	            <div style="display:inline-block;" ng-include="'distance-time-parameters.html'">
+	            </div>
 
 
               </div>

@@ -6,7 +6,7 @@ angular.module('ZeitfadenApp').directive('zfDateTimeInput',function(){
   return {
     restrict: 'EA',
     require: '?ngModel',
-    templateUrl: 'app/views/directive-templates/zf-date-time-input.html', 
+    templateUrl: 'directive-date-time-input.html', 
     scope:{
       myModel: '=ngModel',
       myChangedDateCallback: '=zfOnChangeDate'

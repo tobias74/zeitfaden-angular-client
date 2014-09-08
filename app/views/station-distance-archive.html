@@ -15,25 +15,25 @@
 
 
 
-  	            <div class="row" ng-include="'parameter_header.html'">
+  	            <div ng-include="'parameter_header.html'">
 	            </div>
 
-                  <div class="parameter-element pull-right">
+
+
+  	            <div style="display:inline-block;" ng-include="'distance-time-parameters.html'">
+	            </div>
+
+
+               <div style="text-align:right;display:inline-block;" class="pull-right">
+
+                  <div style="display:block;" class="parameter-element">
                     <label>
                       <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
                       <select style="font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
                     </label>
                   </div>
-
-                <div style="display:block;vertical-align:top;">
-                  
-                  <div class="parameter-element">
-                    <div zf-date-time-input ng-model="fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
-                    </div>
-                    <div zf-date-time-input ng-model="untilDate" class="archive-date-picker" zf-on-change-date="changedDate">
-                    </div>
-                  </div>
-                </div>
+	
+			</div>
 
 
               </div>

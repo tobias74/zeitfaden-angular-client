@@ -99,7 +99,7 @@
 
 .parameter-element{
   position:relative;
-	display:block;
+	display:inline-block;
 	padding:10px;
 	margin:0px;
 	

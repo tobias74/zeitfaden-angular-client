@@ -25,6 +25,15 @@
 </head>
   <body ng-app="ZeitfadenApp" ng-controller="ZeitfadenApplicationCtrl">
 
+  <script type="text/ng-template" id="directive-date-time-input.html">
+	  <label><span style="top:-10px;font-size:18px;" class="glyphicon glyphicon-time"></span>
+	      <div style="display:inline-block;width:130px;overflow:hidden;">
+	        <input style="margin-left:6px;font-size:18px;width:120px;overflow:hidden;" class="datetime_selector" type="datetime-local">
+	      </div>
+	  </label>
+  </script>
+
+
 
   <script type="text/ng-template" id="station-image-modal.html">
     <div style="text-align:center;">
@@ -61,51 +70,66 @@
           
     </div>
   </script>
-  
+ 
+ 
 
   <script type="text/ng-template" id="parameter_header.html">
 
-                <div style="border-left:1px solid #999999; display:block;text-align:right;vertical-align:top;">
-
-                  <div class="parameter-element pull-right">
-                    <div class="btn-group btn-group-lg pull-right" >
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-th" ng-click="showBigImages = false"></span>
-                      </button>
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-th-list" ng-click="showBigImages = true"></span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="parameter-element ">
-                    <div class="btn-group btn-group-lg " >
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-user" ng-click="clickUserIcon()"></span>
-                      </button>
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-picture" ng-click="clickStationIcon()"></span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="parameter-element ">
-                    <div class="btn-group btn-group-lg " >
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-sort-by-attributes" ng-click="clickDistanceSort()"></span>
-                      </button>
-                      <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="clickTimeSort()"></span>
-                      </button>
-                    </div>
-                  </div>
-
-
+                <div style="display:block;vertical-align:top;border-bottom:1px solid #aaaaaa;margin-bottom:5px;">
+	                <div class="btn-group btn-group-lg parameter-element" >
+	                  <button type="button" class="btn btn-default btn-lg">
+	                    <span class="glyphicon glyphicon-user" ng-click="clickUserIcon()"></span>
+	                  </button>
+	                  <button type="button" class="btn btn-default btn-lg">
+	                    <span class="glyphicon glyphicon-picture" ng-click="clickStationIcon()"></span>
+	                  </button>
+	                </div>
+	
+	                <div class="btn-group btn-group-lg parameter-element" >
+	                  <button type="button" class="btn btn-default btn-lg">
+	                    <span class="glyphicon glyphicon-sort-by-attributes" ng-click="clickDistanceSort()"></span>
+	                  </button>
+	                  <button type="button" class="btn btn-default btn-lg">
+	                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="clickTimeSort()"></span>
+	                  </button>
+	                </div>
+	
+	                <div class="btn-group btn-group-lg parameter-element pull-right" >
+	                  <button type="button" class="btn btn-default btn-lg">
+	                    <span class="glyphicon glyphicon-th" ng-click="showBigImages = false"></span>
+	                  </button>
+	                  <button type="button" class="btn btn-default btn-lg">
+	                    <span class="glyphicon glyphicon-th-list" ng-click="showBigImages = true"></span>
+	                  </button>
+	                </div>
 
                 </div>
 
   </script>
 
+
+  <script type="text/ng-template" id="distance-time-parameters.html">
+      <div class="parameter-element">
+        <div zf-date-time-input ng-model="fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
+        </div>
+        <div zf-date-time-input ng-model="untilDate" class="archive-date-picker" zf-on-change-date="changedDate">
+        </div>
+      </div>
+  </script>
+
+
+  <script type="text/ng-template" id="archive-time-parameters.html">
+          
+          <div class="parameter-element">
+	            <div zf-date-time-input ng-model="searchDate" zf-on-change-date="changedDate" >
+	            </div>
+	            <label>
+	              <div style="display:inline-block;top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-forward"></div>
+	              <select style="font-size:18px;width:130px;margin-left:4px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
+	            </label>
+          </div> 
+    
+  </script>
 
 
   <script type="text/ng-template" id="station_repeater.html">
@@ -424,3 +448,4 @@
         
   </body>
 </html>
+

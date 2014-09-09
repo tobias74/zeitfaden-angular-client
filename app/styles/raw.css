@@ -105,6 +105,11 @@
 	
 }
 
+.parameter-button-group{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
 video {
   max-width: 100%;
   height: auto;
@@ -239,6 +244,8 @@ body {
 
 
 @media(max-width:767px){
+ 
+  
   .modal-station .modal-dialog .station-image-map{
     height:140px;
   }
@@ -292,7 +299,6 @@ body {
   	margin-top:120px;
   }
 
-
 }
 
 @media(min-width:768px){
@@ -307,12 +313,17 @@ body {
   
 }
 
+
+@media(min-width:768px) and (max-width:991px){
+  .headroom-sm-50{
+  	margin-top:50px;
+  }
+}
+
 @media(min-width:992px){
-  
 }
 
 @media(min-width:1200px){
-  
 }
 
 

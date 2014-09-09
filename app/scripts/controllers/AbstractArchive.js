@@ -237,7 +237,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   
   $scope.searchSpec = {};
-  $scope.searchSpec.showBigImages = false;
+  $scope.searchSpec.showBigImages = true;
 
   $scope.searchSpec.searchDate = new Date();
 

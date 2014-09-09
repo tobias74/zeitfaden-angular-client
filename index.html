@@ -68,7 +68,7 @@
 
 		<div class="row parameter-button-group">
 					    
-		    <div style="text-align:center;" class="col-md-4 col-sm-12 col-xs-4 headroom-sm-50">
+		    <div style="text-align:center;" class="col-md-4 col-sm-12 col-xs-4 headroom-sm-30">
 			    <div class="row btn-group btn-group-lg" >
 			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickUserIcon()">
 			        <span class="glyphicon glyphicon-user" ></span>
@@ -79,7 +79,7 @@
 			    </div>
 			</div>
 			
-		    <div style="text-align:center;"  class="col-md-4 col-sm-12 col-xs-4 ">
+		    <div style="text-align:center;"  class="col-md-4 col-sm-12 col-xs-4 headroom-sm-30">
 			    <div class="row btn-group btn-group-lg" >
 			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickDistanceSort()">
 			        <span class="glyphicon glyphicon-sort-by-attributes"></span>
@@ -90,7 +90,7 @@
 			    </div>
 			</div>
 			
-		    <div  style="text-align:center;" class="col-md-4  col-sm-12 col-xs-4 ">
+		    <div  style="text-align:center;" class="col-md-4  col-sm-12 col-xs-4 headroom-sm-30">
 			    <div class="row btn-group btn-group-lg" >
 			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="showBigImages = false">
 			        <span class="glyphicon glyphicon-th"></span>
@@ -199,10 +199,7 @@
         
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#station-archive">Station-Archive</a> </li>
-            <li><a href="#station-by-distance">Station-Distance-Archive</a> </li>
-            <li><a href="#user-archive">User-Archive</a> </li>
-            <li><a href="#user-by-distance">User-Distance-Archive</a> </li>
+            <li><a href="#station-archive">Archive</a> </li>
             <li><a href="#trace-archive">Traces</a> </li>
             <li><a href="#settings">Settings</a> </li>
             <li ng-hide="isUserLoggedIn()">
@@ -260,10 +257,13 @@
                 <a href="" ng-click="performLogout()">Logout</a>
             </li>
           </ul>
+          
+          <!--
           <form onsubmit="alert(4);" class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
           </form>
-
+		  -->
+		  
           <form zf-inplace-uploader target-url="/station/create/" button-caption="Instant Upload" class="navbar-form navbar-right" >
           </form>        
 

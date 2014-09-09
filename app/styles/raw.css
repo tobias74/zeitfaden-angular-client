@@ -318,6 +318,9 @@ body {
   .headroom-sm-50{
   	margin-top:50px;
   }
+  .headroom-sm-30{
+  	margin-top:30px;
+  }
 }
 
 @media(min-width:992px){

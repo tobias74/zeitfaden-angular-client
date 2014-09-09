@@ -71,7 +71,6 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   
   $scope.showLongSpacer = true;
   
-  $scope.showBigImages = false;
   $scope.showLonelyEntity = false;
   
   $scope.toggleShowFullSettings = function(){
@@ -238,7 +237,8 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   $scope.selectedRange = $scope.dataForRangeSelect[3];  
   
   $scope.searchSpec = {};
-  
+  $scope.searchSpec.showBigImages = false;
+
   $scope.searchSpec.searchDate = new Date();
 
   $scope.dataForTimeOrderingSelect = [

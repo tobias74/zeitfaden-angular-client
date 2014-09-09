@@ -32,17 +32,17 @@
   <script type="text/ng-template" id="station-image-modal.html">
     <div style="text-align:center;">
       <div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
-      <img ng-if="showBigImages == true" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
-      <img ng-if="showBigImages == false" style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+      <img ng-if="searchSpec.showBigImages == true" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
+      <img ng-if="searchSpec.showBigImages == false" style="max-width:100%;" ng-src="{{station.smallFrontImageUrl}}/format/{{getAttachmentFormat()}}">
     </div>
   </script>
 
   <script type="text/ng-template" id="station-image-lonely.html">
     <div id="{{station.id}}" style="text-align:center;">
       <div class="blocker-div-for-image" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:5;"></div>
-      <img ng-if="showBigImages == true" style="max-width:100%;" 
+      <img ng-if="searchSpec.showBigImages == true" style="max-width:100%;" 
       	ng-src="{{station.bigFrontImageUrl}}/format/original">
-      <img ng-if="showBigImages == false" style="max-width:100%;" 
+      <img ng-if="searchSpec.showBigImages == false" style="max-width:100%;" 
       	ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
     </div>
   </script>
@@ -92,10 +92,10 @@
 			
 		    <div  style="text-align:center;" class="col-md-4  col-sm-12 col-xs-4 headroom-sm-30">
 			    <div class="row btn-group btn-group-lg" >
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="showBigImages = false">
+			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="searchSpec.showBigImages = false">
 			        <span class="glyphicon glyphicon-th"></span>
 			      </button>
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="showBigImages = true">
+			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="searchSpec.showBigImages = true">
 			        <span class="glyphicon glyphicon-th-list"></span>
 			      </button>
 			    </div>
@@ -130,7 +130,7 @@
 
   <script type="text/ng-template" id="station_repeater.html">
       <div ng-repeat="station in entities" ng-switch on="station.attachmentType" 
-      ng-class="{false: 'col-xs-4 small-image', true: 'col-xs-12 big-image'}[showBigImages]"
+      ng-class="{false: 'col-xs-4 small-image', true: 'col-xs-12 big-image'}[searchSpec.showBigImages]"
       class="col-3 col-md-3 col-sm-4 col-lg-3">
         <div ng-switch-when="image" class="thumbnail station medium">
           <div zf-station-image-lonely ng-model="station"></div>	    	            

@@ -7,8 +7,9 @@ angular.module('ZeitfadenApp').factory('StationService', function($resource){
     },
 
     getStationsOrderedByTime: function(params,callback){
-      return $resource('/station/get/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/latitude/:latitude/longitude/:longitude/maxDistance/:distance/datetime/:datetime/sort/byTime/direction/:direction/lastId/:lastId', {
+      return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/latitude/:latitude/longitude/:longitude/maxDistance/:distance/datetime/:datetime/sort/byTime/direction/:direction/lastId/:lastId', {
         mustHaveAttachment: '@id',
+        limit: '@id',
         latitude: '@id',
         longitude: '@id',
         distance: '@id',

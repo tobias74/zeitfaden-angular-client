@@ -48,8 +48,7 @@
   </script>
   
   <script type="text/ng-template" id="station-search-map.html">
-    <div style="" 
-         class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
+    <div style="" class="search-map-wrapper" ng-class="{true: 'full-settings', false: 'small-settings'}[showFullSettings]">
 
           <div zf-search-map ng-model="searchLocation" 
                zf-station="selectedMapEntity" 
@@ -58,13 +57,26 @@
                zf-request-location-callback="setToCurrentLocation"
                zf-is-searching-location="isSearchingLocation"  
                zf-on-changed-full-settings="toggleShowFullSettings"
-               class="search-map" style="height:100%;">
-          </div>        
+               zf-search-map-instance="directiveData.searchMapInstance"
+               class="search-map">
+          </div>
     </div>
   </script>
  
   <script type="text/ng-template" id="parameter_header.html">
-      <div class="container" style="width:auto;display:block;vertical-align:top;border-bottom:1px solid #aaaaaa;margin-bottom:5px;">
+
+      <div class="container" style="width:auto;display:block;vertical-align:top;padding:15px;margin-bottom:10px;border-bottom:1px solid #aaaaaa;">
+	      <div class="row padded">
+	          <label class="col-xs-2" for="google-search-location">Search:</label>
+		      <div class="col-xs-10">
+		      	<input zf-enter="searchGoogleLocation(searchGoogle)" id="google-search-location" name="search-location" ng-model="searchGoogle" class="location-search-input" type="text">
+		      </div>
+	      </div>
+	  </div>
+  	
+      <div class="container" style="width:auto;display:block;vertical-align:top;margin-bottom:5px;">
+
+
 
 		<div class="row parameter-button-group">
 					    
@@ -135,6 +147,7 @@
         <div ng-switch-when="image" class="thumbnail station medium">
           <div zf-station-image-lonely ng-model="station"></div>	    	            
         <div class="small caption">{{station.startDate}}</div>
+        <div><span class="glyphicon glyphicon-map-marker" ></span> {{station.distanceToPin/1000 | number:3}} km</div>
       </div>
       <div ng-switch-when="video" class="thumbnail station medium" >
        <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
@@ -188,7 +201,7 @@
           </button>
           
           <a class="navbar-brand" href="#">
-          	{{applicationTitle}} 
+          	<span ng-bind="applicationTitle"></span> 
           	<span class="hidden-sm hidden-md hidden-ld">xs</span>
           	<span class="hidden-xs hidden-md hidden-ld">sm</span>
           	<span class="hidden-xs hidden-sm hidden-ld">md</span>
@@ -282,7 +295,7 @@
     </div>
       
         <script src="http://fb.me/react-0.11.1.js"></script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places,geometry&sensor=false"></script>        
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="third_party/Touchable-jQuery-Plugin/touchable.js"></script>
 
@@ -320,6 +333,7 @@
         <script src="app/scripts/directives/zfSimpleMap.js"></script>
         <script src="app/scripts/directives/zfTraceMap.js"></script>
         <script src="app/scripts/directives/zfWhenScrolled.js"></script>
+        <script src="app/scripts/directives/misc-tools-directives.js"></script>
         
         <script src="app/scripts/controllers/ModalStation.js"></script>
         <script src="app/scripts/controllers/ModalDemo.js"></script>

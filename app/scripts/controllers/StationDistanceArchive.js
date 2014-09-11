@@ -55,7 +55,6 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
 
   
   $scope.loadMore = function(callback) {
-    console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
     if ($scope.isLoadingEntities)
     {
       return false;

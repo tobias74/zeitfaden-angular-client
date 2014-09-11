@@ -221,6 +221,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
       myFullSettingsCallback: '=zfOnChangedFullSettings',
       myRequestLocationCallback: '=zfRequestLocationCallback',
       myIsSearchingLocation: '=zfIsSearchingLocation',
+      mySearchMapInstance: '=zfSearchMapInstance',
       myChangedMarkerCallback: '=zfOnChangeMarker'
     },
     link: function(scope,element,attrs,ngModel){
@@ -326,6 +327,8 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
         googleMap.mapTypes.set('map_style', styledMap);
         googleMap.setMapTypeId('map_style');
         
+        scope.mySearchMapInstance = googleMap;
+        window.tobiasmap = googleMap;
         //new LongPress(googleMap, 500);            
         
         
@@ -399,6 +402,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
         var myPosition = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
         searchMarker.setPosition(myPosition);
         googleMap.panTo(myPosition);
+        
       }, true);
  
       scope.$watch('myStation', function(){

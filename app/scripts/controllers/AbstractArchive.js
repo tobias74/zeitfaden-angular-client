@@ -4,6 +4,11 @@ angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl',
 ['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService',
 function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   
+  setTimeout(function(){
+	  var someInput = document.getElementById('google-search-location');
+	  var autocomplete = new google.maps.places.Autocomplete(someInput,{'types':['establishment']});
+  	
+  },3000);
 
   $scope.dataForVisibilitySelect = [
     {"visibility": 'public_only', "description": "Public"},
@@ -11,6 +16,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
     {"visibility": 'pass_protected', "description": "Protected"}
   ];
 
+  $scope.directiveData = {};
 
   $scope.searchLocation = {
     latitude: 13.0810, 
@@ -44,7 +50,28 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   };
   
   
+  $scope.searchGoogleLocation = function(request){
+	var service = new google.maps.places.PlacesService($scope.directiveData.searchMapInstance);
+	service.textSearch({query:request}, function(results,status){
+		if (status === 'OK')
+		{
+			var place = results[0];
+			$scope.$apply(function(){
+				$scope.searchLocation.latitude = place.geometry.location.k;
+				$scope.searchLocation.longitude = place.geometry.location.B;
+
+			    self.digestChangedModelTemplateMethod();
+
+			});
+		}
+	});  	
+  	
+  };
+  
+  
   self.onRouteUpdateTemplateMethod = function(myParams){
+  	
+  	window.stop();
   	
   	self.resetScrollStatus();   
   	
@@ -149,7 +176,8 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
         $scope.searchLocation.latitude = position.coords.latitude;
         $scope.searchLocation.longitude = position.coords.longitude;
         $scope.isSearchingLocation = false;
-        $scope.selectedRange = $scope.dataForRangeSelect[1];
+        //$scope.selectedRange = $scope.dataForRangeSelect[1];
+        self.digestChangedModelTemplateMethod();
         callback && callback();
       });
     });  

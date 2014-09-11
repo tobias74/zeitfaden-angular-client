@@ -61,8 +61,6 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   };
   
   self.updateLocationSearch = function(search){
-    console.debug('now doing the searchDate ###############################################################');
-    console.debug($scope.searchSpec.searchDate.toUTCString());
     search.searchDate = $scope.searchSpec.searchDate.toUTCString();
     search.searchDirection = $scope.searchSpec.selectedTimeOrdering.order;
     search.radius = $scope.selectedRange.range;
@@ -95,6 +93,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     var moreStations = StationService.getStationsOrderedByTime({
       mustHaveAttachment: 1,
       lastId: lastId,
+      limit:100,
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
@@ -104,7 +103,11 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       
     },function(){
       for (var i = 0; i < moreStations.length; i++) {
-        $scope.entities.push(moreStations[i]);
+      	var myStation = moreStations[i];
+      	var latlngA = new google.maps.LatLng($scope.searchLocation.latitude,$scope.searchLocation.longitude);
+      	var latlngB = new google.maps.LatLng(myStation.startLatitude,myStation.startLongitude);
+        myStation.distanceToPin = google.maps.geometry.spherical.computeDistanceBetween(latlngA,latlngB);
+        $scope.entities.push(myStation);
       }
       $scope.isLoadingEntities = false;
       if (moreStations.length>0)

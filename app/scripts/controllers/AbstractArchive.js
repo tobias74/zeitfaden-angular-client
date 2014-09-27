@@ -1,14 +1,39 @@
 'use strict';
 
 angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', 
-['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService',
-function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
+['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService',
+function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService) {
   
   setTimeout(function(){
 	  var someInput = document.getElementById('google-search-location');
 	  var autocomplete = new google.maps.places.Autocomplete(someInput,{'types':['establishment']});
   	
   },3000);
+
+  self.attachGeoDataToStation = function(myStation){
+  	var latlngA = new google.maps.LatLng($scope.searchLocation.latitude,$scope.searchLocation.longitude);
+  	var latlngB = new google.maps.LatLng(myStation.startLatitude,myStation.startLongitude);
+    myStation.distanceToPin = google.maps.geometry.spherical.computeDistanceBetween(latlngA,latlngB);
+    ZeitfadenService.getCurrentLocation(function(latitude,longitude){
+    	$scope.$apply(function(){
+			var latlngC = new google.maps.LatLng(latitude, longitude);   	
+		    myStation.distanceToMe = google.maps.geometry.spherical.computeDistanceBetween(latlngC,latlngB);
+    	});
+    });
+    
+    
+    
+    var response = ZeitfadenService.reverseGeoCode(myStation.startLatitude, myStation.startLongitude, function(){
+      myStation.startLocationDescription = response.description;
+    });
+    
+   
+  };
+
+  $scope.showLocation = function(station){
+    $scope.setSelectedMapEntity(station);
+  };
+
 
   $scope.dataForVisibilitySelect = [
     {"visibility": 'public_only', "description": "Public"},
@@ -112,7 +137,15 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService) {
   $scope.isSearchingLocation = false;
   $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
 
-  $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;       
+
+
+
+  $scope.getAttachmentFormat = ResponsiveService.getAttachmentFormat;  
+  $scope.isExtraSmallDevice = ResponsiveService.isExtraSmallDevice;
+  $scope.isLargeDevice = ResponsiveService.isLargeDevice;
+  
+
+       
 
   self.updateLocationSearch = function(search){
   	

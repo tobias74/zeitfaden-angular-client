@@ -66,7 +66,6 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     search.radius = $scope.selectedRange.range;
   };
 
-
   
   
   $scope.loadMore = function(callback) {
@@ -93,7 +92,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     var moreStations = StationService.getStationsOrderedByTime({
       mustHaveAttachment: 1,
       lastId: lastId,
-      limit:100,
+      limit:20,
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
       distance: $scope.selectedRange.range,
@@ -104,9 +103,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     },function(){
       for (var i = 0; i < moreStations.length; i++) {
       	var myStation = moreStations[i];
-      	var latlngA = new google.maps.LatLng($scope.searchLocation.latitude,$scope.searchLocation.longitude);
-      	var latlngB = new google.maps.LatLng(myStation.startLatitude,myStation.startLongitude);
-        myStation.distanceToPin = google.maps.geometry.spherical.computeDistanceBetween(latlngA,latlngB);
+      	self.attachGeoDataToStation(myStation);
         $scope.entities.push(myStation);
       }
       $scope.isLoadingEntities = false;

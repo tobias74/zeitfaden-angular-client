@@ -12,15 +12,8 @@ angular.module('ZeitfadenApp').directive('zfStationImageLonely',function(ScrollH
     scope: false,
     templateUrl: 'station-image-lonely.html', 
     link: function(scope,element,attrs,ngModel){
-      
-	var longTapCallback = function(){
-        scope.$apply(function(){
-          scope.setSelectedMapEntity(ngModel.$modelValue);
-        });
-		
-	};      
 
-	var shortTapCallback = function(){
+	scope.showImage = function(){
 		
      	ScrollHistoryService.lockScrollHistory(scope.scrollingStatusId);
 		
@@ -54,10 +47,10 @@ angular.module('ZeitfadenApp').directive('zfStationImageLonely',function(ScrollH
 
 //      $(element).find('.blocker-div-for-image').longpress(longTapCallback,shortTapCallback);      
 
-      $(element).find('.blocker-div-for-image').tgTouchEvent('longTap',  {includeMouse:false}, longTapCallback);      
-      $(element).find('.blocker-div-for-image').tgTouchEvent('tap',  {includeMouse:false}, shortTapCallback);
+      //$(element).find('.blocker-div-for-image').tgTouchEvent('longTap',  {includeMouse:false}, longTapCallback);      
+      //$(element).find('.blocker-div-for-image').tgTouchEvent('tap',  {includeMouse:false}, shortTapCallback);
       
-      $(element).find('.blocker-div-for-image').click(shortTapCallback);
+      //$(element).find('.blocker-div-for-image').click(shortTapCallback);
      
      
     }

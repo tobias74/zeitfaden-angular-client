@@ -223,6 +223,17 @@ var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scrol
 
 
 
+angular.module('ZeitfadenApp').filter('filterUnknownLocations', function(){
+  return function(input){
+    if(!(input == undefined || input == null || input == '')){
+      return input;
+    } else {
+      return "unknown location";
+    }
+  };
+});
+
+
 
 
 

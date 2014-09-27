@@ -35,6 +35,30 @@ angular.module('ZeitfadenApp').factory('ResponsiveService', function(){
         return '4by3';
       }
     },
+    
+    
+    isLargeDevice: function(){
+      if (window.innerWidth >= 1200)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    },
+    
+    isExtraSmallDevice: function(){
+      if (window.innerWidth <= 767)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    },
+    
     getStationsByQuery: function(query, callback){
       return $resource('/station/getByQuery/query/:query', {query:'@id'}).query({query:query},callback);
     },

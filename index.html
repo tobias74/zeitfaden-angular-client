@@ -169,6 +169,20 @@
     </div>
    </div>
   </script>
+
+  <script type="text/ng-template" id="user_repeater.html">
+      <div ng-repeat="user in entities" ng-switch on="user.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
+        <div ng-switch-when="image" class="thumbnail station medium">
+          <img ng-click="clickedImage(user)" ng-src="{{user.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+          <div class="small caption">{{user.startDate}}</div>
+          <div class="small caption"><a href="#/user-trace/?userId={{user.id}}">trace</a></div>
+        </div>
+    </div>
+  </script>
+
+
+
+
     
 	<!-- Modal -->
 	<div zf-login-form class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -343,6 +357,7 @@
         <script src="app/scripts/directives/zfSearchMap.js"></script>
         <script src="app/scripts/directives/zfSimpleMap.js"></script>
         <script src="app/scripts/directives/zfTraceMap.js"></script>
+        <script src="app/scripts/directives/zfUserTraceMap.js"></script>
         <script src="app/scripts/directives/zfWhenScrolled.js"></script>
         <script src="app/scripts/directives/misc-tools-directives.js"></script>
         
@@ -357,6 +372,7 @@
         <script src="app/scripts/controllers/StationDistanceArchive.js"></script>
         <script src="app/scripts/controllers/UserArchive.js"></script>
         <script src="app/scripts/controllers/UserDistanceArchive.js"></script>
+        <script src="app/scripts/controllers/UserTrace.js"></script>
         <script src="app/scripts/controllers/Settings.js"></script>
         
 

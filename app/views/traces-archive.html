@@ -1,53 +1,58 @@
-    <div class="span4">
-      <div class="well sidebar-nav">
+      <div class="col-lg-4 col-sm-5 col-md-5 sidebar">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-lg-12">
 
 
-        <div class="archive-sidebar-container">
-          <div class="btn-toolbar">
-            <button ng-click="clickedLoad()" class="btn">load! </button>
-            <button ng-click="setToCurrentLocation()" class="btn">here! </button>
-          </div>
+              <div class="archive-sidebar-container">
+                <div class="btn-toolbar">
+                  <button ng-click="clickedLoad()" class="btn">load! </button>
+                  <button ng-click="setToCurrentLocation()" class="btn">here! </button>
+                </div>
+      
+      
+      
+                <div ng-switch on="isSearchingLocation">
+                  <span ng-switch-when="true">Currently location your position</span>
+                  <span ng-switch-when="false">locating off.</span>
+                </div>
+      
+                <span ng-switch on="isLoadingStations">
+                  <span ng-switch-when="true">Loading stations...</span>
+                  <span ng-switch-when="false">Stations loaded.</span>
+                </span>
+              </div>
+      
+      
+              <h4>Timeframe</h4>
+              <div class="archive-sidebar-container">
+                <div zf-date-picker ng-model="fromDate" class="archive-date-picker"></div>
+                <div zf-date-picker ng-model="untilDate" class="archive-date-picker"></div>
+              </div>
+              
+      
+              <h4>Debug</h4>
+              <div class="archive-sidebar-container">
+                Latitude: {{searchLocation.latitude}} <br>
+                Longitude: {{searchLocation.longitude}} <br>
+                Radius: {{searchRadius}}<br>
+                Zoom: {{searchLocation.zoom}}<br>
+      
+              </div>
 
 
-
-          <div ng-switch on="isSearchingLocation">
-            <span ng-switch-when="true">Currently location your position</span>
-            <span ng-switch-when="false">locating off.</span>
-          </div>
-
-          <span ng-switch on="isLoadingStations">
-            <span ng-switch-when="true">Loading stations...</span>
-            <span ng-switch-when="false">Stations loaded.</span>
-          </span>
         </div>
-
-
-        <h4>Timeframe</h4>
-        <div class="archive-sidebar-container">
-          <div zf-date-picker ng-model="fromDate" class="archive-date-picker"></div>
-          <div zf-date-picker ng-model="untilDate" class="archive-date-picker"></div>
-        </div>
-        
-
-        <h4>Debug</h4>
-        <div class="archive-sidebar-container">
-          Latitude: {{searchLocation.latitude}} <br>
-          Longitude: {{searchLocation.longitude}} <br>
-          Radius: {{searchRadius}}<br>
-          Zoom: {{searchLocation.zoom}}<br>
-
-        </div>
-
-
-
-
-
-
-        
       </div>
     </div>
-    <div class="span8 station-list-container">
-      <div class="hero-unit traces" >
+  
+  
+  
+  
+  
+    <div class="col-lg-8 col-lg-offset-4 col-sm-7 col-sm-offset-5 col-md-7 col-md-offset-5">
+
+  
+  
+      <div class="traces" >
         
         <ul style="display:none;">
           <li ng-repeat="user in users" >
@@ -55,7 +60,7 @@
           </li>
         </ul>
         
-        <div zf-trace-map ng-model="searchLocation" zf-traces="stationsByUserId" zf-search-location="searchLocation" zf-search-radius="searchRadius" class="trace-map" >
+        <div style="width:100%;height:400px;" zf-trace-map ng-model="searchLocation" zf-traces="stationsByUserId" zf-search-location="searchLocation" zf-search-radius="searchRadius" class="trace-map" >
         </div>        
 
         

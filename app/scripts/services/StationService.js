@@ -6,6 +6,18 @@ angular.module('ZeitfadenApp').factory('StationService', function($resource){
       return $resource('/station/getByQUery/query/:query', {query:'@id'}).query({query:query},callback);
     },
 
+
+    getUnboundStationsOrderedByTime: function(params,callback){
+      return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/datetime/:datetime/sort/byTime/direction/:direction/lastId/:lastId', {
+        mustHaveAttachment: '@id',
+        limit: '@id',
+        datetime: '@id',
+        direction: '@id',
+        visibility: '@id',
+        lastId: '@id'
+      }).query(params,callback);
+    },
+
     getStationsOrderedByTime: function(params,callback){
       return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/latitude/:latitude/longitude/:longitude/maxDistance/:distance/datetime/:datetime/sort/byTime/direction/:direction/lastId/:lastId', {
         mustHaveAttachment: '@id',
@@ -37,12 +49,23 @@ angular.module('ZeitfadenApp').factory('StationService', function($resource){
     },
 
 
-    getStationsByQuery: function(query, callback){
-      return $resource('/station/getByQuery/query/:query', {query:'@id'}).query({query:query},callback);
-    },
-    getUsersByQuery: function(query, callback){
-      return $resource('/user/getByQuery/query/:query', {query:'@id'}).query({query:query},callback);
+    
+    
+    getUsersOrderedByTime: function(params,callback){
+      return $resource('/user/get/limit/:limit/userMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/latitude/:latitude/longitude/:longitude/maxDistance/:distance/datetime/:datetime/sort/byTime/direction/:direction/', {
+        mustHaveAttachment: '@id',
+        limit: '@id',
+        latitude: '@id',
+        longitude: '@id',
+        distance: '@id',
+        datetime: '@id',
+        direction: '@id',
+        visibility: '@id'
+      }).query(params,callback);
     }
+
+
+
   };
   
 });

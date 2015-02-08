@@ -63,26 +63,12 @@
 	            Loading users...
 	        </div>
           
-          <div class="row">
-            <div ng-repeat="user in entities" ng-switch on="user.attachmentType" class="col-3 col-md-3 col-sm-4 col-lg-2 col-xs-4">
-              
-              <div ng-switch-when="image" class="thumbnail station medium">
-                <img ng-click="clickedImage(user)" ng-src="{{user.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
-                <div class="small caption">{{user.startDate}}</div>
-              </div>
-              <div ng-switch-when="video" class="thumbnail station medium" >
-                <video width="400" height="300" ng-poster="{{user.html5Video.jpg}}" preload="none" controls="">
-                  <source ng-src="{{user.html5Video.mp4}}" type="video/mp4"></source>
-                  <source ng-src="{{user.html5Video.ogv}}" type="video/ogg"></source>
-                  <source ng-src="{{user.html5Video.webm}}" type="video/webm"></source>
-                </video>
-             </div>
-  
-            </li>
-          </row>
           
-        </div>
-     </div>
+          <div class="row" ng-include="'user_repeater.html'"  after-rendering="entityListLoaded()">
+          </div>
+
+          
+   </div>
 
 
 

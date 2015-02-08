@@ -116,45 +116,13 @@ angular.module('ZeitfadenApp').controller('TraceArchiveCtrl', function ($scope,S
     return "get " + $scope.queryLimit + "," + $scope.queryOffset + " attachments from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.searchRadius + " miles";
   };
 
-  $scope.getStationsQuery = function(userId){
-    var fromDateString='2020-01-01';
-    var untilDateString='2020-01-01';
-    
-    if ($scope.fromDate != undefined)
-    {
-        fromDateString = $scope.fromDate.toUTCString();
-    }
-    if ($scope.untilDate != undefined)
-    {
-        untilDateString = $scope.untilDate.toUTCString();
-    }
-    
-    return "get " + $scope.queryStationsLimit + "," + $scope.queryStationsOffset + " stations from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.searchRadius + " miles belonging to user '" + userId + "'" ;
-  };
-  
-  
-  $scope.getUsersQuery = function(){
-    var fromDateString='2020-01-01';
-    var untilDateString='2020-01-01';
-    
-    if ($scope.fromDate != undefined)
-    {
-        fromDateString = $scope.fromDate.toUTCString();
-    }
-    if ($scope.untilDate != undefined)
-    {
-        untilDateString = $scope.untilDate.toUTCString();
-    }
-    
-    return "get " + $scope.queryUsersLimit + "," + $scope.queryUsersOffset + " users from '" + fromDateString + "' until '" + untilDateString +"' at latitude " + $scope.searchLocation.latitude + " and longitude " + $scope.searchLocation.longitude + " within " + $scope.searchRadius + " miles";
-  };
   
   $scope.loadUsers = function(){
     if ($scope.searchRadius === false) return;
     
     console.debug('new load Users');
     $scope.queryStationsOffset = 0;
-    $scope.queryStationsLimit = 100;
+    $scope.queryStationsLimit = 1000;
 
     
     $scope.users = [];
@@ -164,7 +132,17 @@ angular.module('ZeitfadenApp').controller('TraceArchiveCtrl', function ($scope,S
     $scope.isLoadingUsers = true;
     $scope.stationsByUserId = {};
     
-    var moreUsers = StationService.getUsersByQuery($scope.getUsersQuery(),function(){
+    var moreUsers = StationService.getUsersOrderedByTime({
+      mustHaveAttachment: 1,
+      limit:20,
+      latitude: $scope.searchLocation.latitude,
+      longitude: $scope.searchLocation.longitude,
+      distance: $scope.searchRadius,
+      direction: 'intoTheFuture',
+      visibility: 'public_only',
+      datetime: $scope.fromDate.toUTCString()
+
+    },function(){
 
       $scope.users = moreUsers;
       $scope.users.forEach(function(user){
@@ -180,7 +158,17 @@ angular.module('ZeitfadenApp').controller('TraceArchiveCtrl', function ($scope,S
   
   
   $scope.loadStationsForUser = function(userId,callback){
-    var stations = StationService.getStationsByQuery($scope.getStationsQuery(userId),function(){
+    var stations = StationService.getStationsOrderedByTime({
+      mustHaveAttachment: 0,
+      lastId: 0,
+      limit:1000,
+      latitude: $scope.searchLocation.latitude,
+      longitude: $scope.searchLocation.longitude,
+      distance: $scope.searchRadius,
+      direction: 'intoTheFuture',
+      visibility: 'public_only',
+      datetime: $scope.fromDate.toUTCString()
+    },function(){
       $scope.stationsByUserId[userId] = stations;
 
     });

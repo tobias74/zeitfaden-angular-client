@@ -190,6 +190,11 @@ var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scrol
         controller: 'UserDistanceArchiveCtrl', 
         reloadOnSearch:false
       })
+      .when('/user-trace', {
+        templateUrl: 'app/views/user-trace.html', 
+        controller: 'UserTraceCtrl', 
+        reloadOnSearch:false
+      })
       .when('/trace-archive', {
         templateUrl: 'app/views/traces-archive.html', 
         controller: 'TraceArchiveCtrl', 

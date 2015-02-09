@@ -7,17 +7,18 @@ angular.module('ZeitfadenApp').directive('zfDatePicker',function(){
     restrict: 'EA',
     require: '?ngModel',
     scope:{
-      myModel: '=ngModel'
+      myModel: '=ngModel',
+      myDateChangeCallback : '=onDateChange'
     },
     link: function(scope,element,attrs,ngModel){
 
       var datepicker;
       var optionsObj = {
         onSelect: function(dateText, inst){
-          console.debug('we got the onsleect. ' + inst);
           scope.$apply(function(){
             scope.myModel = new Date(dateText);
           });
+          scope.myDateChangeCallback();
         }
       };
 
@@ -30,11 +31,8 @@ angular.module('ZeitfadenApp').directive('zfDatePicker',function(){
       };
       
       scope.$watch('myModel', function(value){
-        console.debug('we got notified in watch about ' + value + ' and the thing is ' + scope.myModel);
-        //console.debug(datepicker.datepicker('getDate'));
         datepicker.datepicker('setDate', scope.myModel);
         datepicker.datepicker('refresh');
-        //console.debug(datepicker.datepicker('getDate'));
       });
       
       

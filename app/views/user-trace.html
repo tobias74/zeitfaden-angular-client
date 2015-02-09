@@ -24,7 +24,7 @@
       
               <h4>Timeframe</h4>
               <div class="archive-sidebar-container">
-                <div zf-date-picker ng-model="searchSpec.searchDate" class="archive-date-picker"></div>
+                <div zf-date-picker ng-model="searchSpec.searchDate" on-date-change="changedSearchTime" class="archive-date-picker"></div>
                 <label>
                     <div style="display:inline-block;top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-forward"></div>
                     <select style="font-size:18px;width:130px;margin-left:4px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="searchSpec.selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
@@ -39,6 +39,7 @@
                 Longitude: {{searchLocation.longitude}} <br>
                 Radius: {{searchRadius}}<br>
                 Zoom: {{searchLocation.zoom}}<br>
+                Search-Date: {{searchSpec.searchDate}}
       
               </div>
 

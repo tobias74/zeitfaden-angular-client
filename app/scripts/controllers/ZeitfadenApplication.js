@@ -13,7 +13,8 @@ angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($
   $scope.$watch('isUserLoggedIn', function(newValue, oldValue, scope){
     console.debug('inside ApplicationCOntroller: got the notification of the loginservice about loggedinUser');
   });
-         
+  
+  $scope.isThisEveryWhere='Tobias is everywhere!';       
          
 /*  
   $scope.loadCurrentLocation = function(callback) {

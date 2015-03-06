@@ -19,6 +19,8 @@ angular.module('ZeitfadenApp').directive('zfTraceMap',function(){
       var googleMap;
       var searchLatLng;
       var allFlightPaths = [];
+      var bounds;
+      var itsJustMeFittingBounds=false;
       
       
       var distanceBetweenPoints = function(p1, p2) {
@@ -67,8 +69,9 @@ angular.module('ZeitfadenApp').directive('zfTraceMap',function(){
         if (polyStations.length === 0) return;
         
         var coordinates = [];
-        
-        coordinates.push(new google.maps.LatLng(polyStations[0].startLatitude, polyStations[0].startLongitude));
+        var myLatLng = new google.maps.LatLng(polyStations[0].startLatitude, polyStations[0].startLongitude);
+        coordinates.push(myLatLng);
+        bounds.extend(myLatLng);
         
         polyStations.forEach(function(station){
           coordinates.push(new google.maps.LatLng(station.endLatitude, station.endLongitude));
@@ -137,10 +140,10 @@ angular.module('ZeitfadenApp').directive('zfTraceMap',function(){
       scope.$watch('myTraces', function(){
         console.debug('change in my traces');
         removeAllFlightPaths(allFlightPaths);
+        bounds = new google.maps.LatLngBounds();
         
         $.each(scope.myTraces, function(userId, stations){
           
-          console.debug('working my round for userId ' + userId);
           
           var lineStations = [];
           var previousEndLatitude = 0;
@@ -167,10 +170,10 @@ angular.module('ZeitfadenApp').directive('zfTraceMap',function(){
           paintPolylineByStations(lineStations);
         });
         
-        console.debug('from within the tracemap');
-        console.debug(scope.myTraces);
-        console.debug('leaving my traces');
-        
+        itsJustMeFittingBounds=true;
+        googleMap.fitBounds(bounds);
+        itsJustMeFittingBounds=false;
+
       }, true);
 
 
@@ -195,6 +198,8 @@ angular.module('ZeitfadenApp').directive('zfTraceMap',function(){
         
         
         var eventHandler = function(){
+          if (itsJustMeFittingBounds) return;
+          
           console.debug('bounds changed.');
           scope.$apply(function(){
             var bounds = googleMap.getBounds();

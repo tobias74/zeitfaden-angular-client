@@ -66,62 +66,57 @@
     </div>
   </script>
  
+  <script type="text/ng-template" id="location_search_below_map.html">
+      <div class="container" style="width:auto;display:block;vertical-align:top;padding-top:10px;padding-left:0px;padding-right:0px;">
+        <div class="row">
+            <div class="col-xs-12">
+              <input zf-enter="searchGoogleLocation(searchGoogle)" id="google-search-location" name="search-location" ng-model="searchGoogle" class="location-search-input" type="text">
+            </div>
+        </div>
+      </div>
+  </script> 
+ 
+ 
+ 
   <script type="text/ng-template" id="parameter_header.html">
-
-      <div class="container" style="width:auto;display:block;vertical-align:top;padding:15px;margin-bottom:10px;border-bottom:1px solid #aaaaaa;">
-	      <div class="row padded">
-	          <label class="col-xs-2" for="google-search-location">Search:</label>
-		      <div class="col-xs-10">
-		      	<input zf-enter="searchGoogleLocation(searchGoogle)" id="google-search-location" name="search-location" ng-model="searchGoogle" class="location-search-input" type="text">
-		      </div>
-	      </div>
-	  </div>
-  	
       <div class="container" style="width:auto;display:block;vertical-align:top;margin-bottom:5px;">
-
-
-
-		<div class="row parameter-button-group">
-					    
-		    <div style="text-align:center;" class="col-md-4 col-sm-12 col-xs-4 headroom-sm-30">
-			    <div class="row btn-group btn-group-lg" >
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickUserIcon()">
-			        <span class="glyphicon glyphicon-user" ></span>
-			      </button>
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickStationIcon()">
-			        <span class="glyphicon glyphicon-picture" ></span>
-			      </button>
-			    </div>
-			</div>
-			
-		    <div style="text-align:center;"  class="col-md-4 col-sm-12 col-xs-4 headroom-sm-30">
-			    <div class="row btn-group btn-group-lg" >
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickDistanceSort()">
-			        <span class="glyphicon glyphicon-sort-by-attributes"></span>
-			      </button>
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickTimeSort()">
-			        <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
-			      </button>
-			    </div>
-			</div>
-			
-		    <div  style="text-align:center;" class="col-md-4  col-sm-12 col-xs-4 headroom-sm-30">
-			    <div class="row btn-group btn-group-lg" >
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="searchSpec.showBigImages = false">
-			        <span class="glyphicon glyphicon-th"></span>
-			      </button>
-			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="searchSpec.showBigImages = true">
-			        <span class="glyphicon glyphicon-th-list"></span>
-			      </button>
-			    </div>
-			</div>
-		    
-		</div>
-
-
-
+    		<div class="row parameter-button-group">
+    		    <div style="text-align:center;" class="col-md-6 col-sm-6 col-xs-6 headroom-sm-30">
+    			    <div class="row btn-group btn-group-lg" >
+    			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickUserIcon()">
+    			        <span class="glyphicon glyphicon-user" ></span>
+    			      </button>
+    			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickStationIcon()">
+    			        <span class="glyphicon glyphicon-picture" ></span>
+    			      </button>
+    			    </div>
+    			</div>
+   		    <div style="text-align:center;"  class="col-md-6 col-sm-6 col-xs-6 headroom-sm-30">
+    			    <div class="row btn-group btn-group-lg" >
+    			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickDistanceSort()">
+    			        <span class="glyphicon glyphicon-sort-by-attributes"></span>
+    			      </button>
+    			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickTimeSort()">
+    			        <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+    			      </button>
+    			    </div>
+    			</div>
+    			<!--
+    		    <div  style="text-align:center;" class="col-md-4  col-sm-12 col-xs-4 headroom-sm-30">
+    			    <div class="row btn-group btn-group-lg" >
+    			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="searchSpec.showBigImages = false">
+    			        <span class="glyphicon glyphicon-th"></span>
+    			      </button>
+    			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="searchSpec.showBigImages = true">
+    			        <span class="glyphicon glyphicon-th-list"></span>
+    			      </button>
+    			    </div>
+    			 </div>
+    		  -->
+  		  </div>
       </div>
   </script>
+
 
   <script type="text/ng-template" id="distance-time-parameters.html">
       <div class="parameter-element">
@@ -150,7 +145,7 @@
         <div ng-switch-when="image" class="thumbnail station medium">
           <div zf-station-image-lonely ng-model="station"></div>
           <div style="display:table"class="small caption">
-            <div style="display:table-row;height:23px;"><span style="display:table-cell;"><span class="glyphicon glyphicon-time"></span></span><span style="margin-left:5px;display:inline-block;">{{station.zuluStartDateString | date:'medium'}}</span></div>
+            <div style="display:table-row;height:23px;"><span style="display:table-cell;"><span class="glyphicon glyphicon-time"></span></span><span style="margin-left:5px;display:inline-block;">{{station.startTimestamp*1000 | date:'medium'}}</span></div>
             <div style="display:table-row;height:37px;cursor:pointer;" ng-click="showLocation(station)"><span style="display:table-cell;vertical-align: top;" ><span class="glyphicon glyphicon-map-marker"></span></span><span style="margin-left:5px;display:inline-block;">{{station.startLocationDescription | filterUnknownLocations}}</span></div>
             <div style="display:table-row;"><span style="display:table-cell;"><span class="glyphicon glyphicon-plane" ></span></span><span style="margin-top:4px;margin-left:5px;display:inline-block;">{{station.distanceToMe/1000 | number:3}} km</span></div>
  
@@ -183,124 +178,111 @@
 
 
 
-    
-	<!-- Modal -->
-	<div zf-login-form class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	</div>    
-
-  <div class="modal fade" id="myRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="myRegistrationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myRegistrationModalLabel">Registration</h4>
-        </div>
+  <script type="text/ng-template" id="menu_intro.html">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
         
-        <div class="modal-body">
-          <form>
-              <div class="form-group">
-                <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
-              </div>
-              <div class="form-group">
-                <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
-                <input ng-model="userInput.password_again" type="password" placeholder="Re-Type Password" class="form-control">
-              </div>
-          </form>
+        <a class="navbar-brand" href="#">
+          <span ng-bind="applicationTitle"></span> 
+          <span class="hidden-sm hidden-md hidden-lg">xs</span>
+          <span class="hidden-xs hidden-md hidden-lg">sm</span>
+          <span class="hidden-xs hidden-sm hidden-lg">md</span>
+          <span class="hidden-xs hidden-sm hidden-md">lg</span>
+        </a>
+        
       </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)" class="btn btn-primary">Register</button>
-        </div>
+  </script>
+
+
+
+  <script type="text/ng-template" id="myModalLogin.html">
+      <div class="modal-header">
+          <h3>Login</h3>
       </div>
-    </div>
-  </div>    
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+              <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-primary" ng-disabled="isPerformingLogin()" ng-click="performLogin(userInput.email,userInput.password)">Login</button>
+          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      </div>
+  </script>
+
+
+  <script type="text/ng-template" id="myModalRegistration.html">
+      <div class="modal-header">
+          <h3>Registration</h3>
+      </div>
+      <div class="modal-body">
+      <form>
+          <div class="form-group">
+            <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
+          </div>
+          <div class="form-group">
+            <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
+            <input ng-model="userInput.password_again" type="password" placeholder="Re-Type Password" class="form-control">
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-primary" ng-disabled="isPerformingRegistration" ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)">Register</button>
+          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      </div>
+  </script>
+
+
+  <script type="text/ng-template" id="login_logout_menu_elements.html">
+    <li ng-hide="isUserLoggedIn()">
+      <a ng-controller="ModalRegistrationCtrl" style="cursor:pointer;" ng-click="open()">Registration
+      </a>
+    </li>
+    <li ng-hide="isUserLoggedIn()">
+      <a ng-controller="ModalLoginCtrl" style="cursor:pointer;" ng-click="open()">Login
+      </a>
+    </li>
+    <li ng-hide="!isUserLoggedIn()">
+        <a href="" ng-click="performLogout()">Logout</a>
+    </li>
+  </script>
+
+
     
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          
-          <a class="navbar-brand" href="#">
-          	<span ng-bind="applicationTitle"></span> 
-          	<span class="hidden-sm hidden-md hidden-ld">xs</span>
-          	<span class="hidden-xs hidden-md hidden-ld">sm</span>
-          	<span class="hidden-xs hidden-sm hidden-ld">md</span>
-          	<span class="hidden-xs hidden-sm hidden-md">ld</span>
-          </a>
-          
-        </div>
         
+        <div ng-include="'menu_intro.html'">
+        </div>
+ 
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#station-archive">Archive</a> </li>
             <li><a href="#trace-archive">Traces</a> </li>
             <li><a href="#settings">Settings</a> </li>
-            <li ng-hide="isUserLoggedIn()">
-              <a ng-controller="ModalRegistrationCtrl" style="cursor:pointer;" ng-click="open()">Registration
-                  <script type="text/ng-template" id="myModalRegistration.html">
-                      <div class="modal-header">
-                          <h3>Registration</h3>
-                      </div>
-                      <div class="modal-body">
-                      <form>
-                          <div class="form-group">
-                            <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
-                          </div>
-                          <div class="form-group">
-                            <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
-                            <input ng-model="userInput.password_again" type="password" placeholder="Re-Type Password" class="form-control">
-                          </div>
-                      </form>
-                      </div>
-                      <div class="modal-footer">
-                          <button class="btn btn-primary" ng-disabled="isPerformingRegistration" ng-click="performRegistration(userInput.email,userInput.password,userInput.password_again)">Register</button>
-                          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-                      </div>
-                  </script>
-              </a>
-            </li>
+            
+            <div ng-include="'login_logout_menu_elements.html'" include-replace>
+            </div>
 
-            <!-- Menu:Login -->
-            <li ng-hide="isUserLoggedIn()">
-              <a ng-controller="ModalLoginCtrl" style="cursor:pointer;" ng-click="open()">Login
-                  <script type="text/ng-template" id="myModalLogin.html">
-                      <div class="modal-header">
-                          <h3>Login</h3>
-                      </div>
-                      <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                              <input ng-model="userInput.email" type="text" placeholder="Email" class="form-control">
-                            </div>
-                            <div class="form-group">
-                              <input ng-model="userInput.password" type="password" placeholder="Password" class="form-control">
-                            </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                          <button class="btn btn-primary" ng-disabled="isPerformingLogin()" ng-click="performLogin(userInput.email,userInput.password)">Login</button>
-                          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-                      </div>
-                  </script>
-              </a>
-            </li>
             
             
-            <li ng-hide="!isUserLoggedIn()">
-                <a href="" ng-click="performLogout()">Logout</a>
-            </li>
           </ul>
           
           <!--
           <form onsubmit="alert(4);" class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
           </form>
-		  -->
+		      -->
 		  
           <form zf-inplace-uploader target-url="/station/create/" button-caption="Instant Upload" class="navbar-form navbar-right" >
           </form>        
@@ -350,7 +332,6 @@
         <script src="app/scripts/directives/zfEntityImage.js"></script>
         <script src="app/scripts/directives/zfImageModal.js"></script>
         <script src="app/scripts/directives/zfImageLonely.js"></script>
-        <script src="app/scripts/directives/zfLoginForm.js"></script>
         <script src="app/scripts/directives/zfDatePicker.js"></script>
         <script src="app/scripts/directives/zfDateTimeInput.js"></script>
         <script src="app/scripts/services/ZeitfadenService.js"></script>

@@ -85,7 +85,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
 				$scope.searchLocation.latitude = place.geometry.location.k;
 				$scope.searchLocation.longitude = place.geometry.location.B;
 
-			    self.digestChangedModelTemplateMethod();
+			    self.pushToRouteHistoryTemplateMethod();
 
 			});
 		}
@@ -151,7 +151,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   	
   };
 	
-  self.digestChangedModelTemplateMethod = function(){
+  self.pushToRouteHistoryTemplateMethod = function(){
     self.resetScrollStatus();
     
     var search = $location.search();
@@ -210,34 +210,34 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
         $scope.searchLocation.longitude = position.coords.longitude;
         $scope.isSearchingLocation = false;
         //$scope.selectedRange = $scope.dataForRangeSelect[1];
-        self.digestChangedModelTemplateMethod();
+        self.pushToRouteHistoryTemplateMethod();
         callback && callback();
       });
     });  
   };
 
   $scope.changedDistance = function(){
-    self.digestChangedModelTemplateMethod();
+    self.pushToRouteHistoryTemplateMethod();
   };
 
   $scope.changedVisibility = function(){
-    self.digestChangedModelTemplateMethod();
+    self.pushToRouteHistoryTemplateMethod();
   };
 
   $scope.changedDate = function(){
     $scope.$apply(function(){
-      self.digestChangedModelTemplateMethod();
+      self.pushToRouteHistoryTemplateMethod();
     });
   };
 
   $scope.changedLocation = function(){
     $scope.$apply(function(){
-      self.digestChangedModelTemplateMethod();
+      self.pushToRouteHistoryTemplateMethod();
     });
   };
 
   $scope.clickedLoad = function(){
-    self.digestChangedModelTemplateMethod();    
+    self.pushToRouteHistoryTemplateMethod();    
   };
   
   $scope.$on('$routeUpdate', function(next, current) { 
@@ -245,7 +245,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   });  
   
   $scope.clickedLoad = function(){
-    self.digestChangedModelTemplateMethod();    
+    self.pushToRouteHistoryTemplateMethod();    
   };
   
   $scope.scrolledForMore = function(callback){
@@ -332,7 +332,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
 
   $scope.changedTimeOrdering = function(){
     console.debug('changed time ordering');
-    self.digestChangedModelTemplateMethod();
+    self.pushToRouteHistoryTemplateMethod();
   };
 
   self.digestRadius = function(myParams){

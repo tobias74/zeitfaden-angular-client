@@ -358,6 +358,11 @@ body {
 }
 
 @media(min-width:1200px){
+
+  .search-map-wrapper{
+    height:280px;
+  }
+
 }
 
 

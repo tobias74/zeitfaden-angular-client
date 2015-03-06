@@ -18,7 +18,7 @@ angular.module('ZeitfadenApp').directive('zfDatePicker',function(){
           scope.$apply(function(){
             scope.myModel = new Date(dateText);
           });
-          scope.myDateChangeCallback();
+          scope.myDateChangeCallback && scope.myDateChangeCallback();
         }
       };
 

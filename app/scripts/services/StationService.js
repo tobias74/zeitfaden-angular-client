@@ -7,25 +7,31 @@ angular.module('ZeitfadenApp').factory('StationService', function($resource){
     },
 
 
-    getUnboundStationsOrderedByTime: function(params,callback){
-      return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/datetime/:datetime/sort/byTime/direction/:direction/lastId/:lastId', {
+    
+    getResourceForUnboundStationsOrderedByTime: function(){
+      return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/timestamp/:timestamp/sort/byTime/direction/:direction/lastId/:lastId', {
         mustHaveAttachment: '@id',
         limit: '@id',
-        datetime: '@id',
+        timestamp: '@id',
         direction: '@id',
         visibility: '@id',
         lastId: '@id'
-      }).query(params,callback);
+      });
+    },
+
+
+    getUnboundStationsOrderedByTime: function(params,callback){
+      return this.getResourceForUnboundStationsOrderedByTime().query(params,callback);
     },
 
     getStationsOrderedByTime: function(params,callback){
-      return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/latitude/:latitude/longitude/:longitude/maxDistance/:distance/datetime/:datetime/sort/byTime/direction/:direction/lastId/:lastId', {
+      return $resource('/station/get/limit/:limit/stationMustHaveAttachment/:mustHaveAttachment/visibility/:visibility/latitude/:latitude/longitude/:longitude/maxDistance/:distance/timestamp/:timestamp/sort/byTime/direction/:direction/lastId/:lastId', {
         mustHaveAttachment: '@id',
         limit: '@id',
         latitude: '@id',
         longitude: '@id',
         distance: '@id',
-        datetime: '@id',
+        timestamp: '@id',
         direction: '@id',
         visibility: '@id',
         lastId: '@id'

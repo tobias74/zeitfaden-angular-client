@@ -10,16 +10,19 @@
             
             
             
+            <div class="hidden-xs" ng-include="'location_search_below_map.html'">
+            </div>
             
-            <div style="" 
-                 class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
-
-  	            <div ng-include="'parameter_header.html'">
-	            </div>
+            <div ng-include="'parameter_header.html'">
+            </div>
+            
+            
+            <!-- this is the menu fpr all non large devices -->
+            <div style="" class="hidden-lg station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
 
 
   	            <div style="display:inline-block;" ng-include="'archive-time-parameters.html'">
-	            </div>
+	              </div>
 
 
                <div style="text-align:right;display:inline-block;" class="pull-right">
@@ -37,9 +40,20 @@
                     </label>
                   </div>
                </div>
-
-
               </div>
+
+
+              <!-- this is the menu for all large desktop devices -->
+              <div class="visible-lg-block">
+                is it?
+                {{isThisEveryWhere}}
+                <div zf-date-picker ng-model="searchSpec.searchDate" on-date-change="changedDate" class="archive-date-picker"></div>
+                <label>
+
+
+                 
+              </div>
+
 
           </div><!--/span-->
         </div><!--/row-->

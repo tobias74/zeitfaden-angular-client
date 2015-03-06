@@ -6,8 +6,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
   
   var myParentController = $controller('AbstractStationArchiveCtrl', {$scope: $scope, ProtectedControllerData:self});
 
-  var internalFromDate;
-  var internalUntilDate;
+  var internalFromTimestamp;
   var lastStation;
   
   var parentSetHistoryEntities = self.setHistoryEntities;  
@@ -40,8 +39,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
 
   self.resetScrollStatus = function(){
     lastStation = undefined;
-    internalFromDate = undefined;
-    internalUntilDate = undefined;
+    internalFromTimestamp = undefined;
     self.scrollEndReached = false;
   };
   
@@ -81,11 +79,11 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
     if (lastStation != undefined)
     {
       lastId = lastStation.id;
-      internalFromDate = new Date(lastStation.zuluStartDateString);
+      internalFromTimestamp = lastStation.startTimestamp;
     }
     else // its a new search
     {
-      internalFromDate = $scope.searchSpec.searchDate;
+      internalFromTimestamp = Math.floor($scope.searchSpec.searchDate.getTime() / 1000);
     }
 
     
@@ -98,7 +96,7 @@ function(self,$controller,$log,$modal,$scope,StationService,$routeParams,$locati
       distance: $scope.selectedRange.range,
       direction: $scope.searchSpec.selectedTimeOrdering.order,
       visibility: $scope.selectedVisibility.visibility,
-      datetime: internalFromDate.toUTCString()
+      timestamp: internalFromTimestamp
       
     },function(){
       for (var i = 0; i < moreStations.length; i++) {

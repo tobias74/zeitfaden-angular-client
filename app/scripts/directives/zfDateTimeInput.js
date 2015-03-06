@@ -113,7 +113,7 @@ angular.module('ZeitfadenApp').directive('zfDateTimeInput',function(){
           scope.myModel = new Date($(element).find('.datetime_selector').val());
         });
         
-        scope.myChangedDateCallback();
+        scope.myChangedDateCallback && scope.myChangedDateCallback();
       });
       
       

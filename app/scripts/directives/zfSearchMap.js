@@ -214,7 +214,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
   return {
     restrict: 'EA',
     require: '?ngModel',
-    template:'<div style="width:100%;height:90%;" class="search_map_div"></div><div class="hidden-xs" style="width:100%;"class="search_input_div"><input class="search_input" zf-enter="searchGoogleLocation(searchGoogleText)" ng-model="searchGoogleText" class="location-search-input" type="text"></div>',
+    template:'<div style="width:100%;height:90%;" class="search_map_div"></div><div class="hidden-xs" style="width:100%;"class="search_input_div"><input style="width:100%;" class="search_input" zf-enter="searchGoogleLocation(searchGoogleText)" ng-model="searchGoogleText" class="location-search-input" type="text"></div>',
     scope:{
       myModel: '=ngModel',
       myStation: '=zfStation',

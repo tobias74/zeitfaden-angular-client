@@ -175,13 +175,18 @@
                 </span>
               </span>
               <span style="margin-top:4px;margin-left:5px;display:inline-block;font-size:12px;">
+                {{station.distanceToPin/1000 | number:3}} km
+              </span>
+            </div>
+            <div style="display:table-row;">
+              <span style="display:table-cell;">
+                <span class="glyphicon glyphicon-globe" >
+                </span>
+              </span>
+              <span style="margin-top:4px;margin-left:5px;display:inline-block;font-size:12px;">
                 {{station.distanceToMe/1000 | number:3}} km
               </span>
             </div>
- 
-            <!--
-            <div style="display:none;"><span class="glyphicon glyphicon-plane" ></span> {{station.distanceToPin/1000 | number:3}} km</div>
-            -->
             
           </div>	    	            
       </div>

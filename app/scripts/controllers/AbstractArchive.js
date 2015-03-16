@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', 
-['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService',
-function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService) {
+['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService','$routeParams','StationService',
+function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService,$routeParams,StationService) {
+  
+  $scope.entityStrategy = new StationsByTimeStrategy(StationService,ScrollHistoryService);
+  $scope.viewName="station-archive";
+  
   
   setTimeout(function(){
 	  var someInput = document.getElementById('google-search-location');
@@ -10,7 +14,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   	
   },3000);
 
-  self.attachGeoDataToStation = function(myStation){
+  $scope.attachGeoDataToStation = function(myStation){
   	var latlngA = new google.maps.LatLng($scope.searchLocation.latitude,$scope.searchLocation.longitude);
   	var latlngB = new google.maps.LatLng(myStation.startLatitude,myStation.startLongitude);
     myStation.distanceToPin = google.maps.geometry.spherical.computeDistanceBetween(latlngA,latlngB);
@@ -52,13 +56,16 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   ScrollHistoryService.setController(self);
   
   self.setHistoryEntities = function(data){
-	  $scope.entities = data[self.entityName + 's'];
-      self.scrollEndReached = data['scrollEndReached'];
+    $scope.entityStrategy.setHistoryEntities(data,$scope);
   };
   
   self.loadEntities = function(){
     $scope.entities = [];
     $scope.loadMore();
+  };
+
+  $scope.loadMore = function(callback) {
+    $scope.entityStrategy.loadMore(callback,$scope);
   };
 
   
@@ -98,9 +105,9 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   	
   	window.stop();
   	
-  	self.resetScrollStatus();   
+  	$scope.entityStrategy.resetScrollStatus($scope);   
   	
-  	self.digestRouteParams(myParams);
+  	$scope.entityStrategy.digestRoute(myParams,$scope);
 
     if (myParams.latitude && myParams.longitude){
       $scope.searchLocation.latitude = myParams.latitude;
@@ -131,7 +138,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   
   $scope.showFullSettings = false;
   
-  self.scrollEndReached = false;       
+  $scope.scrollEndReached = false;       
   $scope.entities = [];
   $scope.isLoadingEntities = false;
   $scope.isSearchingLocation = false;
@@ -152,19 +159,15 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   };
 	
   self.pushToRouteHistoryTemplateMethod = function(){
-    self.resetScrollStatus();
-    
+    $scope.entityStrategy.resetScrollStatus($scope);
     var search = $location.search();
 
-    search.latitude = $scope.searchLocation.latitude;
-    search.longitude = $scope.searchLocation.longitude;
-    search.searchVisibility = $scope.selectedVisibility.visibility;
-	
-	  self.updateLocationSearch(search);
+    $scope.entityStrategy.pushToRouteHistory(search,$scope);
     
     search.scrollingStatusId = 'zf-ls-' + new Date().getTime();
     $location.search(search);
   };
+  
 
   self.introduceNewScrollingId = function(){
     var search = $location.search();
@@ -172,23 +175,6 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
     $location.search(search);
   };
 
-  self.digestRouteParams = function(myParams){
-
-    if (myParams.searchVisibility){
-      $scope.selectedVisibility = $.grep($scope.dataForVisibilitySelect,function(n,i){
-        return (n.visibility == myParams.searchVisibility);
-      })[0];
-    }
-    else {
-      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
-    }
-
-    if (!$scope.selectedVisibility){
-      $scope.selectedVisibility = $scope.dataForVisibilitySelect[0];
-    }
-
-
-  };
 
   self.digestRouteLonelyEntity = function(myParams){
     if (myParams.showLonelyEntity){
@@ -209,7 +195,6 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
         $scope.searchLocation.latitude = position.coords.latitude;
         $scope.searchLocation.longitude = position.coords.longitude;
         $scope.isSearchingLocation = false;
-        //$scope.selectedRange = $scope.dataForRangeSelect[1];
         self.pushToRouteHistoryTemplateMethod();
         callback && callback();
       });
@@ -249,7 +234,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   };
   
   $scope.scrolledForMore = function(callback){
-    if (self.scrollEndReached)
+    if ($scope.scrollEndReached)
     {
       console.debug('scroll end reached');
       return;
@@ -281,6 +266,8 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   
   
   // only for the Archives
+  $scope.searchSpec = {};
+
   
   $scope.dataForRangeSelect = [
     {"range": 2, "description": "2m"},
@@ -295,9 +282,8 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
     {"range": 100000000, "description": "100000km"}
   ];
 
-  $scope.selectedRange = $scope.dataForRangeSelect[3];  
+  $scope.searchSpec.selectedRange = $scope.dataForRangeSelect[3];  
   
-  $scope.searchSpec = {};
   $scope.searchSpec.showBigImages = true;
 
   $scope.searchSpec.searchDate = new Date();
@@ -309,7 +295,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
 
   $scope.searchSpec.selectedTimeOrdering = $scope.dataForTimeOrderingSelect[0];
   
-  self.digestSingleTime = function(myParams){
+  $scope.digestSingleTime = function(myParams){
     if (myParams.searchDirection){
       $scope.searchSpec.selectedTimeOrdering = $.grep($scope.dataForTimeOrderingSelect,function(n,i){
         return (n.order == myParams.searchDirection);
@@ -335,14 +321,14 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
     self.pushToRouteHistoryTemplateMethod();
   };
 
-  self.digestRadius = function(myParams){
+  $scope.digestRadius = function(myParams){
     if (myParams.radius){
-      $scope.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
+      $scope.searchSpec.selectedRange = $.grep($scope.dataForRangeSelect,function(n,i){
         return (n.range == myParams.radius);
       })[0];
     }
     else {
-      $scope.selectedRange = $scope.dataForRangeSelect[3];
+      $scope.searchSpec.selectedRange = $scope.dataForRangeSelect[3];
     }
   	
   };
@@ -372,6 +358,13 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
       $scope.searchSpec.untilDate = new Date();
     }
   };  
+  
+  
+  
+  
+  
+  
+  self.onRouteUpdateTemplateMethod($routeParams);
   
   
   

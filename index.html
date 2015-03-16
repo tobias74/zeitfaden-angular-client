@@ -10,10 +10,10 @@
     <link href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     
     <!-- Optional theme -->
-    <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <llsslink rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     
     <link href="app/styles/raw.css" rel="stylesheet">
         
@@ -21,13 +21,6 @@
 </head>
   <body ng-app="ZeitfadenApp" ng-controller="ZeitfadenApplicationCtrl">
 
-  <script type="text/ng-template" id="directive-date-time-input.html">
-	  <label><span style="top:-10px;font-size:18px;" class="glyphicon glyphicon-time"></span>
-	      <div style="display:inline-block;width:130px;overflow:hidden;">
-	        <input style="margin-left:6px;font-size:18px;width:120px;overflow:hidden;" class="datetime_selector" type="datetime-local">
-	      </div>
-	  </label>
-  </script>
 
   <script type="text/ng-template" id="station-image-modal.html">
     <div style="text-align:center;">
@@ -41,10 +34,10 @@
     <div ng-click="showImage()" id="{{station.id}}" style="text-align:center;">
       
         
-      <img ng-if="isExtraSmallDevice() && (searchSpec.showBigImages == true)" style="max-width:100%;" ng-src="{{station.bigFrontImageUrl}}/format/original">
-      <img ng-if="isExtraSmallDevice() && (searchSpec.showBigImages == false)" style="max-width:100%;" ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+      <img ng-if="isExtraSmallDevice() && (searchSpec.showBigImages == true)" class="station-image" ng-src="/station/getImage/stationId/{{station.id}}/imageSize/big/format/original">
+      <img ng-if="isExtraSmallDevice() && (searchSpec.showBigImages == false)" class="station-image"  ng-src="/station/getImage/stationId/{{station.id}}/imageSize/medium/format/{{getAttachmentFormat()}}">
 
-      <img ng-if="isLargeDevice()" style="max-width:100%;" ng-src="{{station.mediumFrontImageUrl}}/format/{{getAttachmentFormat()}}">
+      <img ng-if="isLargeDevice()" class="station-image"  ng-src="/station/getImage/stationId/{{station.id}}/imageSize/medium/format/{{getAttachmentFormat()}}">
     
     
     </div>
@@ -80,8 +73,11 @@
  
   <script type="text/ng-template" id="parameter_header.html">
       <div class="container" style="width:auto;display:block;vertical-align:top;margin-bottom:5px;">
+        
     		<div class="row parameter-button-group">
-    		    <div style="text-align:center;" class="col-md-6 col-sm-6 col-xs-6 headroom-sm-30">
+
+    		  <!--
+    		  <div style="text-align:center;" class="col-md-6 col-sm-6 col-xs-6 headroom-sm-30">
     			    <div class="row btn-group btn-group-lg" >
     			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickUserIcon()">
     			        <span class="glyphicon glyphicon-user" ></span>
@@ -91,6 +87,9 @@
     			      </button>
     			    </div>
     			</div>
+    			-->
+    			
+    			<!--
    		    <div style="text-align:center;"  class="col-md-6 col-sm-6 col-xs-6 headroom-sm-30">
     			    <div class="row btn-group btn-group-lg" >
     			      <button type="button" class="btn btn-default btn-lg col-6" ng-click="clickDistanceSort()">
@@ -101,6 +100,8 @@
     			      </button>
     			    </div>
     			</div>
+    			-->
+    			
     			<!--
     		    <div  style="text-align:center;" class="col-md-4  col-sm-12 col-xs-4 headroom-sm-30">
     			    <div class="row btn-group btn-group-lg" >
@@ -118,6 +119,13 @@
   </script>
 
 
+  <script type="text/ng-template" id="directive-date-time-input.html">
+        <span style="top:4px;font-size:20px;" class="glyphicon glyphicon-time"></span>
+        <div style="display:inline-block;">
+          <input style="margin-left:6px;font-size:16px;" class="datetime_selector" type="datetime-local">
+        </div>
+  </script>
+
   <script type="text/ng-template" id="distance-time-parameters.html">
       <div class="parameter-element">
         <div zf-date-time-input ng-model="searchSpec.fromDate" class="archive-date-picker" zf-on-change-date="changedDate">
@@ -128,13 +136,20 @@
   </script>
 
   <script type="text/ng-template" id="archive-time-parameters.html">
-    <div class="parameter-element">
-        <div zf-date-time-input ng-model="searchSpec.searchDate" zf-on-change-date="changedDate" >
+    <div >
+        <div zf-date-time-input ng-model="searchSpec.searchDate" zf-on-change-date="changedDate" class="parameter-element" >
         </div>
-        <label>
-          <div style="display:inline-block;top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-forward"></div>
-          <select style="font-size:18px;width:130px;margin-left:4px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="searchSpec.selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
-        </label>
+
+        <div class="parameter-element">
+          <div style="display:inline-block;top:4px;font-size:20px;" class="glyphicon glyphicon-forward"></div>
+          <select style="margin-left:6px;font-size:18px;" id="time_ordering_select" ng-change="changedTimeOrdering()" ng-model="searchSpec.selectedTimeOrdering" ng-options="c.description for c in dataForTimeOrderingSelect"></select>
+        </div>
+
+        <div class="parameter-element">
+          <span style="top:4px;font-size:20px;" class="glyphicon glyphicon-map-marker"></span>
+          <select style="margin-left:6px;font-size:18px;" id="radius_select" ng-change="changedDistance()" ng-model="searchSpec.selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
+        </div>
+        
     </div> 
   </script>
 
@@ -145,9 +160,33 @@
         <div ng-switch-when="image" class="thumbnail station medium">
           <div zf-station-image-lonely ng-model="station"></div>
           <div style="display:table"class="small caption">
-            <div style="display:table-row;height:23px;"><span style="display:table-cell;"><span class="glyphicon glyphicon-time"></span></span><span style="margin-left:5px;display:inline-block;">{{station.startTimestamp*1000 | date:'medium'}}</span></div>
-            <div style="display:table-row;height:37px;cursor:pointer;" ng-click="showLocation(station)"><span style="display:table-cell;vertical-align: top;" ><span class="glyphicon glyphicon-map-marker"></span></span><span style="margin-left:5px;display:inline-block;">{{station.startLocationDescription | filterUnknownLocations}}</span></div>
-            <div style="display:table-row;"><span style="display:table-cell;"><span class="glyphicon glyphicon-plane" ></span></span><span style="margin-top:4px;margin-left:5px;display:inline-block;">{{station.distanceToMe/1000 | number:3}} km</span></div>
+            <div style="display:table-row;">
+              <span style="display:table-cell;">
+                <span class="glyphicon glyphicon-time">
+                </span>
+              </span>
+              <span style="margin-left:5px;display:inline-block;height:23px;font-size:12px;">
+                {{station.startTimestamp*1000 | date:'medium'}}
+              </span>
+            </div>
+            <div style="display:table-row;cursor:pointer;" ng-click="showLocation(station)">
+              <span style="display:table-cell;vertical-align: top;" >
+                <span class="glyphicon glyphicon-map-marker">
+                </span>
+              </span>
+              <span style="margin-left:5px;display:inline-block;height:33px;overflow:hidden;font-size:12px;">
+                {{station.startLocationDescription | filterUnknownLocations}}
+              </span>
+            </div>
+            <div style="display:table-row;">
+              <span style="display:table-cell;">
+                <span class="glyphicon glyphicon-plane" >
+                </span>
+              </span>
+              <span style="margin-top:4px;margin-left:5px;display:inline-block;font-size:12px;">
+                {{station.distanceToMe/1000 | number:3}} km
+              </span>
+            </div>
  
             <!--
             <div style="display:none;"><span class="glyphicon glyphicon-plane" ></span> {{station.distanceToPin/1000 | number:3}} km</div>
@@ -258,6 +297,25 @@
   </script>
 
 
+
+     
+     
+
+
+
+
+
+
+
+        
+
+    
+
+
+
+
+
+
     
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -267,12 +325,17 @@
  
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#station-archive">Archive</a> </li>
-            <li><a href="#trace-archive">Traces</a> </li>
-            <li><a href="#settings">Settings</a> </li>
-            
             <div ng-include="'login_logout_menu_elements.html'" include-replace>
             </div>
+            <li><a href="#settings">Settings</a> </li>
+            
+          </ul>
+
+
+          <ul class="nav navbar-nav">
+            <li><a href="#station-archive">Pictures</a> </li>
+            <li><a href="" ng-click="MenuService.clickPeople()">People</a> </li>
+            
 
             
             
@@ -311,23 +374,30 @@
         <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
         <!-- Latest compiled and minified JavaScript -->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
         
         <script src="third_party/simplify.js"></script>
         <script src="third_party/strftime.js"></script>
         <script src="third_party/underscore/underscore.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-route.js"></script>
-        <script src="app/scripts/app.js"></script>
-        <script src="app/scripts/controllers/main.js"></script>
-        <script src="third_party/angular-resource/angular-resource.js"></script>
-        <script src="third_party/angular-cookies/angular-cookies.js"></script>
-        <script src="third_party/angular-sanitize/angular-sanitize.js"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular-route.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular-resource.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular-cookies.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular-sanitize.js"></script>
+        
+        
+        
+        
         <script src="my-frameworks/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
         <script src="third_party/alternatives/angular-file-upload/angular-file-upload.js"></script>
         <script src="third_party/ui-bootsrap-tpls-0.9.0.js"></script>
         <script src="third_party/Javascript-and-Coffeescript-Utils/imgloader.js"></script>
+        
+        
+        <script src="app/scripts/app.js"></script>
+        <script src="app/scripts/controllers/main.js"></script>
         <script src="app/scripts/directives/zfInplaceUploader.js"></script>
         <script src="app/scripts/directives/zfEntityImage.js"></script>
         <script src="app/scripts/directives/zfImageModal.js"></script>
@@ -341,6 +411,8 @@
         <script src="app/scripts/directives/zfUserTraceMap.js"></script>
         <script src="app/scripts/directives/zfWhenScrolled.js"></script>
         <script src="app/scripts/directives/misc-tools-directives.js"></script>
+
+        <script src="app/scripts/controllers/archive-strategies/StationsByTimeStrategy.js"></script>
         
         <script src="app/scripts/controllers/ModalStation.js"></script>
         <script src="app/scripts/controllers/ModalDemo.js"></script>
@@ -357,6 +429,7 @@
         <script src="app/scripts/controllers/Settings.js"></script>
         
 
+        <script src="app/scripts/services/MenuService.js"></script>
         <script src="app/scripts/services/ProtectedControllerData.js"></script>
         <script src="app/scripts/services/StationService.js"></script>
         <script src="app/scripts/services/UserService.js"></script>

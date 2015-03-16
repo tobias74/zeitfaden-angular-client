@@ -1,7 +1,7 @@
      
      
      
-      <div class="col-lg-4 col-sm-5 col-md-5 sidebar">
+      <div class="col-lg-3 col-sm-5 col-md-5 sidebar">
         <div class="row">
           <div class="col-12 col-sm-12 col-lg-12">
 
@@ -17,42 +17,17 @@
             </div>
             
             
-            <!-- this is the menu fpr all non large devices -->
-            <div style="" class="hidden-lg station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
-
-
-  	            <div style="display:inline-block;" ng-include="'archive-time-parameters.html'">
+            <div style="" class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
+  	            <div style="display:block;" ng-include="'archive-time-parameters.html'">
 	              </div>
+            
+                <div class="parameter-element">
+                  <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
+                  <select style="margin-left:6px;font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
+                </div>
+            </div>
 
 
-               <div style="text-align:right;display:inline-block;" class="pull-right">
-                  <div style="display:block;" class="parameter-element">
-                    <label>
-                  	  <span style="top:3px;font-size:18px;" class="glyphicon glyphicon-map-marker"></span>
-                   	  <select style="font-size:18px;" id="radius_select" ng-change="changedDistance()" ng-model="selectedRange" ng-options="c.description for c in dataForRangeSelect"></select>
-                    </label>
-   	              </div>
-
-                  <div style="display:block;" class="parameter-element">
-                    <label>
-                      <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
-                      <select style="font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
-                    </label>
-                  </div>
-               </div>
-              </div>
-
-
-              <!-- this is the menu for all large desktop devices -->
-              <div class="visible-lg-block">
-                is it?
-                {{isThisEveryWhere}}
-                <div zf-date-picker ng-model="searchSpec.searchDate" on-date-change="changedDate" class="archive-date-picker"></div>
-                <label>
-
-
-                 
-              </div>
 
 
           </div><!--/span-->
@@ -63,7 +38,7 @@
  
  
 
-      <div class="col-lg-8 col-lg-offset-4 col-sm-7 col-sm-offset-5 col-md-7 col-md-offset-5">
+      <div class="col-lg-9 col-lg-offset-3 col-sm-7 col-sm-offset-5 col-md-7 col-md-offset-5">
 
 		<div ng-if="showLonelyEntity == true">
 			hello lonely entity

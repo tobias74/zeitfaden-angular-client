@@ -83,26 +83,11 @@ var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scrol
 		      };
 		    };
 
-		console.debug($delegate);
 
 		return $delegate;
 	});
 
 
-
-  $provide.factory('myHttpInterceptor', function($q) {
-    return function(promise) {
-
-     return promise.then(
-        function(response) {
-            //console.debug(eval ('window.some = ' + response.headers().zeitfadenprofiler));
-           return response;
-        }, function(response) {
-           return $q.reject('whaat?');
-        });
-     };
-  });
-  $httpProvider.responseInterceptors.push('myHttpInterceptor');
   
   // Use x-www-form-urlencoded Content-Type
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -170,9 +155,14 @@ var app = angular.module('ZeitfadenApp', ['ngRoute','ngResource','infinite-scrol
         templateUrl: 'app/views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/archive', {
+        templateUrl: 'app/views/archive.html', 
+        controller: 'AbstractArchiveCtrl', 
+        reloadOnSearch:false
+      })
       .when('/station-archive', {
         templateUrl: 'app/views/station-archive.html', 
-        controller: 'StationArchiveCtrl', 
+        controller: 'AbstractArchiveCtrl', 
         reloadOnSearch:false
       })
       .when('/station-by-distance', {

@@ -4,15 +4,10 @@ angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl',
 ['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService','$routeParams','StationService',
 function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService,$routeParams,StationService) {
   
-  $scope.entityStrategy = new StationsByTimeStrategy(StationService,ScrollHistoryService);
-  $scope.viewName="station-archive";
+  $scope.entityStrategy = new StationsByDistanceStrategy(StationService,ScrollHistoryService);
+  $scope.viewName="station-distance-archive";
   
   
-  setTimeout(function(){
-	  var someInput = document.getElementById('google-search-location');
-	  var autocomplete = new google.maps.places.Autocomplete(someInput,{'types':['establishment']});
-  	
-  },3000);
 
   $scope.attachGeoDataToStation = function(myStation){
   	var latlngA = new google.maps.LatLng($scope.searchLocation.latitude,$scope.searchLocation.longitude);
@@ -45,7 +40,6 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
     {"visibility": 'pass_protected', "description": "Protected"}
   ];
 
-  $scope.directiveData = {};
 
   $scope.searchLocation = {
     latitude: 13.0810, 
@@ -82,23 +76,6 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   };
   
   
-  $scope.searchGoogleLocation = function(request){
-	var service = new google.maps.places.PlacesService($scope.directiveData.searchMapInstance);
-	service.textSearch({query:request}, function(results,status){
-		if (status === 'OK')
-		{
-			var place = results[0];
-			$scope.$apply(function(){
-				$scope.searchLocation.latitude = place.geometry.location.k;
-				$scope.searchLocation.longitude = place.geometry.location.B;
-
-			    self.pushToRouteHistoryTemplateMethod();
-
-			});
-		}
-	});  	
-  	
-  };
   
   
   self.onRouteUpdateTemplateMethod = function(myParams){
@@ -154,9 +131,6 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
 
        
 
-  self.updateLocationSearch = function(search){
-  	
-  };
 	
   self.pushToRouteHistoryTemplateMethod = function(){
     $scope.entityStrategy.resetScrollStatus($scope);
@@ -343,7 +317,7 @@ function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenS
   $scope.searchSpec.untilDate = new Date();
   $scope.searchDirection = "nearFirst"; //farFirst
 
-  self.digestTwoTimes = function(myParams){
+  $scope.digestTwoTimes = function(myParams){
     if (myParams.fromDate){
       $scope.searchSpec.fromDate = new Date(myParams.fromDate);
     }

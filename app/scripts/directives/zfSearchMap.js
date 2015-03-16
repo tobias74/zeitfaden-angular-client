@@ -214,6 +214,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
   return {
     restrict: 'EA',
     require: '?ngModel',
+    template:'<div style="width:100%;height:90%;" class="search_map_div"></div><div class="hidden-xs" style="width:100%;"class="search_input_div"><input class="search_input" zf-enter="searchGoogleLocation(searchGoogleText)" ng-model="searchGoogleText" class="location-search-input" type="text"></div>',
     scope:{
       myModel: '=ngModel',
       myStation: '=zfStation',
@@ -323,9 +324,13 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
             draggable: ResponsiveService.shouldMapBeDraggable()
           };
 
-        googleMap = new google.maps.Map($(element)[0],mapOptions);
+        console.debug('making the maps');
+        var domElementForMap = $(element).find('.search_map_div');
+        console.debug(domElementForMap);
+        googleMap = new google.maps.Map(domElementForMap[0],mapOptions);
         googleMap.mapTypes.set('map_style', styledMap);
         googleMap.setMapTypeId('map_style');
+        console.debug('done making the maps');
         
         scope.mySearchMapInstance = googleMap;
         window.tobiasmap = googleMap;
@@ -334,10 +339,11 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
         
         google.maps.event.trigger(googleMap, 'resize');
 
-		//customMapController = addCustomControlls(googleMap,scope);
-		locateController = addLocateControlls(googleMap,scope);
-		//freeMapController = addFreeMapControlls(googleMap,scope);
+		    //customMapController = addCustomControlls(googleMap,scope);
+		    locateController = addLocateControlls(googleMap,scope);
+		    //freeMapController = addFreeMapControlls(googleMap,scope);
 
+        console.debug('before the marker');
         searchMarker = new google.maps.Marker({
           position: searchLatLng,
           map: googleMap,
@@ -347,8 +353,10 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
         });
         
         
+        console.debug('after the marker');
         
         google.maps.event.addListener(searchMarker, 'dragend', function(){
+          console.debug('dragend event');
           scope.$apply(function(){
             scope.myModel.latitude = searchMarker.getPosition().lat();
             scope.myModel.longitude = searchMarker.getPosition().lng();
@@ -359,6 +367,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
 
 
         google.maps.event.addListener(googleMap, 'click', function(event){
+          console.debug('click event');
           event.stop();
           scope.$apply(function(){
             scope.myFullSettingsCallback();
@@ -369,12 +378,14 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
 
 
           google.maps.event.trigger(googleMap, 'resize');
+          
           var myPosition = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
           googleMap.panTo(myPosition);
         }.bind(this));
 
 
         google.maps.event.addListener(googleMap, 'dblclick', function(event){
+          console.debug('dnbl click event');
           searchMarker.setPosition(event.latLng);
           scope.$apply(function(){
             scope.myModel.latitude = searchMarker.getPosition().lat();
@@ -395,10 +406,33 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
 */
         
         
+        var domElementForSearchInput = $(element).find('.search_input');
+        var autocomplete = new google.maps.places.Autocomplete(domElementForSearchInput[0],{'types':['establishment']});
+          
+        
+        
       };
+
+
+      scope.searchGoogleLocation = function(request){
+        var service = new google.maps.places.PlacesService(googleMap);
+        service.textSearch({query:request}, function(results,status){
+          if (status === 'OK')
+          {
+            var place = results[0];
+            scope.$apply(function(){
+              scope.myModel.latitude = place.geometry.location.lat();
+              scope.myModel.longitude = place.geometry.location.lng();
+            });
+            scope.myChangedMarkerCallback();
+          }
+        });   
+      };
+
  
 
       scope.$watch('myModel', function(){
+        console.debug('watching my model in search map');
         var myPosition = new google.maps.LatLng(scope.myModel.latitude, scope.myModel.longitude);
         searchMarker.setPosition(myPosition);
         googleMap.panTo(myPosition);
@@ -406,6 +440,7 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
       }, true);
  
       scope.$watch('myStation', function(){
+        console.debug('show my station');
         showStationOnMap(scope.myStation);
       }, true);
 
@@ -445,7 +480,9 @@ angular.module('ZeitfadenApp').directive('zfSearchMap',function(ResponsiveServic
           });
         }
         
+        console.debug('before resize');
         google.maps.event.trigger(googleMap, 'resize');
+        console.debug('after resize');
         googleMap.panTo(myPosition);
         
       };

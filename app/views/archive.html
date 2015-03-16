@@ -1,4 +1,29 @@
 
 
-            <div ng-include="'app/views/station-archive.html'" >
-            </div>
+<div ng-switch="viewName">
+
+  <div ng-switch-when="station-archive">
+    <div  ng-include="'station-archive.html'">
+    </div>
+  </div>
+
+  <div ng-switch-when="station-distance-archive">
+    <div  ng-include="'station-distance-archive.html'">
+    </div>
+  </div>
+
+  <div ng-switch-when="station-distance-archive-test">
+    <div  ng-include="'station-distance-archive-test.html'">
+    </div>
+  </div>
+
+  <div ng-switch-when="user-archive">
+    hier user
+  </div>
+
+  <div ng-switch-default>
+    hier default
+  </div>
+  
+</div>
+

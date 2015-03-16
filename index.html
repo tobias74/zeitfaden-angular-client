@@ -59,15 +59,6 @@
     </div>
   </script>
  
-  <script type="text/ng-template" id="location_search_below_map.html">
-      <div class="container" style="width:auto;display:block;vertical-align:top;padding-top:10px;padding-left:0px;padding-right:0px;">
-        <div class="row">
-            <div class="col-xs-12">
-              <input zf-enter="searchGoogleLocation(searchGoogle)" id="google-search-location" name="search-location" ng-model="searchGoogle" class="location-search-input" type="text">
-            </div>
-        </div>
-      </div>
-  </script> 
  
  
  
@@ -195,10 +186,12 @@
           </div>	    	            
       </div>
       <div ng-switch-when="video" class="thumbnail station medium" >
-       <video width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
+       <video ng-src="{{station.html5Video.mp4}}" width="400" height="300" ng-poster="{{station.html5Video.jpg}}" preload="none" controls="">
+         <!--
          <source ng-src="{{station.html5Video.mp4}}" type="video/mp4"></source>
          <source ng-src="{{station.html5Video.ogv}}" type="video/ogg"></source>
          <source ng-src="{{station.html5Video.webm}}" type="video/webm"></source>
+         --->
        </video>
     </div>
    </div>
@@ -298,12 +291,109 @@
 
 
 
+  <script type="text/ng-template" id="station-archive.html">
+      <div class="col-lg-3 col-sm-5 col-md-5 sidebar">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-lg-12">
+            <div ng-include="'station-search-map.html'">
+            </div>
+            <div ng-include="'parameter_header.html'">
+            </div>
+            <div style="" class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
+                <div style="display:block;" ng-include="'archive-time-parameters.html'">
+                </div>
+            
+                <div class="parameter-element">
+                  <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
+                  <select style="margin-left:6px;font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
+                </div>
+            </div>
+          </div><!--/span-->
+        </div><!--/row-->
+      </div><!--/span-->
+      <div class="col-lg-9 col-lg-offset-3 col-sm-7 col-sm-offset-5 col-md-7 col-md-offset-5">
+        <div ng-if="showLonelyEntity == true">
+          hello lonely entity
+        </div>
+        <div ng-if="showLonelyEntity == false" 
+             ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" 
+             class="archive" 
+             infinite-scroll="scrolledForMore()" 
+             infinite-scroll-distance="3" 
+             infinite-scroll-callback="scrollCallback">
+          
+          <div ng-show="isLoadingEntities" style="padding-top:100px;text-align:center;margin-left:auto;margin-right:auto;width:100%;">
+              Loading stations...
+          </div>
+          <div class="row" ng-include="'station_repeater.html'"  after-rendering="entityListLoaded()">
+          </div>
+        </div>
+        <div ng-if="showLongSpacer == true" style="height:{{longSpacerHeighth}}px;" >
+        </div>
+      </div>
+  </script>
+
      
-     
+
+  <script type="text/ng-template" id="station-distance-archive.html">
+      <div class="col-lg-3 col-sm-4 col-md-5 sidebar">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-lg-12">
+            <div ng-include="'station-search-map.html'">
+            </div>
+            
+            <div style="" class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
+              <div ng-include="'parameter_header.html'">
+              </div>
+              <div style="display:inline-block;" ng-include="'distance-time-parameters.html'">
+              </div>
+              <div style="text-align:right;display:inline-block;" class="pull-right">
+                <div style="display:block;" class="parameter-element">
+                  <label>
+                    <span style="top:4px;font-size:18px;margin-right:2px;" class="glyphicon glyphicon-list-alt"></span>
+                    <select style="font-size:18px;" id="visibility_select" ng-change="changedVisibility()" ng-model="selectedVisibility" ng-options="c.description for c in dataForVisibilitySelect"></select>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
+        <div ng-if="showLonelyEntity == true">
+          hello lonely entity
+        </div>
+        <div ng-if="showLonelyEntity == false" 
+             ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" 
+             class="archive" 
+             infinite-scroll="scrolledForMore()" 
+             infinite-scroll-distance="3" 
+             infinite-scroll-callback="scrollCallback">
+          
+          <div ng-show="isLoadingEntities" style="padding-top:100px;text-align:center;margin-left:auto;margin-right:auto;width:100%;">
+              Loading stations...
+          </div>
+
+          <div class="row" ng-include="'station_repeater.html'"  after-rendering="entityListLoaded()">
+          </div>
+        </div>
+        <div ng-if="showLongSpacer == true" style="height:{{longSpacerHeighth}}px;" >
+        </div>
+      </div>
+  </script>
 
 
 
-
+  <script type="text/ng-template" id="location_search_below_map.html">
+      <div class="container" style="width:auto;display:block;vertical-align:top;padding-top:10px;padding-left:0px;padding-right:0px;">
+        <div class="row">
+            <div class="col-xs-12">
+              <input zf-enter="searchGoogleLocation(searchGoogle)" id="google-search-location" name="search-location" ng-model="searchGoogle" class="location-search-input" type="text">
+            </div>
+        </div>
+      </div>
+  </script> 
 
 
 
@@ -413,6 +503,7 @@
         <script src="app/scripts/directives/misc-tools-directives.js"></script>
 
         <script src="app/scripts/controllers/archive-strategies/StationsByTimeStrategy.js"></script>
+        <script src="app/scripts/controllers/archive-strategies/StationsByDistanceStrategy.js"></script>
         
         <script src="app/scripts/controllers/ModalStation.js"></script>
         <script src="app/scripts/controllers/ModalDemo.js"></script>

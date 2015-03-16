@@ -4,8 +4,8 @@ angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl',
 ['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService','$routeParams','StationService',
 function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService,$routeParams,StationService) {
   
-  $scope.entityStrategy = new StationsByDistanceStrategy(StationService,ScrollHistoryService);
-  $scope.viewName="station-distance-archive";
+  $scope.entityStrategy = new UsersByTimeStrategy(StationService,ScrollHistoryService);
+  $scope.viewName="user-archive";
   
   
 

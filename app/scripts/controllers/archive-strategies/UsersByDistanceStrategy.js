@@ -1,31 +1,28 @@
 'use strict';
 
 
-var StationsByTimeStrategy = function(StationService,ScrollHistoryService){
+var UsersByDistanceStrategy = function(UserService,ScrollHistoryService){
   var self = this;
-
-  var internalFromTimestamp;
-  var lastStation;
-  var entityName = 'station';
+  var entityName = 'user';
   
   
   self.pushToRouteHistory = function(search,$scope){
     search.latitude = $scope.searchLocation.latitude;
     search.longitude = $scope.searchLocation.longitude;
     search.searchVisibility = $scope.selectedVisibility.visibility;
-    search.searchDate = $scope.searchSpec.searchDate.toUTCString();
-    search.searchDirection = $scope.searchSpec.selectedTimeOrdering.order;
-    search.radius = $scope.searchSpec.selectedRange.range;
+
+    search.fromDate = $scope.searchSpec.fromDate.toUTCString();
+    search.untilDate = $scope.searchSpec.untilDate.toUTCString();
+    search.searchDirection = $scope.searchDirection;
   };
   
   self.resetScrollStatus = function($scope){
-    lastStation = undefined;
-    internalFromTimestamp = undefined;
     $scope.scrollEndReached = false;
+    $scope.limit = 100;
+    $scope.offset = 0;
   };
   
   self.setHistoryEntities = function(data,$scope){
-    lastStation = data['lastStation'];
     $scope.entities = data[self.entityName + 's'];
     $scope.scrollEndReached = data['scrollEndReached'];
   };
@@ -45,14 +42,12 @@ var StationsByTimeStrategy = function(StationService,ScrollHistoryService){
     }
 
 
-    $scope.digestSingleTime(myParams);
-    
-    $scope.digestRadius(myParams);
+    $scope.digestTwoTimes(myParams);
     
   };
   
   
-  self.loadMore = function(callback,$scope) {
+  self.loadMore = function(callback, $scope) {
     console.debug('load more! ... my scrollStatusId is ' + $scope.scrollingStatusId);
     if ($scope.isLoadingEntities)
     {
@@ -60,56 +55,45 @@ var StationsByTimeStrategy = function(StationService,ScrollHistoryService){
     }
     
     $scope.isLoadingEntities = true;
-    var lastId = 0;
-
-    if (lastStation != undefined)
-    {
-      lastId = lastStation.id;
-      internalFromTimestamp = lastStation.startTimestamp;
-    }
-    else // its a new search
-    {
-      internalFromTimestamp = Math.floor($scope.searchSpec.searchDate.getTime() / 1000);
-    }
-
     
-    var moreStations = StationService.getStationsOrderedByTime({
+    var moreEntities = UserService.getUsersOrderedByDistance({
       mustHaveAttachment: 1,
-      lastId: lastId,
-      limit:20,
+      limit: $scope.limit,
+      offset: $scope.offset,
       latitude: $scope.searchLocation.latitude,
       longitude: $scope.searchLocation.longitude,
-      distance: $scope.searchSpec.selectedRange.range,
-      direction: $scope.searchSpec.selectedTimeOrdering.order,
+      maxDistance: 99999999999,
+      direction: $scope.searchDirection,
       visibility: $scope.selectedVisibility.visibility,
-      timestamp: internalFromTimestamp
+      fromDate: Math.floor($scope.searchSpec.fromDate.getTime() / 1000),
+      untilDate: Math.floor($scope.searchSpec.untilDate.getTime() / 1000),
       
     },function(){
-      for (var i = 0; i < moreStations.length; i++) {
-        var myStation = moreStations[i];
-        $scope.attachGeoDataToStation(myStation);
-        $scope.entities.push(myStation);
+      $scope.offset += moreEntities.length;
+      
+      for (var i = 0; i < moreEntities.length; i++) {
+        $scope.entities.push(moreEntities[i]);
       }
       $scope.isLoadingEntities = false;
-      if (moreStations.length>0)
-      {
-        lastStation = moreStations[moreStations.length-1];
-      }
-      else
+      if (moreEntities.length==0)
       {
         $scope.scrollEndReached = true;
       }
       
       ScrollHistoryService.storeScrollingStatus($scope.scrollingStatusId, {
         filled: true,
-        stations: $scope.entities,
-        lastStation: lastStation,
+        entities: $scope.entities,
         scrollEndReached: $scope.scrollEndReached
       });
       
-      
       callback && callback();
     });
+
+
+
+
+
+
   };
   
   

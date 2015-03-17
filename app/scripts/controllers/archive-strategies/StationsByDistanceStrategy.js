@@ -48,14 +48,6 @@ var StationsByDistanceStrategy = function(StationService,ScrollHistoryService){
     
   };
   
-  
-
-
-
-
-  
-  
-  
   self.loadMore = function(callback,$scope) {
     if ($scope.isLoadingEntities)
     {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($scope,StationService,$routeParams,$location,LoginService,$fileUploader,MenuService) {
+angular.module('ZeitfadenApp').controller('ZeitfadenApplicationCtrl', function($scope,ZeitfadenService,$routeParams,$location,LoginService,$fileUploader,MenuService) {
   
 
   $scope.tobias="inside the main application controller.";

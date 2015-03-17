@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('ZeitfadenApp').controller('AbstractArchiveCtrl', 
-['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService','$routeParams','StationService',
-function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService,$routeParams,StationService) {
+['$scope','ProtectedControllerData','$location','ResponsiveService','ScrollHistoryService','ZeitfadenService','$routeParams',
+function($scope,self,$location,ResponsiveService,ScrollHistoryService,ZeitfadenService,$routeParams) {
   
-  $scope.entityStrategy = new UsersByTimeStrategy(StationService,ScrollHistoryService);
-  $scope.viewName="user-archive";
+  $scope.entityStrategy = new UsersByDistanceStrategy(ZeitfadenService,ScrollHistoryService);
+  $scope.viewName="user-distance-archive";
   
   
 

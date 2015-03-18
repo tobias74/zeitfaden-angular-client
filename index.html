@@ -427,7 +427,45 @@
   </script>
 
 
+  <script type="text/ng-template" id="user-distance-archive.html">
+      <div class="col-lg-3 col-sm-4 col-md-5 sidebar">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-lg-12">
+            <div ng-include="'station-search-map.html'">
+            </div>
+            <div style="" class="station-archive-settings-wrapper" ng-class="{true: 'show-wrapper', false: 'hide-wrapper'}[showFullSettings]">
+                <div ng-include="'parameter_header.html'">
+                </div>
 
+                <div style="display:inline-block;" ng-include="'distance-time-parameters.html'">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-5">
+        <div ng-if="showLonelyEntity == false" 
+             ng-class="{true: 'with-big-top-distance', false: 'with-small-top-distance'}[showFullSettings]" 
+             class="archive" 
+             infinite-scroll="scrolledForMore()" 
+             infinite-scroll-distance="3" 
+             infinite-scroll-callback="scrollCallback">
+          
+            <div ng-show="isLoadingEntities" style="padding-top:100px;text-align:center;margin-left:auto;margin-right:auto;width:100%;">
+                Loading users...
+            </div>
+            <div class="row" ng-include="'user_repeater.html'"  after-rendering="entityListLoaded()">
+            </div>
+          
+          
+        </div>
+     </div>
+
+  </script>
+        
+
+    
 
         
 
@@ -562,7 +600,8 @@
         <script src="app/scripts/controllers/ModalDemo.js"></script>
         <script src="app/scripts/controllers/ModalLogin.js"></script>
         <script src="app/scripts/controllers/ModalRegistration.js"></script>
-        <script src="app/scripts/controllers/AbstractArchive.js"></script>
+        
+        <script src="app/scripts/controllers/Archive.js"></script>
         <script src="app/scripts/controllers/UserTrace.js"></script>
         <script src="app/scripts/controllers/Settings.js"></script>
         
